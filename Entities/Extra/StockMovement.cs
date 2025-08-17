@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Extra
 {
-    internal class StockMovement
+    public class StockMovement : AbstractEntity
     {
     }
 }

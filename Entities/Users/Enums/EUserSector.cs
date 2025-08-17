@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities
+namespace Entities.Users.Enums
 {
-    internal class Entity
+    public enum EUserSector
     {
+        SALES,
+        REPAIR,
+        INVENTORY
     }
 }

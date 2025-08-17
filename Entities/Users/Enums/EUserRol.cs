@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Services
+namespace Entities.Users.Enums
 {
-    public class Service : AbstractEntity
+    public enum EUserRol
     {
+        ADMIN,
+        EMPLOYEE,
+        TECHNICIAN
     }
 }

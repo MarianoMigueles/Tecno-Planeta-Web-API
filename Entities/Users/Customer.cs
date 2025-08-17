@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Users
 {
-    internal class Customer
+    public class Customer : AbstractEntity
     {
     }
 }

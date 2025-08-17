@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Services
 {
-    internal class Repair
+    public class Repair : AbstractEntity
     {
     }
 }

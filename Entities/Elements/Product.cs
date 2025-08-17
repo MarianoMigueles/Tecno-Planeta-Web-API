@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Elements
 {
-    internal class Product
+    public class Product : AbstractEntity
     {
     }
 }

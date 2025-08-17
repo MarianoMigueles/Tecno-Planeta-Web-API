@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Services
+namespace Entities
 {
-    public class Service : AbstractEntity
+    public abstract class AbstractEntity
     {
+        public int Id { get; set; }
     }
 }

@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Services
+namespace Entities.Services.Enums
 {
-    public class Service : AbstractEntity
+    public enum ERepairStatus
     {
+        PENDING,
+        IN_PROGRESS,
+        COMPLETE
     }
 }

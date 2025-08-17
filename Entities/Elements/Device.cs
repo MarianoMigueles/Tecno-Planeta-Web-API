@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Elements
 {
-    internal class Device
+    public class Device : AbstractEntity
     {
     }
 }

@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Services
+namespace Entities.Elements.Enums
 {
-    public class Service : AbstractEntity
+    public enum EInvoiceStatus
     {
+        DRAFT,
+        PAID,
+        CANCELED
     }
 }
