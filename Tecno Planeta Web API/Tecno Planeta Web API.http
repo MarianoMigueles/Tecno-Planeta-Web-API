@@ -1,0 +1,6 @@
+@Tecno_Planeta_Web_API_HostAddress = http://localhost:5110
+
+GET {{Tecno_Planeta_Web_API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
