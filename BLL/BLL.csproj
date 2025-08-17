@@ -19,4 +19,12 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTO\Invoice\" />
+    <Folder Include="DTO\Device\" />
+    <Folder Include="DTO\Service\" />
+    <Folder Include="DTO\Repair\" />
+    <Folder Include="DTO\Product\" />
+  </ItemGroup>
+
 </Project>
