@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Elements
+namespace Entities.Elements.Enums
 {
-    public class Invoice : AbstractEntity
+    public enum EInvoiceOperation
     {
+        INCOME,
+        EXPENSE
     }
 }
