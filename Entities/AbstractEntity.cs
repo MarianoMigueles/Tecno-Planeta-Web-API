@@ -10,7 +10,7 @@ namespace Entities
     {
         public required int Id { get; set; }
 
-        public void OnChangeData() { }
+        public void LogData() { }
     }
 
 }
