@@ -10,7 +10,7 @@ namespace Entities.Elements.InvoiceFolder
 {
     public class Invoice : AbstractEntity
     {
-        public EInvoiceStatus Status { get; set; }
+        public EInvoiceStatus Status { get; private set; }
         public decimal SubTotal { get; set; }
         public decimal Total { get; set; }
         public string InvoiceNumber { get; set; }
@@ -26,13 +26,15 @@ namespace Entities.Elements.InvoiceFolder
 
         public void EditStatus(EInvoiceStatus newStatus)
         {
-            throw new NotImplementedException();
-        }
+            // Can't change the status of a canceled or paied invoice 
+            if(this.Status == EInvoiceStatus.CANCELED || this.Status == EInvoiceStatus.PAID)
+                throw new NotImplementedException("not implement the specific exeption yet");
 
-        public void EditIssueDate(DateTime newIssueDate)
-        {
-            throw new NotImplementedException();
-        }
+            // The status can't be the same status
+            if (newStatus == this.Status)
+                throw new NotImplementedException("not implement the specific exeption yet");
 
+            this.Status = newStatus;
+        }
     }
 }

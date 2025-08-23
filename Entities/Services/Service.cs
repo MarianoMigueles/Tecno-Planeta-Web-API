@@ -14,12 +14,16 @@ namespace Entities.Services
 
         [Column(TypeName = "decimal(6,2)")]
         public decimal BasePrice { get; private set; }
-        public TimeOnly EstimatedTime { get; private set; }
+        public TimeOnly EstimatedTime { get; set; }
 
 
-        public void EditBasePrice(double newPrice)
+        public void EditBasePrice(decimal newPrice)
         {
-            throw new NotImplementedException();
+            // The date cannot be less of 0
+            if (newPrice < 0)
+                throw new NotImplementedException("not implement the specific exeption yet");
+
+            BasePrice = newPrice;
         }
     }
 }

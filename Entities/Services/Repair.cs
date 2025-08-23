@@ -18,28 +18,35 @@ namespace Entities.Services
         public ERepairStatus RepairStatus { get; private set; }
         public string Notes { get; set; }
 
-
         public int DeviceId { get; set; }
         public Device Device { get; set; }
 
         public void ChangeRepairStatus(ERepairStatus newStatus)
         {
-            throw new NotImplementedException();
-        }
+            // The status can't be chaged if the repair was completed
+            if (this.RepairStatus == ERepairStatus.COMPLETE)
+                throw new NotImplementedException("not implement the specific exeption yet");
 
-        public void EditEntryDate(DateTime newDate)
-        {
-            throw new NotImplementedException();
+            // The status can't be the same status
+            if (newStatus == this.RepairStatus)
+                throw new NotImplementedException("not implement the specific exeption yet");
+
+            this.RepairStatus = newStatus;
         }
 
         public void EditExitDate(DateTime newDate)
         {
-            throw new NotImplementedException();
+            // The date cannot be older than the current one
+            if (newDate < DateTime.Now)
+                throw new NotImplementedException("not implement the specific exeption yet");
+
+            this.ExitDate = newDate;
         }
 
         public void CancelRepair()
         {
-            throw new NotImplementedException();
+            EditExitDate(DateTime.Now);
+            ChangeRepairStatus(ERepairStatus.CANCELED);
         }
 
     }

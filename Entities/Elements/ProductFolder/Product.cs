@@ -43,11 +43,18 @@ namespace Entities.Elements.ProductFolder
 
         public void EditSalePrice(decimal newPrice)
         {
-            throw new NotImplementedException();
+            // The sale price cannot be less of 0
+            if (newPrice < 0)
+                throw new NotImplementedException("not implement the specific exeption yet");
+
+            SalePrice = newPrice;
         }
         public void AddStock(int amount)
         {
-            throw new NotImplementedException();
+            if (amount <= 0)
+                throw new NotImplementedException("not implement the specific exeption yet");
+
+            Stock += amount;
         }
         public void SubstractStock(int amount)
         {

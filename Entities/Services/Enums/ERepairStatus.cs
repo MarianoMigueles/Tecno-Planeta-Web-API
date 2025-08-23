@@ -8,6 +8,7 @@ namespace Entities.Services.Enums
 {
     public enum ERepairStatus
     {
+        CANCELED,
         PENDING,
         IN_PROGRESS,
         COMPLETE
