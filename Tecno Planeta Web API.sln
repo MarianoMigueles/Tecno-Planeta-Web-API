@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tecno Planeta Web API", "Tecno Planeta Web API\Tecno Planeta Web API.csproj", "{A28E3D83-6C8C-46BC-8EBE-17BABD2F0C86}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{0D96E192-21A7-4019-9B2C-AC287D96355D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{55E28C2F-6077-4C2F-9AE9-AF80C189AFFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exeptions", "Exeptions\Exeptions.csproj", "{11A125F7-9EF1-47AD-B592-1405FE849D47}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{55E28C2F-6077-4C2F-9AE9-AF80C189AFFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55E28C2F-6077-4C2F-9AE9-AF80C189AFFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55E28C2F-6077-4C2F-9AE9-AF80C189AFFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11A125F7-9EF1-47AD-B592-1405FE849D47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11A125F7-9EF1-47AD-B592-1405FE849D47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11A125F7-9EF1-47AD-B592-1405FE849D47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11A125F7-9EF1-47AD-B592-1405FE849D47}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

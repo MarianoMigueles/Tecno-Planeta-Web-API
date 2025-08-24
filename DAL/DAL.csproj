@@ -16,4 +16,8 @@
     <Folder Include="Data\DataSeed\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Exeptions\Exeptions.csproj" />
+  </ItemGroup>
+
 </Project>
