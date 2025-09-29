@@ -1,4 +1,9 @@
-﻿using System;
+﻿using AutoMapper;
+using BLL.DTO.Service;
+using BLL.Services.Interfaces;
+using DAL.UnitOfWork;
+using Entities.Services.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +11,41 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    internal class RepairService
+    public class RepairService(IUnitOfWork unitOfWork, IMapper mapper) : AbstractService(unitOfWork, mapper), IRepairService
     {
+        public Task<RepairDTO> CancelRepair()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<RepairDTO>> GetByCustomerName(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<RepairDTO>> GetByEntryDate(DateTime entryDate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<RepairDTO>> GetByPeriotOfEntryDate(DateTime startDate, DateTime endDate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<RepairDTO> UpdateCost(decimal newCost)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<RepairDTO> UpdateNote(string note)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<RepairDTO> UpdateStatus(ERepairStatus newStatus)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

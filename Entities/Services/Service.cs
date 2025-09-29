@@ -16,7 +16,6 @@ namespace Entities.Services
         public decimal BasePrice { get; private set; }
         public TimeOnly EstimatedTime { get; set; }
 
-
         public void EditBasePrice(decimal newPrice)
         {
             // The date cannot be less of 0
