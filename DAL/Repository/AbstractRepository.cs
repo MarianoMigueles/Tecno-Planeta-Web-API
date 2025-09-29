@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace DAL.Repository
 {
-    public class Repository<T>(DataContext context) : IRepository<T> where T : class
+    public abstract class AbstractRepository<T>(DataContext context) : IRepository<T> where T : class
     {
         protected readonly DataContext _context = context;
 
-        public async Task CreateAsync(T entity)
+        public virtual async Task CreateAsync(T entity)
         {
             try
             {
@@ -26,7 +26,7 @@ namespace DAL.Repository
             }
         }
 
-        public void Delete(T entity)
+        public virtual void Delete(T entity)
         {
             try
             {
@@ -38,7 +38,7 @@ namespace DAL.Repository
             }
         }
 
-        public async Task<List<T>> GetAllAsync()
+        public virtual async Task<List<T>> GetAllAsync()
         {
             try
             {
@@ -50,13 +50,13 @@ namespace DAL.Repository
             }
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public virtual async Task<T> GetByIdAsync(int id)
         {
             var result = await _context.Set<T>().FindAsync(id);
             return result ?? throw new EntityNotFoundException($"No entity of type {typeof(T).Name} was found with ID {id}.");
         }
 
-        public void Update(T entity)
+        public virtual void Update(T entity)
         {
             try
             {

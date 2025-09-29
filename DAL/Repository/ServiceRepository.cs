@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repository
 {
-    public class ServiceRepository(DataContext context) : Repository<Service>(context), IServiceRepository
+    public class ServiceRepository(DataContext context) : AbstractRepository<Service>(context), IServiceRepository
     {
         public Task<List<Service>> GetAllByGreaterPrice(decimal price)
         {

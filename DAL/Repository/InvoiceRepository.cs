@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repository
 {
-    public class InvoiceRepository(DataContext context) : Repository<Invoice>(context), IInvoiceRepository
+    public class InvoiceRepository(DataContext context) : AbstractRepository<Invoice>(context), IInvoiceRepository
     {
         public Task<List<Invoice>> GetAllByGreaterProductQuantity(int amount)
         {

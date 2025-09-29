@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repository
 {
-    public class CustomerRepository(DataContext context) : Repository<Customer>(context), ICustomerRepository
+    public class CustomerRepository(DataContext context) : AbstractRepository<Customer>(context), ICustomerRepository
     {
         public Task<Customer> GetByName(string name)
         {

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repository
 {
-    public class ProductRepository(DataContext context) : Repository<Product>(context), IProductRepository
+    public class ProductRepository(DataContext context) : AbstractRepository<Product>(context), IProductRepository
     {
         public Task<Product> AddStock(string newName)
         {

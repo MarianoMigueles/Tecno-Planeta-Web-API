@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repository
 {
-    public class DeviceRepository(DataContext context) : Repository<Device>(context), IDeviceRepository
+    public class DeviceRepository(DataContext context) : AbstractRepository<Device>(context), IDeviceRepository
     {
         public Task<List<Device>> GetAllByBrand(string brand)
         {

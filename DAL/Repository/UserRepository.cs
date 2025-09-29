@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repository
 {
-    public class UserRepository(DataContext context) : Repository<User>(context), IUserRepository
+    public class UserRepository(DataContext context) : AbstractRepository<User>(context), IUserRepository
     {
         public Task<User> GetAllByRol(EUserRol rol)
         {

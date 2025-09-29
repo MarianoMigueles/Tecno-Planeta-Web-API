@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repository
 {
-    public class RepairRepository(DataContext context) : Repository<Repair>(context), IRepairRepository
+    public class RepairRepository(DataContext context) : AbstractRepository<Repair>(context), IRepairRepository
     {
         public Task<Repair> CancelRepair()
         {
