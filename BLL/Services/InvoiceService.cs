@@ -3,6 +3,7 @@ using BLL.DTO.Invoice;
 using BLL.Services.Interfaces;
 using DAL.UnitOfWork;
 using Entities.Elements.Enums;
+using Entities.Elements.InvoiceFolder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,10 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class InvoiceService(IUnitOfWork unitOfWork, IMapper mapper) : AbstractService(unitOfWork, mapper), IInvoiceService
+    public class InvoiceService(IUnitOfWork unitOfWork, IMapper mapper) : AbstractService<Invoice, InvoiceDTO>(unitOfWork, mapper), IInvoiceService
     {
+        //--------------------------------- GET ------------------------------------------------------
+
         public Task<List<InvoiceDTO>> GetAllByGreaterProductQuantity(int amount)
         {
             throw new NotImplementedException();
@@ -58,9 +61,15 @@ namespace BLL.Services
             throw new NotImplementedException();
         }
 
+        //----------------------------------------------------------------------------------------- <>
+
+        //--------------------------------- PATCH ------------------------------------------------------
+
         public Task<InvoiceDTO> UpdateStatus(EInvoiceStatus newStatus)
         {
             throw new NotImplementedException();
         }
+
+        //----------------------------------------------------------------------------------------- <>
     }
 }

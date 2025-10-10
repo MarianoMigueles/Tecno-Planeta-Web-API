@@ -2,6 +2,7 @@
 using BLL.DTO.Product;
 using BLL.Services.Interfaces;
 using DAL.UnitOfWork;
+using Entities.Elements.ProductFolder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +11,9 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class ProductService(IUnitOfWork unitOfWork, IMapper mapper) : AbstractService(unitOfWork, mapper), IProductService
+    public class ProductService(IUnitOfWork unitOfWork, IMapper mapper) : AbstractService<Product, ProductDTO>(unitOfWork, mapper), IProductService
     {
-        public Task<ProductDTO> AddStock(string newName)
-        {
-            throw new NotImplementedException();
-        }
-
+        //--------------------------------- GET ------------------------------------------------------
         public Task<List<ProductDTO>> GetAllByActiveStatus(bool status)
         {
             throw new NotImplementedException();
@@ -56,8 +53,26 @@ namespace BLL.Services
         {
             throw new NotImplementedException();
         }
+        //----------------------------------------------------------------------------------------- <>
 
-        public Task<ProductDTO> SubstractStock(string newName)
+        //--------------------------------- PATCH ------------------------------------------------------
+
+        public Task<ProductDTO> Activate()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ProductDTO> AddStock(int amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ProductDTO> Deactivate()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ProductDTO> SubstractStock(int amount)
         {
             throw new NotImplementedException();
         }
@@ -77,14 +92,11 @@ namespace BLL.Services
             throw new NotImplementedException();
         }
 
-        public Task<ProductDTO> UpdateSalePrice(string newName)
+        public Task<ProductDTO> UpdateSalePrice(decimal newPrice)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ProductDTO> UpdateStatus(string newName)
-        {
-            throw new NotImplementedException();
-        }
+        //----------------------------------------------------------------------------------------- <>
     }
 }

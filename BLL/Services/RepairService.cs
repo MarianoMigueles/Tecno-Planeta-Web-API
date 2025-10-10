@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
-using BLL.DTO.Service;
+using BLL.DTO.Repair;
 using BLL.Services.Interfaces;
 using DAL.UnitOfWork;
+using Entities.Services;
 using Entities.Services.Enums;
 using System;
 using System.Collections.Generic;
@@ -11,12 +12,9 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class RepairService(IUnitOfWork unitOfWork, IMapper mapper) : AbstractService(unitOfWork, mapper), IRepairService
+    public class RepairService(IUnitOfWork unitOfWork, IMapper mapper) : AbstractService<Repair, RepairDTO>(unitOfWork, mapper), IRepairService
     {
-        public Task<RepairDTO> CancelRepair()
-        {
-            throw new NotImplementedException();
-        }
+        //--------------------------------- GET ------------------------------------------------------
 
         public Task<List<RepairDTO>> GetByCustomerName(string name)
         {
@@ -28,7 +26,16 @@ namespace BLL.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<RepairDTO>> GetByPeriotOfEntryDate(DateTime startDate, DateTime endDate)
+        public Task<List<RepairDTO>> GetByPeriodOfEntryDate(DateTime startDate, DateTime endDate)
+        {
+            throw new NotImplementedException();
+        }
+
+        //----------------------------------------------------------------------------------------- <>
+
+        //--------------------------------- PATCH ------------------------------------------------------
+
+        public Task<RepairDTO> CancelRepair()
         {
             throw new NotImplementedException();
         }
@@ -47,5 +54,7 @@ namespace BLL.Services
         {
             throw new NotImplementedException();
         }
+
+        //----------------------------------------------------------------------------------------- <>
     }
 }

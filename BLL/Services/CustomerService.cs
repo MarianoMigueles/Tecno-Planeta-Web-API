@@ -2,6 +2,7 @@
 using BLL.DTO.User;
 using BLL.Services.Interfaces;
 using DAL.UnitOfWork;
+using Entities.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,10 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class CustomerService(IUnitOfWork unitOfWork, IMapper mapper) : AbstractService(unitOfWork, mapper), ICustomerService
+    public class CustomerService(IUnitOfWork unitOfWork, IMapper mapper) : AbstractService<Customer, CustomerDTO>(unitOfWork, mapper), ICustomerService
     {
+        //--------------------------------- GET ------------------------------------------------------
+
         public Task<CustomerDTO> GetByName(string name)
         {
             throw new NotImplementedException();
@@ -32,6 +35,10 @@ namespace BLL.Services
             throw new NotImplementedException();
         }
 
+        //----------------------------------------------------------------------------------------- <>
+
+        //--------------------------------- PATCH ------------------------------------------------------
+
         public Task<CustomerDTO> UpdateName(string newName)
         {
             throw new NotImplementedException();
@@ -41,5 +48,7 @@ namespace BLL.Services
         {
             throw new NotImplementedException();
         }
+
+        //----------------------------------------------------------------------------------------- <>
     }
 }

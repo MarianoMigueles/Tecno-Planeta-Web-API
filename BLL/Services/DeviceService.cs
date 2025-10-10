@@ -2,6 +2,7 @@
 using BLL.DTO.Device;
 using BLL.Services.Interfaces;
 using DAL.UnitOfWork;
+using Entities.Elements;
 using Entities.Elements.Enums;
 using System;
 using System.Collections.Generic;
@@ -11,8 +12,10 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class DeviceService(IUnitOfWork unitOfWork, IMapper mapper) : AbstractService(unitOfWork, mapper), IDeviceService
+    public class DeviceService(IUnitOfWork unitOfWork, IMapper mapper) : AbstractService<Device, DeviceDTO>(unitOfWork, mapper), IDeviceService
     {
+        //--------------------------------- GET ------------------------------------------------------
+
         public Task<List<DeviceDTO>> GetAllByBrand(string brand)
         {
             throw new NotImplementedException();
@@ -32,5 +35,7 @@ namespace BLL.Services
         {
             throw new NotImplementedException();
         }
+
+        //----------------------------------------------------------------------------------------- <>
     }
 }
