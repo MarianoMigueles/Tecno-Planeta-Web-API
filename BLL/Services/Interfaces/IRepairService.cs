@@ -9,16 +9,16 @@ using BLL.DTO.Service;
 
 namespace BLL.Services.Interfaces
 {
-    public interface IRepairService
+    public interface IRepairService : IService
     {
         //--------------------------------- GET ------------------------------------------------------
         public Task<List<RepairDTO>> GetByCustomerName(string name);
         public Task<List<RepairDTO>> GetByEntryDate(DateTime entryDate);
-        public Task<List<RepairDTO>> GetByPeriotOfEntryDate(DateTime startDate, DateTime endDate);
+        public Task<List<RepairDTO>> GetByPeriodOfEntryDate(DateTime startDate, DateTime endDate);
 
         //----------------------------------------------------------------------------------------- <>
 
-        //--------------------------------- PUT ------------------------------------------------------
+        //--------------------------------- PATCH ------------------------------------------------------
         public Task<RepairDTO> UpdateCost(decimal newCost);
         public Task<RepairDTO> UpdateNote(string note);
         public Task<RepairDTO> UpdateStatus(ERepairStatus newStatus);

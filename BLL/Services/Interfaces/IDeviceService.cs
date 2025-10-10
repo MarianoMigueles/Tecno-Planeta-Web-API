@@ -9,9 +9,9 @@ using BLL.DTO.Device;
 
 namespace BLL.Services.Interfaces
 {
-    public interface IDeviceService
+    public interface IDeviceService : IService
     {
-        //--------------------------------- GET ------------------------------------------------------
+        //--------------------------------- PATCH ------------------------------------------------------
         public Task<List<DeviceDTO>> GetByCustomerName(string customerName);
         public Task<List<DeviceDTO>> GetAllByType(EDeviceType type);
         public Task<List<DeviceDTO>> GetAllByModel(string model);

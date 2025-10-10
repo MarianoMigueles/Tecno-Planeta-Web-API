@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Services.Interfaces
 {
-    public interface IInvoiceService
+    public interface IInvoiceService : IService
     {
         //--------------------------------- GET ------------------------------------------------------
         public Task<InvoiceDTO> GetByNumber(int number);
@@ -20,11 +20,11 @@ namespace BLL.Services.Interfaces
         public Task<InvoiceDTO> GetByCustomerName(string name);
         public Task<List<InvoiceDTO>> GetAllByStatus(EInvoiceStatus status);
         public Task<List<InvoiceDTO>> GetAllByOperationType(EInvoiceOperation type);
-        public Task<List<InvoiceDTO>> GetAllByIssueDate(DateTime status);
+        public Task<List<InvoiceDTO>> GetAllByIssueDate(DateTime date);
 
         //----------------------------------------------------------------------------------------- <>
 
-        //--------------------------------- PUT ------------------------------------------------------
+        //--------------------------------- PATCH ------------------------------------------------------
         public Task<InvoiceDTO> UpdateStatus(EInvoiceStatus newStatus);
         //----------------------------------------------------------------------------------------- <>
     }

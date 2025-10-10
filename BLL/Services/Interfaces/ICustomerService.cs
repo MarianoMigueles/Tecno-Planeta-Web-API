@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Services.Interfaces
 {
-    public interface ICustomerService
+    public interface ICustomerService : IService
     {
         //--------------------------------- GET ------------------------------------------------------
         public Task<CustomerDTO> GetByName(string name);
@@ -18,7 +18,7 @@ namespace BLL.Services.Interfaces
 
         //----------------------------------------------------------------------------------------- <>
 
-        //--------------------------------- PUT ------------------------------------------------------
+        //--------------------------------- PATCH ------------------------------------------------------
         public Task<CustomerDTO> UpdateName(string newName);
         public Task<CustomerDTO> UpdatePhone(string newPhone);
         //----------------------------------------------------------------------------------------- <>

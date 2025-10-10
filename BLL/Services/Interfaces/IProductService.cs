@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Services.Interfaces
 {
-    public interface IProductService
+    public interface IProductService : IService
     {
         //--------------------------------- GET ------------------------------------------------------
         public Task<ProductDTO> GetByName(string name);
@@ -18,15 +18,16 @@ namespace BLL.Services.Interfaces
         public Task<List<ProductDTO>> GetAllByLessPurchasePrice(decimal price);
         public Task<List<ProductDTO>> GetAllByActiveStatus(bool status);
         public Task<List<ProductDTO>> GetAllByCategory(string category);
-        public Task<List<ProductDTO>> GetAllByAmoutOfStock(int phone, bool isGreater = false);
+        public Task<List<ProductDTO>> GetAllByAmoutOfStock(int amount, bool isGreater = false);
         //----------------------------------------------------------------------------------------- <>
 
-        //--------------------------------- PUT ------------------------------------------------------
+        //--------------------------------- PATCH ------------------------------------------------------
         public Task<ProductDTO> UpdateName(string newName);
-        public Task<ProductDTO> UpdateSalePrice(string newName);
-        public Task<ProductDTO> AddStock(string newName);
-        public Task<ProductDTO> SubstractStock(string newName);
-        public Task<ProductDTO> UpdateStatus(string newName);
+        public Task<ProductDTO> UpdateSalePrice(decimal newPrice);
+        public Task<ProductDTO> AddStock(int amount);
+        public Task<ProductDTO> SubstractStock(int amount);
+        public Task<ProductDTO> Activate();
+        public Task<ProductDTO> Deactivate();
         public Task<ProductDTO> UpdateCategory(string newName);
         public Task<ProductDTO> UpdateDescription(string newName);
         //----------------------------------------------------------------------------------------- <>

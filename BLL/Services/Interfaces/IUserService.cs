@@ -9,7 +9,7 @@ using BLL.DTO.User;
 
 namespace BLL.Services.Interfaces
 {
-    public interface IUserService
+    public interface IUserService : IService
     {
         //--------------------------------- GET ------------------------------------------------------
         public Task<UserDTO> GetByName(string name);
@@ -18,11 +18,11 @@ namespace BLL.Services.Interfaces
 
         //----------------------------------------------------------------------------------------- <>
 
-        //--------------------------------- PUT ------------------------------------------------------
+        //--------------------------------- PATCH ------------------------------------------------------
         public Task<UserDTO> UpdateName(string newName);
         public Task<UserDTO> UpdatePassword(string newPassword);
-        public Task<UserDTO> UpdateRol(EUserRol rol);
-        public Task<UserDTO> UpdateSector(EUserRol rol);
+        public Task<UserDTO> UpdateRol(EUserRol newRol);
+        public Task<UserDTO> UpdateSector(EUserSector newSector);
         //----------------------------------------------------------------------------------------- <>
     }
 }
