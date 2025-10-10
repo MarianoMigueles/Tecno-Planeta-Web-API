@@ -3,39 +3,26 @@ using DAL.Repository.Interfaces;
 
 namespace DAL.UnitOfWork
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork(
+        ICustomerRepository customerRepository,
+        IDeviceRepository deviceRepository,
+        IInvoiceRepository invoiceRepository,
+        IProductRepository productRepository,
+        IRepairRepository repairRepository,
+        IServiceRepository serviceRepository,
+        IUserRepository userRepository,
+        DataContext dataContext
+        ) : IUnitOfWork
     {
-        public ICustomerRepository CustomerRepository { get; }
-        public IDeviceRepository DeviceRepository { get; }
-        public IInvoiceRepository InvoiceRepository { get; }
-        public IProductRepository ProductRepository { get; }
-        public IRepairRepository RepairRepository { get; }
-        public IServiceRepository ServiceRepository { get; }
-        public IUserRepository UserRepository { get; }
+        public ICustomerRepository CustomerRepository { get; } = customerRepository;
+        public IDeviceRepository DeviceRepository { get; } = deviceRepository;
+        public IInvoiceRepository InvoiceRepository { get; } = invoiceRepository;
+        public IProductRepository ProductRepository { get; } = productRepository;
+        public IRepairRepository RepairRepository { get; } = repairRepository;
+        public IServiceRepository ServiceRepository { get; } = serviceRepository;
+        public IUserRepository UserRepository { get; } = userRepository;
 
-        private readonly DataContext _context;
-
-        public UnitOfWork
-        (
-            ICustomerRepository customerRepository,
-            IDeviceRepository deviceRepository,
-            IInvoiceRepository invoiceRepository,
-            IProductRepository productRepository,
-            IRepairRepository repairRepository,
-            IServiceRepository serviceRepository,
-            IUserRepository userRepository,
-            DataContext dataContext
-        )
-        {
-            CustomerRepository = customerRepository;
-            DeviceRepository = deviceRepository;
-            InvoiceRepository = invoiceRepository;
-            ProductRepository = productRepository;
-            RepairRepository = repairRepository;
-            ServiceRepository = serviceRepository;
-            UserRepository = userRepository;
-            _context = dataContext;
-        }
+        private readonly DataContext _context = dataContext;
 
         public void Dispose()
         {
