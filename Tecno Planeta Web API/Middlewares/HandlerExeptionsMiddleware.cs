@@ -14,29 +14,50 @@ namespace Tecno_Planeta_Web_API.Middlewares
             {
                 await _next(context);
             }
-            catch (AbstractBaseExeption ex)
+            catch (Exception ex)
             {
                 _logger.LogError($"Bad request: {ex.Message}");
                 await HandleExceptionAsync(context, ex);
             }
         }
 
-        private static Task HandleExceptionAsync(HttpContext context, AbstractBaseExeption ex)
+        private static Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
             ProblemDetails problem;
             int status = GetStatusCode(ex);
-            problem = CreateProblemDetail(ex, status, context);
+
+            if(ex is AbstractBaseExeption absEx)
+            {          
+                problem = CreateProblemDetail(
+                    absEx.Type,
+                    absEx.Title,
+                    absEx.Message,
+                    status,
+                    context
+                );
+            } 
+            else
+            {
+                problem = CreateProblemDetail(
+                    "https://example.com/errors/internal-server-error",
+                    "Internal server error.",
+                    "An unexpected error has occurred. Please try again later.",
+                    status,
+                    context
+                );
+            }
 
             context.Response.ContentType = "application/problem+json";
             return context.Response.WriteAsJsonAsync(problem);
         }
 
-        private static int GetStatusCode(AbstractBaseExeption ex)
+        private static int GetStatusCode(Exception ex)
         {
             /*
-             * the list of exceptions that are from status 500 error code.
-                - DatabaseOperationException
-             */
+               List of exceptions that are from status 500 error code:
+                   - DatabaseOperationException
+                   - Generic or uncontrolled exceptions
+            */
             int status = StatusCodes.Status500InternalServerError;
 
             switch (ex)
@@ -64,14 +85,14 @@ namespace Tecno_Planeta_Web_API.Middlewares
             return status;
         }
 
-        private static ProblemDetails CreateProblemDetail(AbstractBaseExeption ex, int statusCode, HttpContext context)
+        private static ProblemDetails CreateProblemDetail(string type, string title, string message, int statusCode, HttpContext context)
         {
             var problem = new ProblemDetails
             {
-                Type = ex.Type,
-                Title = ex.Title,
+                Type = type,
+                Title = title,
                 Status = statusCode,
-                Detail = ex.Message,
+                Detail = message,
                 Instance = context.Request.Path
             };
 
