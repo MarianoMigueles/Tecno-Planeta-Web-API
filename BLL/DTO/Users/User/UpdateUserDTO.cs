@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BLL.DTO.Repair
+namespace BLL.DTO.Users.User
 {
-    public class RepairDTO : IBaseDTO
+    public class UpdateUserDTO : UserBaseDTO
     {
     }
 }

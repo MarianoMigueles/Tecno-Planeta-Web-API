@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BLL.DTO.User
+namespace BLL.DTO.Product
 {
-    public class UserDTO : IBaseDTO
+    public class CreateProductDTO : ProductBaseDTO
     {
     }
 }

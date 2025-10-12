@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BLL.DTO.Extra
+namespace BLL.DTO.Users.User
 {
-    public class StockMovementDTO : IBaseDTO
+    public class CreateUserDTO : UserBaseDTO
     {
     }
 }
