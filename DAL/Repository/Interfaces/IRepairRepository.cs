@@ -12,17 +12,17 @@ namespace DAL.Repository.Interfaces
     public interface IRepairRepository
     {
         //--------------------------------- GET ------------------------------------------------------
-        public Task<List<Repair>> GetByCustomerName(string name);
-        public Task<List<Repair>> GetByEntryDate(DateTime entryDate);
-        public Task<List<Repair>> GetByPeriotOfEntryDate(DateTime startDate, DateTime endDate);
-
+        public Task<List<Repair>> GetByCustomerNameAsync(string name);
+        public Task<List<Repair>> GetByEntryDateAsync(DateTime entryDate);
+        public Task<List<Repair>> GetByPeriotOfEntryDateAsync(DateTime min, DateTime max);
         //----------------------------------------------------------------------------------------- <>
 
-        //--------------------------------- PUT ------------------------------------------------------
-        public Task<Repair> UpdateCost(decimal newCost);
-        public Task<Repair> UpdateNote(string note);
-        public Task<Repair> UpdateStatus(ERepairStatus newStatus);
-        public Task<Repair> CancelRepair();
+        //--------------------------------- PATCH ------------------------------------------------------
+        public Task<Repair> CancelRepairAsync(int id);
+        public Task<Repair> UpdateCostAsync(int id, decimal newCost);
+        public Task<Repair> UpdateNoteAsync(int id, string note);
+        public Task<Repair> UpdateStatusAsync(int id, ERepairStatus newStatus);
+        public Task<Repair> UpdateEstimatedTime(int id, TimeOnly newEstimatedTime);
         //----------------------------------------------------------------------------------------- <>
     }
 }

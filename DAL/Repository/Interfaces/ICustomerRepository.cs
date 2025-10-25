@@ -11,16 +11,16 @@ namespace DAL.Repository.Interfaces
     public interface ICustomerRepository
     {
         //--------------------------------- GET ------------------------------------------------------
-        public Task<Customer> GetByName(string name);
-        public Task<Customer> GetByPhone(int phone);
-        public Task<Customer> GetByRegisterDate(DateTime registerTime);
-        public Task<Customer> GetByPeriotOfTime(DateTime startDate, DateTime endDate);
+        public Task<Customer> GetByNameAsync(string name);
+        public Task<Customer> GetByPhoneAsync(int phone);
+        public Task<Customer> GetByRegisterDateAsync(DateTime registerTime);
+        public Task<List<Customer>> GetByPeriotOfTimeAsync(DateTime min, DateTime max);
 
         //----------------------------------------------------------------------------------------- <>
 
         //--------------------------------- PUT ------------------------------------------------------
-        public Task<Customer> UpdateName(string newName);
-        public Task<Customer> UpdatePhone(string newPhone);
+        public Task<Customer> UpdateNameAsync(int id, string newName);
+        public Task<Customer> UpdatePhoneAsync(int id, int newPhone);
         //----------------------------------------------------------------------------------------- <>
 
     }

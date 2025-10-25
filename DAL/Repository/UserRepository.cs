@@ -12,39 +12,42 @@ namespace DAL.Repository
 {
     public class UserRepository(DataContext context) : AbstractRepository<User>(context), IUserRepository
     {
-        public Task<User> GetAllByRol(EUserRol rol)
+        //--------------------------------- GET ------------------------------------------------------
+
+        public async Task<User> GetByName(string name) => await this.GetSingleAsync(u => u.UserName.Equals(name));
+        public async Task<List<User>> GetAllBySector(EUserSector sector) => await this.GetListAsync(u => u.Sector.Equals(sector));
+        public async Task<User> GetAllByRol(EUserRol rol) => await this.GetSingleAsync(u => u.Rol.Equals(rol));
+
+
+        //----------------------------------------------------------------------------------------- <>
+
+        //--------------------------------- PATCH ------------------------------------------------------
+
+        public async Task<User> UpdateName(int id, string newName)
         {
-            throw new NotImplementedException();
+            var user = await this.GetByIdAsync(id);
+            user.UserName = newName;
+            return user;
+        }
+        public async Task<User> UpdatePassword(int id, string newPassword)
+        {
+            var user = await this.GetByIdAsync(id);
+            user.EditPassword(newPassword);
+            return user;
+        }
+        public async Task<User> UpdateRol(int id, EUserRol newRol)
+        {
+            var user = await this.GetByIdAsync(id);
+            user.EditRol(newRol);
+            return user;
+        }
+        public async Task<User> UpdateSector(int id, EUserSector newSector)
+        {
+            var user = await this.GetByIdAsync(id);
+            user.EditSector(newSector);
+            return user;
         }
 
-        public Task<User> GetAllBySector(EUserSector sector)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<User> GetByName(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<User> UpdateName(string newName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<User> UpdatePassword(string newPassword)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<User> UpdateRol(EUserRol rol)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<User> UpdateSector(EUserRol rol)
-        {
-            throw new NotImplementedException();
-        }
+        //----------------------------------------------------------------------------------------- <>
     }
 }

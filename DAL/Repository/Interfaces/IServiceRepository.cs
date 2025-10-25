@@ -12,19 +12,17 @@ namespace DAL.Repository.Interfaces
     public interface IServiceRepository
     {
         //--------------------------------- GET ------------------------------------------------------
-        public Task<Service> GetByName(string name);
-        public Task<List<Service>> GetAllByRangeOfPrice(decimal startPrice, decimal endPrice);
-        public Task<List<Service>> GetAllByGreaterPrice(decimal price);
-        public Task<List<Service>> GetAllByLessPrice(decimal price);
-        public Task<List<Service>> GetByPeriotOfEstimatedTime(DateTime startTime, DateTime endTime);
-
+        public Task<Service> GetByNameAsync(string name);
+        public Task<List<Service>> GetAllByRangeOfPriceAsync(decimal min, decimal max);
+        public Task<List<Service>> GetAllByPriceAsync(decimal price, bool isGreaterThan = false);
+        public Task<List<Service>> GetByPeriotOfEstimatedTimeAsync(TimeOnly min, TimeOnly max);
         //----------------------------------------------------------------------------------------- <>
 
-        //--------------------------------- PUT ------------------------------------------------------
-        public Task<Service> UpdateName(string newName);
-        public Task<Service> UpdateDescription(string newDescription);
-        public Task<Service> UpdateBasePrice(decimal newPrice);
-        public Task<Service> UpdateEstimatedTime(DateTime newEstimatedTime);
+        //--------------------------------- PATCH ------------------------------------------------------
+        public Task<Service> UpdateNameAsync(int id, string newName);
+        public Task<Service> UpdateDescriptionAsync(int id, string newDescription);
+        public Task<Service> UpdateBasePriceAsync(int id, decimal newPrice);
+        public Task<Service> UpdateEstimatedTimeAsync(int id, TimeOnly newEstimatedTime);
         //----------------------------------------------------------------------------------------- <>
     }
 }

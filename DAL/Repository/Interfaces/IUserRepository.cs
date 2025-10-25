@@ -12,16 +12,15 @@ namespace DAL.Repository.Interfaces
     {
         //--------------------------------- GET ------------------------------------------------------
         public Task<User> GetByName(string name);
-        public Task<User> GetAllBySector(EUserSector sector);
+        public Task<List<User>> GetAllBySector(EUserSector sector);
         public Task<User> GetAllByRol(EUserRol rol);
-
         //----------------------------------------------------------------------------------------- <>
 
-        //--------------------------------- PUT ------------------------------------------------------
-        public Task<User> UpdateName(string newName);
-        public Task<User> UpdatePassword(string newPassword);
-        public Task<User> UpdateRol(EUserRol rol);
-        public Task<User> UpdateSector(EUserRol rol);
+        //--------------------------------- PATCH ------------------------------------------------------
+        public Task<User> UpdateName(int id, string newName);
+        public Task<User> UpdatePassword(int id, string newPassword);
+        public Task<User> UpdateRol(int id, EUserRol newRol);
+        public Task<User> UpdateSector(int id, EUserSector newSector);
         //----------------------------------------------------------------------------------------- <>
 
     }

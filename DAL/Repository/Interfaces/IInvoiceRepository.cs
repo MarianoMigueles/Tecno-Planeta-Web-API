@@ -14,20 +14,20 @@ namespace DAL.Repository.Interfaces
     public interface IInvoiceRepository
     {
         //--------------------------------- GET ------------------------------------------------------
-        public Task<Invoice> GetByNumber(int number);
-        public Task<List<Invoice>> GetContainsProductId(int id);
-        public Task<List<Invoice>> GetContainsServiceId(int id);
-        public Task<List<Invoice>> GetAllByGreaterProductQuantity(int amount);
-        public Task<List<Invoice>> GetAllByLessProductQuantity(int amount);
-        public Task<Invoice> GetByCustomerName(string name);
-        public Task<List<Invoice>> GetAllByStatus(EInvoiceStatus status);
-        public Task<List<Invoice>> GetAllByOperationType(EInvoiceOperation type);
-        public Task<List<Invoice>> GetAllByIssueDate(DateTime status);
+        public Task<Invoice> GetByNumberAsync(int number);
+        public Task<List<Invoice>> GetContainsProductIdAsync(int id);
+        public Task<List<Invoice>> GetContainsServiceIdAsync(int id);
+        public Task<List<Invoice>> GetAllByGreaterProductQuantityAsync(int amount);
+        public Task<List<Invoice>> GetAllByLessProductQuantityAsync(int amount);
+        public Task<Invoice> GetByCustomerNameAsync(string name);
+        public Task<List<Invoice>> GetAllByStatusAsync(EInvoiceStatus status);
+        public Task<List<Invoice>> GetAllByOperationTypeAsync(EInvoiceOperation type);
+        public Task<List<Invoice>> GetAllByIssueDateAsync(DateTime status);
 
         //----------------------------------------------------------------------------------------- <>
 
-        //--------------------------------- PUT ------------------------------------------------------
-        public Task<Invoice> UpdateStatus(EInvoiceStatus newStatus);
+        //--------------------------------- PATCH ------------------------------------------------------
+        public Task<Invoice> UpdateStatusAsync(int id, EInvoiceStatus newStatus);
         //----------------------------------------------------------------------------------------- <>
     }
 }

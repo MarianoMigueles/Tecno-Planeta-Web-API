@@ -1,19 +1,28 @@
 ﻿using DAL.Data;
 using DAL.Repository.Interfaces;
+using Entities.Users;
 using Exeptions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DAL.Repository
 {
-    public abstract class AbstractRepository<T>(DataContext context) : IRepository<T> where T : class
+    public abstract class AbstractRepository<T> : IRepository<T> where T : class
     {
-        protected readonly DataContext _context = context;
+        protected readonly DataContext _context;
+        protected readonly DbSet<T> _dbSet;
 
+        protected AbstractRepository(DataContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _dbSet = _context.Set<T>() ?? throw new InvalidOperationException($"DbSet<{typeof(T).Name}> not configured");
+        }
         public virtual async Task CreateAsync(T entity)
         {
             try
@@ -66,6 +75,34 @@ namespace DAL.Repository
             {
                 throw new DatabaseOperationException($"An unexpected error occurred while updating the entity of type {typeof(T).Name}. Error: {ex.Message}");
             }
+        }
+
+        protected virtual async Task<T> GetSingleAsync(
+        Expression<Func<T, bool>> predicate,
+        params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _dbSet;
+
+            foreach (var include in includes)
+                query = query.Include(include);
+
+            return await query.FirstOrDefaultAsync(predicate)
+                   ?? throw new EntityNotFoundException($"{typeof(T).Name} not found");
+        }
+
+        protected virtual async Task<List<T>> GetListAsync(
+            Expression<Func<T, bool>>? predicate = null,
+            params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _dbSet;
+
+            foreach (var include in includes)
+                query = query.Include(include);
+
+            if (predicate != null)
+                query = query.Where(predicate);
+
+            return await query.ToListAsync();
         }
     }
 }

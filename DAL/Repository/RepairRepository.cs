@@ -13,39 +13,53 @@ namespace DAL.Repository
 {
     public class RepairRepository(DataContext context) : AbstractRepository<Repair>(context), IRepairRepository
     {
-        public Task<Repair> CancelRepair()
+        //--------------------------------- GET ------------------------------------------------------
+
+        public async Task<List<Repair>> GetByCustomerNameAsync(string name) => await GetListAsync(r => r.Device.Owner.Name.Equals(name));
+        public async Task<List<Repair>> GetByEntryDateAsync(DateTime entryDate) => await GetListAsync(r => r.EntryDate.Equals(entryDate));
+        public async Task<List<Repair>> GetByPeriotOfEntryDateAsync(DateTime min, DateTime max)
         {
-            throw new NotImplementedException();
+            return await GetListAsync(r => r.EntryDate >= min && r.EntryDate <= max);
         }
 
-        public Task<List<Repair>> GetByCustomerName(string name)
+        //----------------------------------------------------------------------------------------- <>
+
+        //--------------------------------- PATCH ------------------------------------------------------
+
+        public async Task<Repair> CancelRepairAsync(int id)
         {
-            throw new NotImplementedException();
+            var repair = await this.GetByIdAsync(id);
+            repair.CancelRepair();
+            return repair;
         }
 
-        public Task<List<Repair>> GetByEntryDate(DateTime entryDate)
+        public async Task<Repair> UpdateCostAsync(int id, decimal newCost)
         {
-            throw new NotImplementedException();
+            var repair = await this.GetByIdAsync(id);
+            repair.UpdateCost(newCost);
+            return repair;
         }
 
-        public Task<List<Repair>> GetByPeriotOfEntryDate(DateTime startDate, DateTime endDate)
+        public async Task<Repair> UpdateNoteAsync(int id, string note)
         {
-            throw new NotImplementedException();
+            var repair = await this.GetByIdAsync(id);
+            repair.Notes = note;
+            return repair;
         }
 
-        public Task<Repair> UpdateCost(decimal newCost)
+        public async Task<Repair> UpdateStatusAsync(int id, ERepairStatus newStatus)
         {
-            throw new NotImplementedException();
+            var repair = await this.GetByIdAsync(id);
+            repair.ChangeRepairStatus(newStatus);
+            return repair;
         }
 
-        public Task<Repair> UpdateNote(string note)
+        public async Task<Repair> UpdateEstimatedTime(int id, TimeOnly newEstimatedTime)
         {
-            throw new NotImplementedException();
+            var repair = await this.GetByIdAsync(id);
+            repair.EditEstimatedTime(newEstimatedTime);
+            return repair;
         }
-
-        public Task<Repair> UpdateStatus(ERepairStatus newStatus)
-        {
-            throw new NotImplementedException();
-        }
+        //----------------------------------------------------------------------------------------- <>
     }
 }

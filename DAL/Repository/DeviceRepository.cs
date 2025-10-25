@@ -13,24 +13,13 @@ namespace DAL.Repository
 {
     public class DeviceRepository(DataContext context) : AbstractRepository<Device>(context), IDeviceRepository
     {
-        public Task<List<Device>> GetAllByBrand(string brand)
-        {
-            throw new NotImplementedException();
-        }
+        //--------------------------------- GET ------------------------------------------------------
 
-        public Task<List<Device>> GetAllByModel(string model)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<List<Device>> GetAllByBrandAsync(string brand) => await this.GetListAsync(d => d.Equals(brand));
+        public async Task<List<Device>> GetAllByModelAsync(string model) => await this.GetListAsync(d => d.Equals(model));
+        public async Task<List<Device>> GetAllByTypeAsync(EDeviceType type) => await this.GetListAsync(d => d.Equals(type));
+        public async Task<List<Device>> GetByCustomerNameAsync(string customerName) => await this.GetListAsync(d => d.Equals(customerName));
 
-        public Task<List<Device>> GetAllByType(EDeviceType type)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Device>> GetByCustomerName(string customerName)
-        {
-            throw new NotImplementedException();
-        }
+        //----------------------------------------------------------------------------------------- <>
     }
 }

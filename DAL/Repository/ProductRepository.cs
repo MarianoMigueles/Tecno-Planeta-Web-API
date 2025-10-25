@@ -12,79 +12,87 @@ namespace DAL.Repository
 {
     public class ProductRepository(DataContext context) : AbstractRepository<Product>(context), IProductRepository
     {
-        public Task<Product> AddStock(string newName)
+
+        //--------------------------------- GET ------------------------------------------------------
+
+        public async Task<List<Product>> GetAllByActiveStatusAsync(bool status) => await this.GetListAsync(p => p.IsActive.Equals(status));
+        public async Task<List<Product>> GetAllByCategoryAsync(string category) => await this.GetListAsync(p => p.Category.Description.Equals(category));
+        public async Task<Product> GetByBarCodeAsync(string barCode) => await this.GetSingleAsync(p => p.Details.BarCode.Equals(barCode));
+        public async Task<Product> GetByNameAsync(string name) => await this.GetSingleAsync(p => p.Name.Equals(name));
+
+        public async Task<List<Product>> GetAllByAmoutOfStockAsync(int amount, bool isGreaterThan = false)
         {
-            throw new NotImplementedException();
+            return await this.GetListAsync(p => isGreaterThan
+                                                ? p.Stock >= amount
+                                                : p.Stock <= amount);
         }
 
-        public Task<List<Product>> GetAllByActiveStatus(bool status)
+        public async Task<List<Product>> GetAllByPurchasePriceAsync(decimal price, bool isGreaterThan = false)
         {
-            throw new NotImplementedException();
+            return await this.GetListAsync(p => isGreaterThan 
+                                                ? p.SalePrice >= price 
+                                                : p.SalePrice <= price);
         }
 
-        public Task<List<Product>> GetAllByAmoutOfStock(int phone, bool isGreater = false)
+        public async Task<List<Product>> GetAllByRangeOfPurchasePriceAsync(decimal min, decimal max)
         {
-            throw new NotImplementedException();
+            return await this.GetListAsync(p => p.SalePrice >= min && p.SalePrice <= max);
         }
 
-        public Task<List<Product>> GetAllByCategory(string category)
+
+        //----------------------------------------------------------------------------------------- <>-
+
+        //--------------------------------- PATCH ------------------------------------------------------
+
+        public async Task<Product> AddStockAsync(int productId, int amount)
         {
-            throw new NotImplementedException();
+            var product = await this.GetByIdAsync(productId);
+            product.AddStock(amount);
+            return product;
+        } 
+
+        public async Task<Product> SubstractStockAsync(int productId, int amount)
+        {
+            var product = await this.GetByIdAsync(productId);
+            product.SubstractStock(amount);
+            return product;
         }
 
-        public Task<List<Product>> GetAllByGreaterPurchasePrice(decimal price)
+        public async Task<Product> UpdateCategoryAsync(int productId, string newCategory)
         {
-            throw new NotImplementedException();
+            var product = await this.GetByIdAsync(productId);
+            product.Category.Description = newCategory;
+            return product;
         }
 
-        public Task<List<Product>> GetAllByLessPurchasePrice(decimal price)
+        public async Task<Product> UpdateDescription(int productId, string newDescription)
         {
-            throw new NotImplementedException();
+            var product = await this.GetByIdAsync(productId);
+            product.Details.Description = newDescription;
+            return product;
         }
 
-        public Task<List<Product>> GetAllByRangeOfPurchasePrice(decimal startPrice, decimal endPrice)
+        public async Task<Product> UpdateNameAsync(int productId, string newName)
         {
-            throw new NotImplementedException();
+            var product = await this.GetByIdAsync(productId);
+            product.Name = newName;
+            return product;
         }
 
-        public Task<Product> GetByBarCode(string name)
+        public async Task<Product> UpdateSalePriceAsync(int productId, decimal newSalePrice)
         {
-            throw new NotImplementedException();
+            var product = await this.GetByIdAsync(productId);
+            product.EditSalePrice(newSalePrice);
+            return product;
         }
 
-        public Task<Product> GetByName(string name)
+        public async Task<Product> UpdateStatusAsync(int productId, bool newStatus)
         {
-            throw new NotImplementedException();
+            var product = await this.GetByIdAsync(productId);
+            product.EditStatus(newStatus);
+            return product;
         }
 
-        public Task<Product> SubstractStock(string newName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Product> UpdateCategory(string newName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Product> UpdateDescription(string newName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Product> UpdateName(string newName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Product> UpdateSalePrice(string newName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Product> UpdateStatus(string newName)
-        {
-            throw new NotImplementedException();
-        }
+        //----------------------------------------------------------------------------------------- <>
     }
 }

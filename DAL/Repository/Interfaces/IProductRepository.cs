@@ -11,24 +11,23 @@ namespace DAL.Repository.Interfaces
     public interface IProductRepository
     {
         //--------------------------------- GET ------------------------------------------------------
-        public Task<Product> GetByName(string name);
-        public Task<Product> GetByBarCode(string name);
-        public Task<List<Product>> GetAllByRangeOfPurchasePrice(decimal startPrice, decimal endPrice);
-        public Task<List<Product>> GetAllByGreaterPurchasePrice(decimal price);
-        public Task<List<Product>> GetAllByLessPurchasePrice(decimal price);
-        public Task<List<Product>> GetAllByActiveStatus(bool status);
-        public Task<List<Product>> GetAllByCategory(string category);
-        public Task<List<Product>> GetAllByAmoutOfStock(int phone, bool isGreater = false);
-        //----------------------------------------------------------------------------------------- <>
+        public Task<List<Product>> GetAllByActiveStatusAsync(bool status);
+        public Task<List<Product>> GetAllByAmoutOfStockAsync(int amount, bool isGreater = false);
+        public Task<List<Product>> GetAllByCategoryAsync(string category);
+        public Task<List<Product>> GetAllByPurchasePriceAsync(decimal price, bool isGreater = false);
+        public Task<List<Product>> GetAllByRangeOfPurchasePriceAsync(decimal min, decimal max);
+        public Task<Product> GetByBarCodeAsync(string barCode);
+        public Task<Product> GetByNameAsync(string name);
+        //----------------------------------------------------------------------------------------- <>-
 
-        //--------------------------------- PUT ------------------------------------------------------
-        public Task<Product> UpdateName(string newName);
-        public Task<Product> UpdateSalePrice(string newName);
-        public Task<Product> AddStock(string newName);
-        public Task<Product> SubstractStock(string newName);
-        public Task<Product> UpdateStatus(string newName);
-        public Task<Product> UpdateCategory(string newName);
-        public Task<Product> UpdateDescription(string newName);
+        //--------------------------------- PATCH ------------------------------------------------------
+        public Task<Product> AddStockAsync(int productId, int amount);
+        public Task<Product> SubstractStockAsync(int productId, int amount);
+        public Task<Product> UpdateCategoryAsync(int productId, string newCategory);
+        public Task<Product> UpdateDescription(int productId, string newDescription);
+        public Task<Product> UpdateNameAsync(int productId, string newName);
+        public Task<Product> UpdateSalePriceAsync(int productId, decimal newSalePrice);
+        public Task<Product> UpdateStatusAsync(int productId, bool newStatus);
         //----------------------------------------------------------------------------------------- <>
     }
 }

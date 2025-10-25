@@ -2,65 +2,47 @@
 using DAL.Repository.Interfaces;
 using Entities.Elements.Enums;
 using Entities.Elements.InvoiceFolder;
+using Entities.Elements.ProductFolder;
 using Entities.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DAL.Repository
 {
     public class InvoiceRepository(DataContext context) : AbstractRepository<Invoice>(context), IInvoiceRepository
     {
-        public Task<List<Invoice>> GetAllByGreaterProductQuantity(int amount)
+        //--------------------------------- GET ------------------------------------------------------
+        public async Task<List<Invoice>> GetAllByGreaterProductQuantityAsync(int amount) => await this.GetListAsync(i => i.Details.Quantity >= amount);
+        public async Task<List<Invoice>> GetAllByIssueDateAsync(DateTime date) => await this.GetListAsync(i => i.IssueDate.Equals(date));
+        public async Task<List<Invoice>> GetAllByLessProductQuantityAsync(int amount) => await this.GetListAsync(i => i.Details.Quantity <= amount);
+        public async Task<List<Invoice>> GetAllByOperationTypeAsync(EInvoiceOperation type) => await this.GetListAsync(i => i.Type.Equals(type));
+        public async Task<List<Invoice>> GetAllByStatusAsync(EInvoiceStatus status) => await this.GetListAsync(i => i.Status.Equals(status));
+        public async Task<Invoice> GetByCustomerNameAsync(string name) => await this.GetSingleAsync(i => i.Customer.Name.Equals(name));
+        public async Task<Invoice> GetByNumberAsync(int number) => await this.GetSingleAsync(i => i.InvoiceNumber.Equals(number));
+        public async Task<List<Invoice>> GetContainsProductIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await this.GetListAsync(i => i.Details.Items.Any(item => item.ProductId.Equals(id)));
+        }
+        public async Task<List<Invoice>> GetContainsServiceIdAsync(int id)
+        {
+            return await this.GetListAsync(i => i.Details.Items.Any(item => item.ServiceId.Equals(id)));
         }
 
-        public Task<List<Invoice>> GetAllByIssueDate(DateTime status)
+        //----------------------------------------------------------------------------------------- <>
+
+        //--------------------------------- PATCH ------------------------------------------------------
+
+        public async Task<Invoice> UpdateStatusAsync(int id, EInvoiceStatus newStatus)
         {
-            throw new NotImplementedException();
+            var invoice = await this.GetByIdAsync(id);
+            invoice.EditStatus(newStatus);
+            return invoice;
         }
 
-        public Task<List<Invoice>> GetAllByLessProductQuantity(int amount)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Invoice>> GetAllByOperationType(EInvoiceOperation type)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Invoice>> GetAllByStatus(EInvoiceStatus status)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Invoice> GetByCustomerName(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Invoice> GetByNumber(int number)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Invoice>> GetContainsProductId(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Invoice>> GetContainsServiceId(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Invoice> UpdateStatus(EInvoiceStatus newStatus)
-        {
-            throw new NotImplementedException();
-        }
+        //----------------------------------------------------------------------------------------- <>
     }
 }
