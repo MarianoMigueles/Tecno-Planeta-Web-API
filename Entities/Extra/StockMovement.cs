@@ -12,13 +12,10 @@ namespace Entities.Extra
     public class StockMovement : AbstractEntity
     {
         public EStockMovementType Type { get; set; }
-        public int Quantity { get; set; }
+        public int Quantity => Items.Count;
         public DateTime Date { get; set; }
         public string Notes { get; set; }
-
-        public int ProductId { get; set; }
-        public Product Product { get; set; }
-
+        public List<StockMovementItem> Items { get; set; }
         public int InvoiceId { get; set; }
         public Invoice Invoice { get; set; }
     }

@@ -1,4 +1,5 @@
 ﻿using Entities.Elements.Enums;
+using Entities.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace Entities.Elements
 {
     public class Device : AbstractEntity
     {
+        public int OwnerId { get; set; }
+        public Customer Owner { get; set; }
         public EDeviceType Type { get; set; }
         public string Brand { get; set; }
         public string Model { get; set; }

@@ -11,11 +11,11 @@ namespace Entities.Users
     public class Customer : AbstractEntity
     {
         public required string Name { get; set; }
-        public required string Phone { get; set; }
-        public required DateTime RegisterDate { get; set; }
+        public required int Phone { get; set; }
+        public DateTime RegisterDate { get; set; }
 
 
-        public required int RepairId { get; set; }
-        public required Repair Repair { get; set; }
+        public int RepairId { get; set; }
+        public Repair Repair { get; set; }
     }
 }

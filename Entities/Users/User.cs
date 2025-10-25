@@ -1,29 +1,59 @@
 ﻿using Entities.Users.Enums;
+using Exeptions;
+using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace Entities.Users
 {
     public class User : AbstractEntity
     {
         public string UserName { get; set; }
-        public string Password { get; set; }
-        public EUserRol Rol { get; set; }
-        public EUserSector Sector { get; set; }
+        public string Password { get; private set; }
+        public EUserRol Rol { get; private set; }
+        public EUserSector Sector { get; private set; }
 
-        public void ChangeUserRol(EUserRol newRol)
+        public void EditRol(EUserRol newRol)
         {
-            // The rol can't be the same rol
             if (newRol == Rol)
-                throw new NotImplementedException("not implement the specific exeption yet");
+                throw new ValidationException("Rol is the same to the value already set.");
 
             this.Rol = newRol;           
         }
 
-        public void ChangeUserSector(EUserSector newSector) {
-            // The sector can't be the same sector
+        public void EditSector(EUserSector newSector) {
             if (newSector == Sector)
-                throw new NotImplementedException("not implement the specific exeption yet");
+                throw new ValidationException("Sector is the same to the value already set.");
 
             this.Sector = newSector;
         }
+
+        public void EditPassword(string newPassword)
+        {
+            if (newPassword == Password)
+                throw new ValidationException("Password is the same to the value already set.");
+
+            if (string.IsNullOrWhiteSpace(newPassword))
+                throw new ValidationException("Password cannot be empty");
+
+            if (newPassword.Length < 8)
+                throw new ValidationException("Password must be at least 8 characters long");
+
+            if (newPassword.Length > 128)
+                throw new ValidationException("Password is too long");
+
+            if (!Regex.IsMatch(newPassword, @"[0-9]"))
+                throw new ValidationException("Password must contain at least one number");
+
+            if (!Regex.IsMatch(newPassword, @"[a-z]"))
+                throw new ValidationException("Password must contain at least one lowercase letter");
+
+            if (!Regex.IsMatch(newPassword, @"[A-Z]"))
+                throw new ValidationException("Password must contain at least one uppercase letter");
+
+            if (!Regex.IsMatch(newPassword, @"[!@#$%^&*()_+\-=\[\]{};':""\\|,.<>\/?]"))
+                throw new ValidationException("Password must contain at least one special character");
+
+            this.Password = newPassword;
+        }   
     }
 }
