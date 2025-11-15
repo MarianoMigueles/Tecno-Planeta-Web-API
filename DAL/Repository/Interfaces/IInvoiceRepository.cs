@@ -11,7 +11,7 @@ using Entities.Elements.ProductFolder;
 
 namespace DAL.Repository.Interfaces
 {
-    public interface IInvoiceRepository
+    public interface IInvoiceRepository : IRepository<Invoice>
     {
         //--------------------------------- GET ------------------------------------------------------
         public Task<Invoice> GetByNumberAsync(int number);

@@ -1,6 +1,10 @@
 ﻿using AutoMapper;
-using BLL.DTO.Service;
+using BLL.DTO;
+using BLL.DTO.Service.Service;
+using BLL.DTO.Services.Repair;
+using BLL.DTO.Services.Service;
 using BLL.Services.Interfaces;
+using DAL.Repository.Interfaces;
 using DAL.UnitOfWork;
 using Entities.Services;
 using System;
@@ -11,58 +15,69 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class ServiceService(IUnitOfWork unitOfWork, IMapper mapper) : AbstractService<Service, ServiceDTO>(unitOfWork, mapper), IServiceService
+    public class ServiceService(IUnitOfWork unitOfWork, IMapper mapper) : AbstractService<ServiceResponseDTO, Service, IServiceRepository>(unitOfWork, mapper), IServiceService
     {
+        protected override IServiceRepository Repository => _unitOfWork.ServiceRepository;
+
         //--------------------------------- GET ------------------------------------------------------
 
-        public Task<List<ServiceDTO>> GetAllByGreaterPrice(decimal price)
+        public async Task<List<ServiceResponseDTO>> GetAllByPriceRangeAsync(decimal min, decimal max)
         {
-            throw new NotImplementedException();
+            var services = await Repository.GetAllByRangeOfPriceAsync(min, max);
+            return _mapper.Map<List<ServiceResponseDTO>>(services);
         }
 
-        public Task<List<ServiceDTO>> GetAllByLessPrice(decimal price)
+        public async Task<ServiceResponseDTO> GetByNameAsync(string name)
         {
-            throw new NotImplementedException();
+            var service = await Repository.GetByNameAsync(name);
+            return _mapper.Map<ServiceResponseDTO>(service);
         }
 
-        public Task<List<ServiceDTO>> GetAllByPriceRange(decimal min, decimal max)
+        public async Task<List<ServiceResponseDTO>> GetByPeriotOfEstimatedTimeAsync(TimeOnly min, TimeOnly max)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<ServiceDTO> GetByName(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<ServiceDTO>> GetByPeriotOfEstimatedTime(DateTime startTime, DateTime endTime)
-        {
-            throw new NotImplementedException();
+            var services = await Repository.GetByPeriotOfEstimatedTimeAsync(min, max);
+            return _mapper.Map<List<ServiceResponseDTO>>(services);
         }
 
         //----------------------------------------------------------------------------------------- <>
 
         //--------------------------------- PATCH ------------------------------------------------------
 
-        public Task<ServiceDTO> UpdateBasePrice(decimal newPrice)
+        public async Task<ServiceResponseDTO> UpdateBasePriceAsync(int id, decimal newPrice)
         {
-            throw new NotImplementedException();
+            var service = await Repository.UpdateBasePriceAsync(id, newPrice);
+            return _mapper.Map<ServiceResponseDTO>(service);
         }
 
-        public Task<ServiceDTO> UpdateDescription(string newDescription)
+        public async Task<ServiceResponseDTO> UpdateDescriptionAsync(int id, string newDescription)
         {
-            throw new NotImplementedException();
+            var service = await Repository.UpdateDescriptionAsync(id, newDescription);
+            return _mapper.Map<ServiceResponseDTO>(service);
         }
 
-        public Task<ServiceDTO> UpdateEstimatedTime(DateTime newEstimatedTime)
+        public async Task<ServiceResponseDTO> UpdateEstimatedTimeAsync(int id, TimeOnly newEstimatedTime)
         {
-            throw new NotImplementedException();
+            var service = await Repository.UpdateEstimatedTimeAsync(id, newEstimatedTime);
+            return _mapper.Map<ServiceResponseDTO>(service);
         }
 
-        public Task<ServiceDTO> UpdateName(string newName)
+        public async Task<ServiceResponseDTO> UpdateNameAsync(int id, string newName)
         {
-            throw new NotImplementedException();
+            var service = await Repository.UpdateNameAsync(id, newName);
+            return _mapper.Map<ServiceResponseDTO>(service);
         }
+
+        //----------------------------------------------------------------------------------------- <>
+
+        //--------------------------------- POST ------------------------------------------------------
+
+        public override async Task<ServiceResponseDTO> CreateAsync(IBaseDTO createDto) => await CommonCreateAsync(createDto);
+
+        //----------------------------------------------------------------------------------------- <>
+
+        //--------------------------------- DELETE ------------------------------------------------------
+
+        public override async Task<bool> DeleteAsync(int id) => await CommonDeleteAsync(id);
 
         //----------------------------------------------------------------------------------------- <>
     }

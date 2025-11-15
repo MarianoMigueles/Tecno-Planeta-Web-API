@@ -10,7 +10,7 @@ namespace Tecno_Planeta_Web_API.Controllers
     {
         //--------------------------------- GET ------------------------------------------------------
         [HttpGet]
-        public async Task<ActionResult<ProductDTO>> GetProduct(
+        public async Task<ActionResult<ProductResponseDTO>> GetProduct(
             [FromQuery] int? id,
             [FromQuery] string? name,
             [FromQuery] string? barCode)
@@ -19,7 +19,7 @@ namespace Tecno_Planeta_Web_API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAll(
+        public async Task<ActionResult<IEnumerable<ProductResponseDTO>>> GetAll(
             [FromQuery] bool? activeStatus,
             [FromQuery] string? category)
         {
@@ -27,7 +27,7 @@ namespace Tecno_Planeta_Web_API.Controllers
         }
 
         [HttpGet("range")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllByRangeOfPurchasePrice(
+        public async Task<ActionResult<IEnumerable<ProductResponseDTO>>> GetAllByRangeOfPurchasePrice(
             [FromQuery] int minPrice,
             [FromQuery] int maxPrice)
         {
@@ -35,7 +35,7 @@ namespace Tecno_Planeta_Web_API.Controllers
         }
 
         [HttpGet("stock")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllByAmoutOfStock(
+        public async Task<ActionResult<IEnumerable<ProductResponseDTO>>> GetAllByAmoutOfStock(
             [FromQuery] int amount,
             [FromQuery] bool isGreater = false)
         {
@@ -47,7 +47,7 @@ namespace Tecno_Planeta_Web_API.Controllers
         //--------------------------------- PATCH ------------------------------------------------------
 
         [HttpPatch("{id:int}")]
-        public Task<ActionResult<ProductDTO>> UpdateProduct(
+        public Task<ActionResult<ProductResponseDTO>> UpdateProduct(
             [FromQuery] string? newName,
             [FromQuery] string? newPrice,
             [FromQuery] string? category,
@@ -57,19 +57,19 @@ namespace Tecno_Planeta_Web_API.Controllers
         }
 
         [HttpPatch("{id:int}/status")]
-        public Task<ActionResult<ProductDTO>> UpdateStatus([FromQuery] bool isActive)
+        public Task<ActionResult<ProductResponseDTO>> UpdateStatus([FromQuery] bool isActive)
         {
             throw new NotImplementedException();
         }
 
         [HttpPatch("{id:int}/add")]
-        public Task<ActionResult<ProductDTO>> AddStock([FromQuery] int amount)
+        public Task<ActionResult<ProductResponseDTO>> AddStock([FromQuery] int amount)
         {
             throw new NotImplementedException();
         }
 
         [HttpPatch("{id:int}/substrack")]
-        public Task<ActionResult<ProductDTO>> SubstractStock([FromQuery] int amount)
+        public Task<ActionResult<ProductResponseDTO>> SubstractStock([FromQuery] int amount)
         {
             throw new NotImplementedException();
         }
@@ -79,7 +79,7 @@ namespace Tecno_Planeta_Web_API.Controllers
         //--------------------------------- DELETE ------------------------------------------------------
 
         [HttpDelete("{id:int}")]
-        public Task<ActionResult<ProductDTO>> DeleteById(int id)
+        public Task<ActionResult<ProductResponseDTO>> DeleteById(int id)
         {
             throw new NotImplementedException();
         }
@@ -89,7 +89,7 @@ namespace Tecno_Planeta_Web_API.Controllers
         //--------------------------------- POST ------------------------------------------------------
 
         [HttpPost]
-        public Task<ActionResult<ProductDTO>> Create([FromBody] ProductDTO newDevice)
+        public Task<ActionResult<ProductResponseDTO>> Create([FromBody] ProductResponseDTO newDevice)
         {
             throw new NotImplementedException();
         }

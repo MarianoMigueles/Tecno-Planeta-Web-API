@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace DAL.Repository.Interfaces
 {
-    public interface IRepairRepository
+    public interface IRepairRepository : IRepository<Repair>
     {
         //--------------------------------- GET ------------------------------------------------------
         public Task<List<Repair>> GetByCustomerNameAsync(string name);
         public Task<List<Repair>> GetByEntryDateAsync(DateTime entryDate);
-        public Task<List<Repair>> GetByPeriotOfEntryDateAsync(DateTime min, DateTime max);
+        public Task<List<Repair>> GetByPeriodOfEntryDateAsync(DateTime min, DateTime max);
         //----------------------------------------------------------------------------------------- <>
 
         //--------------------------------- PATCH ------------------------------------------------------

@@ -6,16 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BLL.DTO.Device;
+using BLL.DTO.Users.Customer;
 
 namespace BLL.Services.Interfaces
 {
     public interface IDeviceService : IService
     {
         //--------------------------------- PATCH ------------------------------------------------------
-        public Task<List<DeviceDTO>> GetByCustomerName(string customerName);
-        public Task<List<DeviceDTO>> GetAllByType(EDeviceType type);
-        public Task<List<DeviceDTO>> GetAllByModel(string model);
-        public Task<List<DeviceDTO>> GetAllByBrand(string brand);
+        public Task<List<DeviceResponseDTO>> GetByCustomerNameAsync(string customerName);
+        public Task<List<DeviceResponseDTO>> GetAllByTypeAsync(EDeviceType type);
+        public Task<List<DeviceResponseDTO>> GetAllByModelAsync(string model);
+        public Task<List<DeviceResponseDTO>> GetAllByBrandAsync(string brand);
         //----------------------------------------------------------------------------------------- <>
     }
 }

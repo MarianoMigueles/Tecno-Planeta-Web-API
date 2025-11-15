@@ -17,7 +17,7 @@ namespace DAL.Repository
 
         public async Task<List<Repair>> GetByCustomerNameAsync(string name) => await GetListAsync(r => r.Device.Owner.Name.Equals(name));
         public async Task<List<Repair>> GetByEntryDateAsync(DateTime entryDate) => await GetListAsync(r => r.EntryDate.Equals(entryDate));
-        public async Task<List<Repair>> GetByPeriotOfEntryDateAsync(DateTime min, DateTime max)
+        public async Task<List<Repair>> GetByPeriodOfEntryDateAsync(DateTime min, DateTime max)
         {
             return await GetListAsync(r => r.EntryDate >= min && r.EntryDate <= max);
         }

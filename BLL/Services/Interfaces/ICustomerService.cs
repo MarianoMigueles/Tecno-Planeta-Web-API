@@ -1,4 +1,4 @@
-﻿using BLL.DTO.User;
+﻿using BLL.DTO.Users.Customer;
 using Entities.Users;
 using System;
 using System.Collections.Generic;
@@ -11,16 +11,17 @@ namespace BLL.Services.Interfaces
     public interface ICustomerService : IService
     {
         //--------------------------------- GET ------------------------------------------------------
-        public Task<CustomerDTO> GetByName(string name);
-        public Task<CustomerDTO> GetByPhone(int phone);
-        public Task<CustomerDTO> GetByRegisterDate(DateTime registerTime);
-        public Task<CustomerDTO> GetByPeriotOfTime(DateTime startDate, DateTime endDate);
+        public Task<CustomerResponseDTO> GetByIdAsync(int id);
+        public Task<CustomerResponseDTO> GetByNameAsync(string name);
+        public Task<CustomerResponseDTO> GetByPhoneAsync(int phone);
+        public Task<CustomerResponseDTO> GetByRegisterDateAsync(DateTime registerTime);
+        public Task<List<CustomerResponseDTO>> GetByPeriodOfTimeAsync(DateTime min, DateTime max);
 
         //----------------------------------------------------------------------------------------- <>
 
         //--------------------------------- PATCH ------------------------------------------------------
-        public Task<CustomerDTO> UpdateName(string newName);
-        public Task<CustomerDTO> UpdatePhone(string newPhone);
+        public Task<CustomerResponseDTO> UpdateNameAsync(int id, string newName);
+        public Task<CustomerResponseDTO> UpdatePhoneAsync(int id, int newPhone);
         //----------------------------------------------------------------------------------------- <>
     }
 }

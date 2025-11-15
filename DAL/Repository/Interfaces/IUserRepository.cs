@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 
 namespace DAL.Repository.Interfaces
 {
-    public interface IUserRepository
+    public interface IUserRepository : IRepository<User>, ILogInRepository
     {
         //--------------------------------- GET ------------------------------------------------------
-        public Task<User> GetByName(string name);
-        public Task<List<User>> GetAllBySector(EUserSector sector);
-        public Task<User> GetAllByRol(EUserRol rol);
+        public Task<User> GetByNameAsync(string name);
+        public Task<List<User>> GetAllBySectorAsync(EUserSector sector);
+        public Task<User> GetAllByRolAsync(EUserRol rol);
         //----------------------------------------------------------------------------------------- <>
 
         //--------------------------------- PATCH ------------------------------------------------------
-        public Task<User> UpdateName(int id, string newName);
-        public Task<User> UpdatePassword(int id, string newPassword);
-        public Task<User> UpdateRol(int id, EUserRol newRol);
-        public Task<User> UpdateSector(int id, EUserSector newSector);
+        public Task<User> UpdateNameAsync(int id, string newName);
+        public Task<User> UpdatePasswordAsync(int id, string newPassword);
+        public Task<User> UpdateRolAsync(int id, EUserRol newRol);
+        public Task<User> UpdateSectorAsync(int id, EUserSector newSector);
         //----------------------------------------------------------------------------------------- <>
 
     }

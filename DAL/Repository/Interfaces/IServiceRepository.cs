@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repository.Interfaces
 {
-    public interface IServiceRepository
+    public interface IServiceRepository : IRepository<Service>
     {
         //--------------------------------- GET ------------------------------------------------------
         public Task<Service> GetByNameAsync(string name);

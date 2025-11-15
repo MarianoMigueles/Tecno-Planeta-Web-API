@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
+using BLL.DTO;
 using BLL.DTO.Device;
+using BLL.DTO.Users.Customer;
 using BLL.Services.Interfaces;
+using DAL.Repository.Interfaces;
 using DAL.UnitOfWork;
 using Entities.Elements;
 using Entities.Elements.Enums;
+using Entities.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,29 +16,42 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class DeviceService(IUnitOfWork unitOfWork, IMapper mapper) : AbstractService<Device, DeviceDTO>(unitOfWork, mapper), IDeviceService
+    public class DeviceService(IUnitOfWork unitOfWork, IMapper mapper) : AbstractService<DeviceResponseDTO, Device, IDeviceRepository>(unitOfWork, mapper), IDeviceService
     {
-        //--------------------------------- GET ------------------------------------------------------
+        protected override IDeviceRepository Repository => _unitOfWork.DeviceRepository;
 
-        public Task<List<DeviceDTO>> GetAllByBrand(string brand)
+        //--------------------------------- PATCH ------------------------------------------------------
+        public async Task<List<DeviceResponseDTO>> GetByCustomerNameAsync(string customerName)
         {
-            throw new NotImplementedException();
+            var devices = await Repository.GetByCustomerNameAsync(customerName);
+            return _mapper.Map<List<DeviceResponseDTO>>(devices);
         }
+        public async Task<List<DeviceResponseDTO>> GetAllByTypeAsync(EDeviceType type)
+        {
+            var devices = await Repository.GetAllByTypeAsync(type);
+            return _mapper.Map<List<DeviceResponseDTO>>(devices);
+        }
+        public async Task<List<DeviceResponseDTO>> GetAllByModelAsync(string model)
+        {
+            var devices = await Repository.GetAllByModelAsync(model);
+            return _mapper.Map<List<DeviceResponseDTO>>(devices);
+        }
+        public async Task<List<DeviceResponseDTO>> GetAllByBrandAsync(string brand)
+        {
+            var devices = await Repository.GetAllByBrandAsync(brand);
+            return _mapper.Map<List<DeviceResponseDTO>>(devices);
+        }
+        //----------------------------------------------------------------------------------------- <>
 
-        public Task<List<DeviceDTO>> GetAllByModel(string model)
-        {
-            throw new NotImplementedException();
-        }
+        //--------------------------------- POST ------------------------------------------------------
 
-        public Task<List<DeviceDTO>> GetAllByType(EDeviceType type)
-        {
-            throw new NotImplementedException();
-        }
+        public override async Task<DeviceResponseDTO> CreateAsync(IBaseDTO createDto) => await CommonCreateAsync(createDto);
 
-        public Task<List<DeviceDTO>> GetByCustomerName(string customerName)
-        {
-            throw new NotImplementedException();
-        }
+        //----------------------------------------------------------------------------------------- <>
+
+        //--------------------------------- DELETE ------------------------------------------------------
+
+        public override async Task<bool> DeleteAsync(int id) => await CommonDeleteAsync(id);
 
         //----------------------------------------------------------------------------------------- <>
     }

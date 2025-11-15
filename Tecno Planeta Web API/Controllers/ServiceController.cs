@@ -1,4 +1,4 @@
-﻿using BLL.DTO.Service;
+﻿using BLL.DTO.Service.Service;
 using BLL.Services.Interfaces;
 using Entities.Services.Enums;
 using Microsoft.AspNetCore.Authorization;

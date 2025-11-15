@@ -9,5 +9,8 @@ namespace BLL.DTO.Product
 {
     public class CreateProductDTO : ProductBaseDTO
     {
+        [Range(0, double.MaxValue, ErrorMessage = "Purchase price cannot be negative")]
+        [DataType(DataType.Currency)]
+        public decimal PurchasePrice { get; set; }
     }
 }

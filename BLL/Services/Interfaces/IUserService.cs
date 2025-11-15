@@ -5,24 +5,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BLL.DTO.User;
+using BLL.DTO.Users.User;
 
 namespace BLL.Services.Interfaces
 {
     public interface IUserService : IService
     {
         //--------------------------------- GET ------------------------------------------------------
-        public Task<UserDTO> GetByName(string name);
-        public Task<UserDTO> GetAllBySector(EUserSector sector);
-        public Task<UserDTO> GetAllByRol(EUserRol rol);
+        public Task<UserResponseDTO> GetByNameAsync(string name);
+        public Task<List<UserResponseDTO>> GetAllBySectorAsync(EUserSector sector);
+        public Task<List<UserResponseDTO>> GetAllByRolAsync(EUserRol rol);
 
         //----------------------------------------------------------------------------------------- <>
 
         //--------------------------------- PATCH ------------------------------------------------------
-        public Task<UserDTO> UpdateName(string newName);
-        public Task<UserDTO> UpdatePassword(string newPassword);
-        public Task<UserDTO> UpdateRol(EUserRol newRol);
-        public Task<UserDTO> UpdateSector(EUserSector newSector);
+        public Task<UserResponseDTO> UpdateNameAsync(int id, string newName);
+        public Task<UserResponseDTO> UpdatePasswordAsync(int id, string newPassword);
+        public Task<UserResponseDTO> UpdateRolAsync(int id, EUserRol newRol);
+        public Task<UserResponseDTO> UpdateSectorAsync(int id, EUserSector newSector);
         //----------------------------------------------------------------------------------------- <>
     }
 }

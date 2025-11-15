@@ -1,12 +1,14 @@
-﻿using System;
+﻿using BLL.DTO.Device;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BLL.DTO.Users.User
+namespace BLL.DTO.Device
 {
-    public class UpdateUserDTO : UserBaseDTO
+    public class DeviceCreateDTO : BaseDeviceDTO
     {
+
     }
 }

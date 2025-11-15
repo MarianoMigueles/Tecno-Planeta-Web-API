@@ -14,8 +14,7 @@ namespace BLL.DTO.Extra
         public int Quantity { get; set; }
         public DateTime Date { get; set; }
         public string Notes { get; set; }
-        public int ProductId { get; set; }
+        public List<StockMovementItemDTO> Items { get; set; }
         public int? InvoiceNumber { get; set; }
-        public string ProductName { get; set; }
     }
 }

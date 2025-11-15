@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using BLL.DTO.Device;
+using BLL.DTO;
 using BLL.DTO.Invoice;
 using BLL.Services.Interfaces;
+using DAL.Repository.Interfaces;
 using DAL.UnitOfWork;
 using Entities.Elements.Enums;
 using Entities.Elements.InvoiceFolder;
@@ -12,63 +15,87 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class InvoiceService(IUnitOfWork unitOfWork, IMapper mapper) : AbstractService<Invoice, InvoiceDTO>(unitOfWork, mapper), IInvoiceService
+    public class InvoiceService(IUnitOfWork unitOfWork, IMapper mapper) : AbstractService<InvoiceResponseDTO, Invoice, IInvoiceRepository>(unitOfWork, mapper), IInvoiceService
     {
+        protected override IInvoiceRepository Repository => _unitOfWork.InvoiceRepository;
+
         //--------------------------------- GET ------------------------------------------------------
 
-        public Task<List<InvoiceDTO>> GetAllByGreaterProductQuantity(int amount)
+        public async Task<List<InvoiceResponseDTO>> GetAllByGreaterProductQuantityAsync(int amount)
         {
-            throw new NotImplementedException();
+            var invoices = await Repository.GetAllByGreaterProductQuantityAsync(amount);
+            return _mapper.Map<List<InvoiceResponseDTO>>(invoices);
         }
 
-        public Task<List<InvoiceDTO>> GetAllByIssueDate(DateTime status)
+        public async Task<List<InvoiceResponseDTO>> GetAllByIssueDateAsync(DateTime status)
         {
-            throw new NotImplementedException();
+            var invoices = await Repository.GetAllByIssueDateAsync(status);
+            return _mapper.Map<List<InvoiceResponseDTO>>(invoices);
         }
 
-        public Task<List<InvoiceDTO>> GetAllByLessProductQuantity(int amount)
+        public async Task<List<InvoiceResponseDTO>> GetAllByLessProductQuantityAsync(int amount)
         {
-            throw new NotImplementedException();
+            var invoices = await Repository.GetAllByLessProductQuantityAsync(amount);
+            return _mapper.Map<List<InvoiceResponseDTO>>(invoices);
         }
 
-        public Task<List<InvoiceDTO>> GetAllByOperationType(EInvoiceOperation type)
+        public async Task<List<InvoiceResponseDTO>> GetAllByOperationTypeAsync(EInvoiceOperation type)
         {
-            throw new NotImplementedException();
+            var invoices = await Repository.GetAllByOperationTypeAsync(type);
+            return _mapper.Map<List<InvoiceResponseDTO>>(invoices);
         }
 
-        public Task<List<InvoiceDTO>> GetAllByStatus(EInvoiceStatus status)
+        public async Task<List<InvoiceResponseDTO>> GetAllByStatusAsync(EInvoiceStatus status)
         {
-            throw new NotImplementedException();
+            var invoices = await Repository.GetAllByStatusAsync(status);
+            return _mapper.Map<List<InvoiceResponseDTO>>(invoices);
         }
 
-        public Task<InvoiceDTO> GetByCustomerName(string name)
+        public async Task<InvoiceResponseDTO> GetByCustomerNameAsync(string name)
         {
-            throw new NotImplementedException();
+            var invoice = await Repository.GetByCustomerNameAsync(name);
+            return _mapper.Map<InvoiceResponseDTO>(invoice);
         }
 
-        public Task<InvoiceDTO> GetByNumber(int number)
+        public async Task<InvoiceResponseDTO> GetByNumberAsync(int number)
         {
-            throw new NotImplementedException();
+            var invoice = await Repository.GetByNumberAsync(number);
+            return _mapper.Map<InvoiceResponseDTO>(invoice);
         }
 
-        public Task<List<InvoiceDTO>> GetContainsProductId(int id)
+        public async Task<List<InvoiceResponseDTO>> GetContainsProductIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var invoices = await Repository.GetContainsProductIdAsync(id);
+            return _mapper.Map<List<InvoiceResponseDTO>>(invoices);
         }
 
-        public Task<List<InvoiceDTO>> GetContainsServiceId(int id)
+        public async Task<List<InvoiceResponseDTO>> GetContainsServiceIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var invoices = await Repository.GetContainsServiceIdAsync(id);
+            return _mapper.Map<List<InvoiceResponseDTO>>(invoices);
         }
 
         //----------------------------------------------------------------------------------------- <>
 
         //--------------------------------- PATCH ------------------------------------------------------
 
-        public Task<InvoiceDTO> UpdateStatus(EInvoiceStatus newStatus)
+        public async Task<InvoiceResponseDTO> UpdateStatusAsync(int id, EInvoiceStatus newStatus)
         {
-            throw new NotImplementedException();
+            var invoice = await Repository.UpdateStatusAsync(id, newStatus);
+            return _mapper.Map<InvoiceResponseDTO>(invoice);
         }
+
+        //----------------------------------------------------------------------------------------- <>
+
+        //--------------------------------- POST ------------------------------------------------------
+
+        public override async Task<InvoiceResponseDTO> CreateAsync(IBaseDTO createDto) => await CommonCreateAsync(createDto);
+
+        //----------------------------------------------------------------------------------------- <>
+
+        //--------------------------------- DELETE ------------------------------------------------------
+
+        public override async Task<bool> DeleteAsync(int id) => await CommonDeleteAsync(id);
 
         //----------------------------------------------------------------------------------------- <>
     }

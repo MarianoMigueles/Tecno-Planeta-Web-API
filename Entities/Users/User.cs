@@ -12,6 +12,16 @@ namespace Entities.Users
         public EUserRol Rol { get; private set; }
         public EUserSector Sector { get; private set; }
 
+        public void SetPassword(string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VerifyPassword(string password)
+        {
+            throw new NotImplementedException();
+        }
+
         public void EditRol(EUserRol newRol)
         {
             if (newRol == Rol)

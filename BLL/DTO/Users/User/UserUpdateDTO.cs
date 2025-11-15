@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BLL.DTO.Users.User
 {
-    public class CreateUserDTO : UserBaseDTO
+    public class UserUpdateDTO : UserBaseDTO
     {
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repository.Interfaces
 {
-    public interface IProductRepository
+    public interface IProductRepository : IRepository<Product>
     {
         //--------------------------------- GET ------------------------------------------------------
         public Task<List<Product>> GetAllByActiveStatusAsync(bool status);
@@ -24,7 +24,7 @@ namespace DAL.Repository.Interfaces
         public Task<Product> AddStockAsync(int productId, int amount);
         public Task<Product> SubstractStockAsync(int productId, int amount);
         public Task<Product> UpdateCategoryAsync(int productId, string newCategory);
-        public Task<Product> UpdateDescription(int productId, string newDescription);
+        public Task<Product> UpdateDescriptionAsync(int productId, string newDescription);
         public Task<Product> UpdateNameAsync(int productId, string newName);
         public Task<Product> UpdateSalePriceAsync(int productId, decimal newSalePrice);
         public Task<Product> UpdateStatusAsync(int productId, bool newStatus);

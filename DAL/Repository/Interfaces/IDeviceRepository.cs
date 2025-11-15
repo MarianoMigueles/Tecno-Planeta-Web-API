@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repository.Interfaces
 {
-    public interface IDeviceRepository
+    public interface IDeviceRepository : IRepository<Device>
     {
         //--------------------------------- GET ------------------------------------------------------
         public Task<List<Device>> GetByCustomerNameAsync(string customerName);

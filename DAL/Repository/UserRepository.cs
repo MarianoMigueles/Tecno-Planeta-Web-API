@@ -2,6 +2,7 @@
 using DAL.Repository.Interfaces;
 using Entities.Users;
 using Entities.Users.Enums;
+using Exeptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,34 +15,34 @@ namespace DAL.Repository
     {
         //--------------------------------- GET ------------------------------------------------------
 
-        public async Task<User> GetByName(string name) => await this.GetSingleAsync(u => u.UserName.Equals(name));
-        public async Task<List<User>> GetAllBySector(EUserSector sector) => await this.GetListAsync(u => u.Sector.Equals(sector));
-        public async Task<User> GetAllByRol(EUserRol rol) => await this.GetSingleAsync(u => u.Rol.Equals(rol));
+        public async Task<User> GetByNameAsync(string name) => await this.GetSingleAsync(u => u.UserName.Equals(name));
+        public async Task<List<User>> GetAllBySectorAsync(EUserSector sector) => await this.GetListAsync(u => u.Sector.Equals(sector));
+        public async Task<User> GetAllByRolAsync(EUserRol rol) => await this.GetSingleAsync(u => u.Rol.Equals(rol));
 
 
         //----------------------------------------------------------------------------------------- <>
 
         //--------------------------------- PATCH ------------------------------------------------------
 
-        public async Task<User> UpdateName(int id, string newName)
+        public async Task<User> UpdateNameAsync(int id, string newName)
         {
             var user = await this.GetByIdAsync(id);
             user.UserName = newName;
             return user;
         }
-        public async Task<User> UpdatePassword(int id, string newPassword)
+        public async Task<User> UpdatePasswordAsync(int id, string newPassword)
         {
             var user = await this.GetByIdAsync(id);
             user.EditPassword(newPassword);
             return user;
         }
-        public async Task<User> UpdateRol(int id, EUserRol newRol)
+        public async Task<User> UpdateRolAsync(int id, EUserRol newRol)
         {
             var user = await this.GetByIdAsync(id);
             user.EditRol(newRol);
             return user;
         }
-        public async Task<User> UpdateSector(int id, EUserSector newSector)
+        public async Task<User> UpdateSectorAsync(int id, EUserSector newSector)
         {
             var user = await this.GetByIdAsync(id);
             user.EditSector(newSector);
@@ -49,5 +50,10 @@ namespace DAL.Repository
         }
 
         //----------------------------------------------------------------------------------------- <>
+
+        public async Task<User> LogInAsync(string userName, string password)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

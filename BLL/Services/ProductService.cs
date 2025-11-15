@@ -1,7 +1,11 @@
 ﻿using AutoMapper;
+using BLL.DTO.Invoice;
+using BLL.DTO;
 using BLL.DTO.Product;
 using BLL.Services.Interfaces;
+using DAL.Repository.Interfaces;
 using DAL.UnitOfWork;
+using Entities.Elements.Enums;
 using Entities.Elements.ProductFolder;
 using System;
 using System.Collections.Generic;
@@ -11,91 +15,114 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class ProductService(IUnitOfWork unitOfWork, IMapper mapper) : AbstractService<Product, ProductDTO>(unitOfWork, mapper), IProductService
+    public class ProductService(IUnitOfWork unitOfWork, IMapper mapper) : AbstractService<ProductResponseDTO, Product, IProductRepository>(unitOfWork, mapper), IProductService
     {
+        protected override IProductRepository Repository => _unitOfWork.ProductRepository;
+
         //--------------------------------- GET ------------------------------------------------------
-        public Task<List<ProductDTO>> GetAllByActiveStatus(bool status)
+        public async Task<List<ProductResponseDTO>> GetAllByActiveStatusAsync(bool status)
         {
-            throw new NotImplementedException();
+            var products = await Repository.GetAllByActiveStatusAsync(status);
+            return _mapper.Map<List<ProductResponseDTO>>(products);
         }
 
-        public Task<List<ProductDTO>> GetAllByAmoutOfStock(int phone, bool isGreater = false)
+        public async Task<List<ProductResponseDTO>> GetAllByAmoutOfStockAsync(int amount, bool isGreater = false)
         {
-            throw new NotImplementedException();
+            var products = await Repository.GetAllByAmoutOfStockAsync(amount, isGreater);
+            return _mapper.Map<List<ProductResponseDTO>>(products);
         }
 
-        public Task<List<ProductDTO>> GetAllByCategory(string category)
+        public async Task<List<ProductResponseDTO>> GetAllByCategoryAsync(string category)
         {
-            throw new NotImplementedException();
+            var products = await Repository.GetAllByCategoryAsync(category);
+            return _mapper.Map<List<ProductResponseDTO>>(products);
         }
 
-        public Task<List<ProductDTO>> GetAllByGreaterPurchasePrice(decimal price)
+        public async Task<List<ProductResponseDTO>> GetAllByPurchasePriceAsync(decimal price, bool isGreater = false)
         {
-            throw new NotImplementedException();
+            var products = await Repository.GetAllByPurchasePriceAsync(price);
+            return _mapper.Map<List<ProductResponseDTO>>(products);
         }
 
-        public Task<List<ProductDTO>> GetAllByLessPurchasePrice(decimal price)
+        public async Task<List<ProductResponseDTO>> GetAllByRangeOfPurchasePriceAsync(decimal min, decimal max)
         {
-            throw new NotImplementedException();
+            var products = await Repository.GetAllByRangeOfPurchasePriceAsync(min, max);
+            return _mapper.Map<List<ProductResponseDTO>>(products);
         }
 
-        public Task<List<ProductDTO>> GetAllByRangeOfPurchasePrice(decimal startPrice, decimal endPrice)
+        public async Task<ProductResponseDTO> GetByBarCodeAsync(string name)
         {
-            throw new NotImplementedException();
+            var product = await Repository.GetByBarCodeAsync(name);
+            return _mapper.Map<ProductResponseDTO>(product);
         }
 
-        public Task<ProductDTO> GetByBarCode(string name)
+        public async Task<ProductResponseDTO> GetByNameAsync(string name)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<ProductDTO> GetByName(string name)
-        {
-            throw new NotImplementedException();
+            var product = await Repository.GetByNameAsync(name);
+            return _mapper.Map<ProductResponseDTO>(product);
         }
         //----------------------------------------------------------------------------------------- <>
 
         //--------------------------------- PATCH ------------------------------------------------------
 
-        public Task<ProductDTO> Activate()
+        public async Task<ProductResponseDTO> ActivateAsync(int id)
         {
-            throw new NotImplementedException();
+            var product = await Repository.UpdateStatusAsync(id, true);
+            return _mapper.Map<ProductResponseDTO>(product);
+        }
+        public async Task<ProductResponseDTO> DeactivateAsync(int id)
+        {
+            var product = await Repository.UpdateStatusAsync(id, false);
+            return _mapper.Map<ProductResponseDTO>(product);
         }
 
-        public Task<ProductDTO> AddStock(int amount)
+        public async Task<ProductResponseDTO> AddStockAsync(int id, int amount)
         {
-            throw new NotImplementedException();
+            var product = await Repository.AddStockAsync(id, amount);
+            return _mapper.Map<ProductResponseDTO>(product);
         }
 
-        public Task<ProductDTO> Deactivate()
+        public async Task<ProductResponseDTO> SubstractStockAsync(int id, int amount)
         {
-            throw new NotImplementedException();
+            var product = await Repository.SubstractStockAsync(id, amount);
+            return _mapper.Map<ProductResponseDTO>(product);
         }
 
-        public Task<ProductDTO> SubstractStock(int amount)
+        public async Task<ProductResponseDTO> UpdateCategoryAsync(int id, string newCategory)
         {
-            throw new NotImplementedException();
+            var product = await Repository.UpdateCategoryAsync(id, newCategory);
+            return _mapper.Map<ProductResponseDTO>(product);
         }
 
-        public Task<ProductDTO> UpdateCategory(string newName)
+        public async Task<ProductResponseDTO> UpdateDescriptionAsync(int id, string newDescriptio)
         {
-            throw new NotImplementedException();
+            var product = await Repository.UpdateDescriptionAsync(id, newDescriptio);
+            return _mapper.Map<ProductResponseDTO>(product);
         }
 
-        public Task<ProductDTO> UpdateDescription(string newName)
+        public async Task<ProductResponseDTO> UpdateNameAsync(int id, string newName)
         {
-            throw new NotImplementedException();
+            var product = await Repository.UpdateNameAsync(id, newName);
+            return _mapper.Map<ProductResponseDTO>(product);
         }
 
-        public Task<ProductDTO> UpdateName(string newName)
+        public async Task<ProductResponseDTO> UpdateSalePriceAsync(int id, decimal newPrice)
         {
-            throw new NotImplementedException();
+            var product = await Repository.UpdateSalePriceAsync(id, newPrice);
+            return _mapper.Map<ProductResponseDTO>(product);
         }
 
-        public Task<ProductDTO> UpdateSalePrice(decimal newPrice)
-        {
-            throw new NotImplementedException();
-        }
+        //----------------------------------------------------------------------------------------- <>
+
+        //--------------------------------- POST ------------------------------------------------------
+
+        public override async Task<ProductResponseDTO> CreateAsync(IBaseDTO createDto) => await CommonCreateAsync(createDto);
+
+        //----------------------------------------------------------------------------------------- <>
+
+        //--------------------------------- DELETE ------------------------------------------------------
+
+        public override async Task<bool> DeleteAsync(int id) => await CommonDeleteAsync(id);
 
         //----------------------------------------------------------------------------------------- <>
     }

@@ -10,7 +10,7 @@ namespace Tecno_Planeta_Web_API.Controllers
     {
         //--------------------------------- GET ------------------------------------------------------
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DeviceDTO>>> GetDevices(
+        public async Task<ActionResult<IEnumerable<BaseDeviceDTO>>> GetDevices(
             [FromQuery] string? customerName,
             [FromQuery] string? type,
             [FromQuery] string? model,
@@ -22,13 +22,13 @@ namespace Tecno_Planeta_Web_API.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<DeviceDTO>> GetById(int id)
+        public async Task<ActionResult<BaseDeviceDTO>> GetById(int id)
         {
             throw new NotImplementedException();
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DeviceDTO>>> GetAll()
+        public async Task<ActionResult<IEnumerable<BaseDeviceDTO>>> GetAll()
         {
             throw new NotImplementedException();
         }
@@ -38,7 +38,7 @@ namespace Tecno_Planeta_Web_API.Controllers
         //--------------------------------- DELETE ------------------------------------------------------
 
         [HttpDelete("{id:int}")]
-        public Task<ActionResult<DeviceDTO>> DeleteById(int id)
+        public Task<ActionResult<BaseDeviceDTO>> DeleteById(int id)
         {
             throw new NotImplementedException();
         }
@@ -47,7 +47,7 @@ namespace Tecno_Planeta_Web_API.Controllers
         //--------------------------------- POST ------------------------------------------------------
 
         [HttpPost]
-        public Task<ActionResult<DeviceDTO>> Create([FromBody] DeviceDTO newDevice)
+        public Task<ActionResult<BaseDeviceDTO>> Create([FromBody] BaseDeviceDTO newDevice)
         {
             throw new NotImplementedException();
         }

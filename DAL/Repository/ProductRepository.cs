@@ -65,7 +65,7 @@ namespace DAL.Repository
             return product;
         }
 
-        public async Task<Product> UpdateDescription(int productId, string newDescription)
+        public async Task<Product> UpdateDescriptionAsync(int productId, string newDescription)
         {
             var product = await this.GetByIdAsync(productId);
             product.Details.Description = newDescription;

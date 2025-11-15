@@ -9,10 +9,8 @@ using System.Threading.Tasks;
 
 namespace BLL.DTO.Users.Customer
 {
-    public class CustomerResponseDTO : IBaseDTO
+    public class CustomerResponseDTO : CustomerBaseDTO
     {
-        public required string Name { get; set; }
-        public required string Phone { get; set; }
         public required DateTime RegisterDate { get; set; }
     }
 }

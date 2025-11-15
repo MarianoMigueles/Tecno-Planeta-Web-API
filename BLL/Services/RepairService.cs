@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
-using BLL.DTO.Repair;
+using BLL.DTO.Product;
+using BLL.DTO;
+using BLL.DTO.Services.Repair;
 using BLL.Services.Interfaces;
+using DAL.Repository.Interfaces;
 using DAL.UnitOfWork;
 using Entities.Services;
 using Entities.Services.Enums;
@@ -12,48 +15,69 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class RepairService(IUnitOfWork unitOfWork, IMapper mapper) : AbstractService<Repair, RepairDTO>(unitOfWork, mapper), IRepairService
+    public class RepairService(IUnitOfWork unitOfWork, IMapper mapper) : AbstractService<RepairResponseDTO, Repair, IRepairRepository>(unitOfWork, mapper), IRepairService
     {
+        protected override IRepairRepository Repository => _unitOfWork.RepairRepository;
+
         //--------------------------------- GET ------------------------------------------------------
 
-        public Task<List<RepairDTO>> GetByCustomerName(string name)
+        public async Task<List<RepairResponseDTO>> GetByCustomerNameAsync(string name)
         {
-            throw new NotImplementedException();
+            var repairs = await Repository.GetByCustomerNameAsync(name);
+            return _mapper.Map<List<RepairResponseDTO>>(repairs);
         }
 
-        public Task<List<RepairDTO>> GetByEntryDate(DateTime entryDate)
+        public async Task<List<RepairResponseDTO>> GetByEntryDateAsync(DateTime entryDate)
         {
-            throw new NotImplementedException();
+            var repairs = await Repository.GetByEntryDateAsync(entryDate);
+            return _mapper.Map<List<RepairResponseDTO>>(repairs);
         }
 
-        public Task<List<RepairDTO>> GetByPeriodOfEntryDate(DateTime startDate, DateTime endDate)
+        public async Task<List<RepairResponseDTO>> GetByPeriodOfEntryDateAsync(DateTime min, DateTime max)
         {
-            throw new NotImplementedException();
+            var repairs = await Repository.GetByPeriodOfEntryDateAsync(min, max);
+            return _mapper.Map<List<RepairResponseDTO>>(repairs);
         }
 
         //----------------------------------------------------------------------------------------- <>
 
         //--------------------------------- PATCH ------------------------------------------------------
 
-        public Task<RepairDTO> CancelRepair()
+        public async Task<RepairResponseDTO> CancelRepairAsync(int id)
         {
-            throw new NotImplementedException();
+            var repair = await Repository.CancelRepairAsync(id);
+            return _mapper.Map<RepairResponseDTO>(repair);
         }
 
-        public Task<RepairDTO> UpdateCost(decimal newCost)
+        public async Task<RepairResponseDTO> UpdateCostAsync(int id, decimal newCost)
         {
-            throw new NotImplementedException();
+            var repair = await Repository.UpdateCostAsync(id, newCost);
+            return _mapper.Map<RepairResponseDTO>(repair);
         }
 
-        public Task<RepairDTO> UpdateNote(string note)
+        public async Task<RepairResponseDTO> UpdateNoteAsync(int id, string note)
         {
-            throw new NotImplementedException();
+            var repair = await Repository.UpdateNoteAsync(id, note);
+            return _mapper.Map<RepairResponseDTO>(repair);
         }
 
-        public Task<RepairDTO> UpdateStatus(ERepairStatus newStatus)
+        public async Task<RepairResponseDTO> UpdateStatusAsync(int id, ERepairStatus newStatus)
         {
-            throw new NotImplementedException();
+            var repair = await Repository.UpdateStatusAsync(id, newStatus);
+            return _mapper.Map<RepairResponseDTO>(repair);
         }
+
+        //----------------------------------------------------------------------------------------- <>
+
+        //--------------------------------- POST ------------------------------------------------------
+
+        public override async Task<RepairResponseDTO> CreateAsync(IBaseDTO createDto) => await CommonCreateAsync(createDto);
+
+        //----------------------------------------------------------------------------------------- <>
+
+        //--------------------------------- DELETE ------------------------------------------------------
+
+        public override async Task<bool> DeleteAsync(int id) => await CommonDeleteAsync(id);
 
         //----------------------------------------------------------------------------------------- <>
     }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BLL.DTO.Users.Customer
+namespace BLL.DTO.Services.Service
 {
-    public class CreateCustomerDTO : CustomerBaseDTO
+    public class ServiceUpdateDTO : ServiceBaseDTO
     {
     }
 }

@@ -11,25 +11,24 @@ namespace BLL.Services.Interfaces
     public interface IProductService : IService
     {
         //--------------------------------- GET ------------------------------------------------------
-        public Task<ProductDTO> GetByName(string name);
-        public Task<ProductDTO> GetByBarCode(string name);
-        public Task<List<ProductDTO>> GetAllByRangeOfPurchasePrice(decimal startPrice, decimal endPrice);
-        public Task<List<ProductDTO>> GetAllByGreaterPurchasePrice(decimal price);
-        public Task<List<ProductDTO>> GetAllByLessPurchasePrice(decimal price);
-        public Task<List<ProductDTO>> GetAllByActiveStatus(bool status);
-        public Task<List<ProductDTO>> GetAllByCategory(string category);
-        public Task<List<ProductDTO>> GetAllByAmoutOfStock(int amount, bool isGreater = false);
+        public Task<ProductResponseDTO> GetByNameAsync(string name);
+        public Task<ProductResponseDTO> GetByBarCodeAsync(string name);
+        public Task<List<ProductResponseDTO>> GetAllByRangeOfPurchasePriceAsync(decimal min, decimal max);
+        public Task<List<ProductResponseDTO>> GetAllByPurchasePriceAsync(decimal price, bool isGreater = false);
+        public Task<List<ProductResponseDTO>> GetAllByActiveStatusAsync(bool status);
+        public Task<List<ProductResponseDTO>> GetAllByCategoryAsync(string category);
+        public Task<List<ProductResponseDTO>> GetAllByAmoutOfStockAsync(int amount, bool isGreater = false);
         //----------------------------------------------------------------------------------------- <>
 
         //--------------------------------- PATCH ------------------------------------------------------
-        public Task<ProductDTO> UpdateName(string newName);
-        public Task<ProductDTO> UpdateSalePrice(decimal newPrice);
-        public Task<ProductDTO> AddStock(int amount);
-        public Task<ProductDTO> SubstractStock(int amount);
-        public Task<ProductDTO> Activate();
-        public Task<ProductDTO> Deactivate();
-        public Task<ProductDTO> UpdateCategory(string newName);
-        public Task<ProductDTO> UpdateDescription(string newName);
+        public Task<ProductResponseDTO> UpdateNameAsync(int id, string newName);
+        public Task<ProductResponseDTO> UpdateSalePriceAsync(int id, decimal newPrice);
+        public Task<ProductResponseDTO> AddStockAsync(int id, int amount);
+        public Task<ProductResponseDTO> SubstractStockAsync(int id, int amount);
+        public Task<ProductResponseDTO> ActivateAsync(int id);
+        public Task<ProductResponseDTO> DeactivateAsync(int id);
+        public Task<ProductResponseDTO> UpdateCategoryAsync(int id, string newCategory);
+        public Task<ProductResponseDTO> UpdateDescriptionAsync(int id, string newDescription);
         //----------------------------------------------------------------------------------------- <>
     }
 }

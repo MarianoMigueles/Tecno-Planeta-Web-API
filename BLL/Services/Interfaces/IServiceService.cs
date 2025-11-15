@@ -1,4 +1,4 @@
-﻿using BLL.DTO.Service;
+﻿using BLL.DTO.Services.Service;
 using Entities.Services;
 using System;
 using System.Collections.Generic;
@@ -11,17 +11,17 @@ namespace BLL.Services.Interfaces
     public interface IServiceService : IService
     {
         //--------------------------------- GET ------------------------------------------------------
-        public Task<ServiceDTO> GetByName(string name);
-        public Task<List<ServiceDTO>> GetAllByPriceRange(decimal min, decimal max);
-        public Task<List<ServiceDTO>> GetByPeriotOfEstimatedTime(DateTime startTime, DateTime endTime);
+        public Task<ServiceResponseDTO> GetByNameAsync(string name);
+        public Task<List<ServiceResponseDTO>> GetAllByPriceRangeAsync(decimal min, decimal max);
+        public Task<List<ServiceResponseDTO>> GetByPeriotOfEstimatedTimeAsync(TimeOnly min, TimeOnly max);
 
         //----------------------------------------------------------------------------------------- <>
 
         //--------------------------------- PATCH ------------------------------------------------------
-        public Task<ServiceDTO> UpdateName(string newName);
-        public Task<ServiceDTO> UpdateDescription(string newDescription);
-        public Task<ServiceDTO> UpdateBasePrice(decimal newPrice);
-        public Task<ServiceDTO> UpdateEstimatedTime(DateTime newEstimatedTime);
+        public Task<ServiceResponseDTO> UpdateNameAsync(int id, string newName);
+        public Task<ServiceResponseDTO> UpdateDescriptionAsync(int id, string newDescription);
+        public Task<ServiceResponseDTO> UpdateBasePriceAsync(int id, decimal newPrice);
+        public Task<ServiceResponseDTO> UpdateEstimatedTimeAsync(int id, TimeOnly newEstimatedTime);
         //----------------------------------------------------------------------------------------- <>
     }
 }
