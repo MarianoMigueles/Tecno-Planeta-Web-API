@@ -6,12 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BLL.DTO.Services.Repair;
+using BLL.DTO.Users.Customer;
+using BLL.DTO;
+using BLL.DTO.Product;
 
 namespace BLL.Services.Interfaces
 {
     public interface IRepairService : IService
     {
         //--------------------------------- GET ------------------------------------------------------
+        public Task<RepairResponseDTO> GetByIdAsync(int id);
+        public Task<List<RepairResponseDTO>> GetAllAsync();
         public Task<List<RepairResponseDTO>> GetByCustomerNameAsync(string name);
         public Task<List<RepairResponseDTO>> GetByEntryDateAsync(DateTime entryDate);
         public Task<List<RepairResponseDTO>> GetByPeriodOfEntryDateAsync(DateTime min, DateTime max);
@@ -23,6 +28,11 @@ namespace BLL.Services.Interfaces
         public Task<RepairResponseDTO> UpdateNoteAsync(int id, string note);
         public Task<RepairResponseDTO> UpdateStatusAsync(int id, ERepairStatus newStatus);
         public Task<RepairResponseDTO> CancelRepairAsync(int id);
+        //----------------------------------------------------------------------------------------- <>
+        //--------------------------------- POST ------------------------------------------------------
+
+        public Task<RepairResponseDTO> CreateAsync(IBaseDTO createDto);
+
         //----------------------------------------------------------------------------------------- <>
     }
 }

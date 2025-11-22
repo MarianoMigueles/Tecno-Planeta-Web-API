@@ -70,7 +70,7 @@ namespace BLL.Services
             var product = await Repository.UpdateStatusAsync(id, true);
             return _mapper.Map<ProductResponseDTO>(product);
         }
-        public async Task<ProductResponseDTO> DeactivateAsync(int id)
+        public async Task<ProductResponseDTO> DesactivateAsync(int id)
         {
             var product = await Repository.UpdateStatusAsync(id, false);
             return _mapper.Map<ProductResponseDTO>(product);

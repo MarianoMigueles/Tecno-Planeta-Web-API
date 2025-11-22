@@ -1,4 +1,7 @@
-﻿using BLL.DTO.Services.Service;
+﻿using BLL.DTO;
+using BLL.DTO.Product;
+using BLL.DTO.Services.Service;
+using BLL.DTO.Users.Customer;
 using Entities.Services;
 using System;
 using System.Collections.Generic;
@@ -11,6 +14,8 @@ namespace BLL.Services.Interfaces
     public interface IServiceService : IService
     {
         //--------------------------------- GET ------------------------------------------------------
+        public Task<ServiceResponseDTO> GetByIdAsync(int id);
+        public Task<List<ServiceResponseDTO>> GetAllAsync();
         public Task<ServiceResponseDTO> GetByNameAsync(string name);
         public Task<List<ServiceResponseDTO>> GetAllByPriceRangeAsync(decimal min, decimal max);
         public Task<List<ServiceResponseDTO>> GetByPeriotOfEstimatedTimeAsync(TimeOnly min, TimeOnly max);
@@ -22,6 +27,11 @@ namespace BLL.Services.Interfaces
         public Task<ServiceResponseDTO> UpdateDescriptionAsync(int id, string newDescription);
         public Task<ServiceResponseDTO> UpdateBasePriceAsync(int id, decimal newPrice);
         public Task<ServiceResponseDTO> UpdateEstimatedTimeAsync(int id, TimeOnly newEstimatedTime);
+        //----------------------------------------------------------------------------------------- <>
+        //--------------------------------- POST ------------------------------------------------------
+
+        public Task<ServiceResponseDTO> CreateAsync(IBaseDTO createDto);
+
         //----------------------------------------------------------------------------------------- <>
     }
 }

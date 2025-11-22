@@ -21,21 +21,9 @@ namespace BLL.Services
 
         //--------------------------------- GET ------------------------------------------------------
 
-        public async Task<List<InvoiceResponseDTO>> GetAllByGreaterProductQuantityAsync(int amount)
-        {
-            var invoices = await Repository.GetAllByGreaterProductQuantityAsync(amount);
-            return _mapper.Map<List<InvoiceResponseDTO>>(invoices);
-        }
-
         public async Task<List<InvoiceResponseDTO>> GetAllByIssueDateAsync(DateTime status)
         {
             var invoices = await Repository.GetAllByIssueDateAsync(status);
-            return _mapper.Map<List<InvoiceResponseDTO>>(invoices);
-        }
-
-        public async Task<List<InvoiceResponseDTO>> GetAllByLessProductQuantityAsync(int amount)
-        {
-            var invoices = await Repository.GetAllByLessProductQuantityAsync(amount);
             return _mapper.Map<List<InvoiceResponseDTO>>(invoices);
         }
 
@@ -63,15 +51,21 @@ namespace BLL.Services
             return _mapper.Map<InvoiceResponseDTO>(invoice);
         }
 
-        public async Task<List<InvoiceResponseDTO>> GetContainsProductIdAsync(int id)
+        public async Task<List<InvoiceResponseDTO>> GetContainsProductIdAsync(List<int> ids)
         {
-            var invoices = await Repository.GetContainsProductIdAsync(id);
+            var invoices = await Repository.GetContainsProductIdAsync(ids);
             return _mapper.Map<List<InvoiceResponseDTO>>(invoices);
         }
 
-        public async Task<List<InvoiceResponseDTO>> GetContainsServiceIdAsync(int id)
+        public async Task<List<InvoiceResponseDTO>> GetContainsServiceIdAsync(List<int> ids)
         {
-            var invoices = await Repository.GetContainsServiceIdAsync(id);
+            var invoices = await Repository.GetContainsServiceIdAsync(ids);
+            return _mapper.Map<List<InvoiceResponseDTO>>(invoices);
+        }
+
+        public async Task<List<InvoiceResponseDTO>> GetAllByProductQuantityAsync(int min, int max)
+        {
+            var invoices = await Repository.GetAllByProductQuantityAsync(min, max);
             return _mapper.Map<List<InvoiceResponseDTO>>(invoices);
         }
 
