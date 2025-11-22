@@ -16,20 +16,22 @@ namespace DAL.Repository
     public class InvoiceRepository(DataContext context) : AbstractRepository<Invoice>(context), IInvoiceRepository
     {
         //--------------------------------- GET ------------------------------------------------------
-        public async Task<List<Invoice>> GetAllByGreaterProductQuantityAsync(int amount) => await this.GetListAsync(i => i.Details.Quantity >= amount);
         public async Task<List<Invoice>> GetAllByIssueDateAsync(DateTime date) => await this.GetListAsync(i => i.IssueDate.Equals(date));
-        public async Task<List<Invoice>> GetAllByLessProductQuantityAsync(int amount) => await this.GetListAsync(i => i.Details.Quantity <= amount);
         public async Task<List<Invoice>> GetAllByOperationTypeAsync(EInvoiceOperation type) => await this.GetListAsync(i => i.Type.Equals(type));
         public async Task<List<Invoice>> GetAllByStatusAsync(EInvoiceStatus status) => await this.GetListAsync(i => i.Status.Equals(status));
+        public async Task<List<Invoice>> GetAllByProductQuantityAsync(int min, int max)
+        {
+            return await this.GetListAsync(i => i.Details.Items.Count > min && i.Details.Items.Count < max);
+        }
         public async Task<Invoice> GetByCustomerNameAsync(string name) => await this.GetSingleAsync(i => i.Customer.Name.Equals(name));
         public async Task<Invoice> GetByNumberAsync(int number) => await this.GetSingleAsync(i => i.InvoiceNumber.Equals(number));
-        public async Task<List<Invoice>> GetContainsProductIdAsync(int id)
+        public async Task<List<Invoice>> GetContainsProductIdAsync(List<int> ids)
         {
-            return await this.GetListAsync(i => i.Details.Items.Any(item => item.ProductId.Equals(id)));
+            return await this.GetListAsync(i => i.Details.Items.Any(item => ids.Contains(item.ProductId)));
         }
-        public async Task<List<Invoice>> GetContainsServiceIdAsync(int id)
+        public async Task<List<Invoice>> GetContainsServiceIdAsync(List<int> ids)
         {
-            return await this.GetListAsync(i => i.Details.Items.Any(item => item.ServiceId.Equals(id)));
+            return await this.GetListAsync(i => i.Details.Items.Any(item => ids.Contains(item.ServiceId)));
         }
 
         //----------------------------------------------------------------------------------------- <>

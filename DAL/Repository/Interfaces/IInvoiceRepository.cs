@@ -15,14 +15,13 @@ namespace DAL.Repository.Interfaces
     {
         //--------------------------------- GET ------------------------------------------------------
         public Task<Invoice> GetByNumberAsync(int number);
-        public Task<List<Invoice>> GetContainsProductIdAsync(int id);
-        public Task<List<Invoice>> GetContainsServiceIdAsync(int id);
-        public Task<List<Invoice>> GetAllByGreaterProductQuantityAsync(int amount);
-        public Task<List<Invoice>> GetAllByLessProductQuantityAsync(int amount);
+        public Task<List<Invoice>> GetContainsProductIdAsync(List<int> ids);
+        public Task<List<Invoice>> GetContainsServiceIdAsync(List<int> ids);
         public Task<Invoice> GetByCustomerNameAsync(string name);
         public Task<List<Invoice>> GetAllByStatusAsync(EInvoiceStatus status);
         public Task<List<Invoice>> GetAllByOperationTypeAsync(EInvoiceOperation type);
         public Task<List<Invoice>> GetAllByIssueDateAsync(DateTime status);
+        public Task<List<Invoice>> GetAllByProductQuantityAsync(int min, int max);
 
         //----------------------------------------------------------------------------------------- <>
 

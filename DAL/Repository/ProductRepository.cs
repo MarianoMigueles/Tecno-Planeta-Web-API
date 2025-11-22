@@ -43,7 +43,6 @@ namespace DAL.Repository
         //----------------------------------------------------------------------------------------- <>-
 
         //--------------------------------- PATCH ------------------------------------------------------
-
         public async Task<Product> AddStockAsync(int productId, int amount)
         {
             var product = await this.GetByIdAsync(productId);
