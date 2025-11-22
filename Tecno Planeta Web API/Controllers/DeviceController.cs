@@ -1,6 +1,6 @@
 ﻿using BLL.DTO.Device;
-using BLL.DTO.User;
 using BLL.Services.Interfaces;
+using Entities.Elements.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,28 +9,46 @@ namespace Tecno_Planeta_Web_API.Controllers
     public class DeviceController(IDeviceService service) : AbstractBaseController<IDeviceService>(service)
     {
         //--------------------------------- GET ------------------------------------------------------
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<BaseDeviceDTO>>> GetDevices(
-            [FromQuery] string? customerName,
-            [FromQuery] string? type,
-            [FromQuery] string? model,
-            [FromQuery] string? brand)
-        {
-            // Lógica: aplicar filtros opcionales
-            // Ejemplo: _service.GetFilteredAsync(name, phone, registerDate);
-            throw new NotImplementedException();
-        }
-
+        [AllowAnonymous]
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<BaseDeviceDTO>> GetById(int id)
+        public async Task<ActionResult<DeviceResponseDTO>> GetById(int id)
         {
-            throw new NotImplementedException();
+            var device = await service.GetByIdAsync(id);
+            return Ok(device);
         }
 
+        [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BaseDeviceDTO>>> GetAll()
+        public async Task<ActionResult<IEnumerable<DeviceResponseDTO>>> GetAll()
         {
-            throw new NotImplementedException();
+            var devices = await service.GetAllAsync();
+            return Ok(devices);
+        }
+        
+        [HttpGet("by-customer-name/{customerName}")]
+        public async Task<ActionResult<DeviceResponseDTO>> GetByCustomerName([FromQuery] string customerName)
+        {
+            var device = await service.GetByCustomerNameAsync(customerName);
+            return Ok(device);
+        }
+
+        [HttpGet("by-type/{type}")]
+        public async Task<ActionResult<IEnumerable<DeviceResponseDTO>>> GetAllByType([FromQuery] EDeviceType type)
+        {
+            var devices = await service.GetAllByTypeAsync(type);
+            return Ok(devices);
+        }
+        [HttpGet("by-model/{model}")]
+        public async Task<ActionResult<IEnumerable<DeviceResponseDTO>>> GetAllByModel([FromQuery] string model)
+        {
+            var devices = await service.GetAllByModelAsync(model);
+            return Ok(devices);
+        }
+        [HttpGet("by-brand/{brand}")]
+        public async Task<ActionResult<IEnumerable<DeviceResponseDTO>>> GetAllByBrand([FromQuery] string brand)
+        {
+            var devices = await service.GetAllByBrandAsync(brand);
+            return Ok(devices);
         }
 
         //----------------------------------------------------------------------------------------- <>
@@ -38,18 +56,20 @@ namespace Tecno_Planeta_Web_API.Controllers
         //--------------------------------- DELETE ------------------------------------------------------
 
         [HttpDelete("{id:int}")]
-        public Task<ActionResult<BaseDeviceDTO>> DeleteById(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            throw new NotImplementedException();
+            await service.DeleteAsync(id);
+            return NoContent();
         }
         //----------------------------------------------------------------------------------------- <>
 
         //--------------------------------- POST ------------------------------------------------------
 
         [HttpPost]
-        public Task<ActionResult<BaseDeviceDTO>> Create([FromBody] BaseDeviceDTO newDevice)
+        public async Task<ActionResult<DeviceResponseDTO>> Create([FromBody] DeviceCreateDTO newDevice)
         {
-            throw new NotImplementedException();
+            var device = await service.CreateAsync(newDevice);
+            return Ok(device);
         }
         //----------------------------------------------------------------------------------------- <>
     }

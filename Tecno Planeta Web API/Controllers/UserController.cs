@@ -1,5 +1,4 @@
-﻿using BLL.DTO.Service;
-using BLL.DTO.User;
+﻿using BLL.DTO.Users.User;
 using BLL.Services.Interfaces;
 using Entities.Users.Enums;
 using Microsoft.AspNetCore.Authorization;
@@ -14,68 +13,74 @@ namespace Tecno_Planeta_Web_API.Controllers
         //--------------------------------- GET ------------------------------------------------------
         [AllowAnonymous]
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<UserDTO>> GetUserById(int id)
+        public async Task<ActionResult<UserResponseDTO>> GetUserById(int id)
         {
-            throw new NotImplementedException();
+            var user = await service.GetByIdAsync(id);
+            return Ok(user);
         }
 
         [HttpGet("name")]
-        public async Task<ActionResult<UserDTO>> GetUserByName([FromQuery] string name)
+        public async Task<ActionResult<UserResponseDTO>> GetUserByName([FromQuery] string name)
         {
-            throw new NotImplementedException();
+            var user = await service.GetByNameAsync(name);
+            return Ok(user);
         }
 
         [AllowAnonymous]
-        [HttpGet("sector")]
-        public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllBySector([FromQuery] List<EUserSector>? sectors)
+        [HttpGet("all/sector")]
+        public async Task<ActionResult<IEnumerable<UserResponseDTO>>> GetAllBySector([FromQuery] EUserSector sectors)
         {
-            throw new NotImplementedException();
+            var users = await service.GetAllBySectorAsync(sectors);
+            return Ok(users);
         }
 
         [AllowAnonymous]
-        [HttpGet("rol")]
-        public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllByRol([FromQuery] List<EUserRol>? rols)
+        [HttpGet("all/rol")]
+        public async Task<ActionResult<IEnumerable<UserResponseDTO>>> GetAllByRol([FromQuery] EUserRol rols)
         {
-            throw new NotImplementedException();
+            var users = await service.GetAllByRolAsync(rols);
+            return Ok(users);
         }
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserDTO>>> GetAll()
+        public async Task<ActionResult<IEnumerable<UserResponseDTO>>> GetAll()
         {
-            throw new NotImplementedException();
+            var users = await service.GetAllAsync();
+            return Ok(users);
         }
 
         //----------------------------------------------------------------------------------------- <>
 
         //--------------------------------- PATCH ------------------------------------------------------
 
-        [Authorize(policy: "Admin")]
         [HttpPatch("{id:int}/name")]
-        public Task<ActionResult<UserDTO>> UpdateName(int id, [FromBody] string newName)
+        public async Task<ActionResult<UserResponseDTO>> UpdateName(int id, [FromBody] string newName)
         {
-            throw new NotImplementedException();
+            var user = await service.UpdateNameAsync(id, newName);
+            return Ok(user);
         }
-
-        [Authorize(policy: "Admin")]
         [HttpPatch("{id:int}/password")]
-        public Task<ActionResult<UserDTO>> UpdatePassword(int id, [FromBody] string newPassword)
+        public async Task<ActionResult<UserResponseDTO>> UpdatePassword(int id, [FromBody] string newPassword)
         {
-            throw new NotImplementedException();
+            var user = await service.UpdatePasswordAsync(id, newPassword);
+            return Ok(user);
         }
 
         [Authorize(policy: "Admin")]
         [HttpPatch("{id:int}/rol")]
-        public Task<ActionResult<UserDTO>> UpdateRol(int id, [FromBody] EUserRol newRol)
+        public async Task<ActionResult<UserResponseDTO>> UpdateRol(int id, [FromBody] EUserRol newRol)
         {
-            throw new NotImplementedException();
+            var user = await service.UpdateRolAsync(id, newRol);
+            return Ok(user);
         }
 
         [Authorize(policy: "Admin")]
         [HttpPatch("{id:int}/sector")]
-        public Task<ActionResult<UserDTO>> UpdateSector(int id, [FromBody] EUserSector newSector)
+        public async Task<ActionResult<UserResponseDTO>> UpdateSector(int id, [FromBody] EUserSector newSector)
         {
-            throw new NotImplementedException();
+            var user = await service.UpdateSectorAsync(id, newSector);
+            return Ok(user);
         }
         //----------------------------------------------------------------------------------------- <>
 
@@ -83,9 +88,10 @@ namespace Tecno_Planeta_Web_API.Controllers
 
         [Authorize(policy: "Admin")]
         [HttpDelete("{id:int}")]
-        public Task<ActionResult<UserDTO>> DeleteById(int id)
+        public async Task<ActionResult<UserResponseDTO>> Delete(int id)
         {
-            throw new NotImplementedException();
+            await service.DeleteAsync(id);
+            return NoContent();
         }
         //----------------------------------------------------------------------------------------- <>
 
@@ -93,9 +99,10 @@ namespace Tecno_Planeta_Web_API.Controllers
 
         [Authorize(policy: "Admin")]
         [HttpPost]
-        public Task<ActionResult<UserDTO>> Create([FromBody] UserDTO newUser)
+        public async Task<ActionResult<UserResponseDTO>> Create([FromBody] UserCreateDTO newUser)
         {
-            throw new NotImplementedException();
+            var user = await service.CreateAsync(newUser);
+            return Ok(user);
         }
         //----------------------------------------------------------------------------------------- <>
     }

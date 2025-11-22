@@ -1,6 +1,5 @@
 ﻿using BLL.DTO.Device;
 using BLL.DTO.Invoice;
-using BLL.DTO.User;
 using BLL.Services.Interfaces;
 using Entities.Elements.Enums;
 using Microsoft.AspNetCore.Authorization;
@@ -14,58 +13,64 @@ namespace Tecno_Planeta_Web_API.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<InvoiceResponseDTO>> GetById(int id)
         {
-            throw new NotImplementedException();
+            var invoice = await service.GetByIdAsync(id);
+            return Ok(invoice);
         }
 
-        [HttpGet]
-        public async Task<ActionResult<InvoiceResponseDTO>> GetInvoice(
-            [FromQuery] string? customerName,
-            [FromQuery] int? invoiceNumber)
+        [HttpGet("by-customer-name/{customerName}")]
+        public async Task<ActionResult<InvoiceResponseDTO>> GetByCustomerName([FromQuery] string customerName)
         {
-            throw new NotImplementedException();
+            var invoice = await service.GetByCustomerNameAsync(customerName);
+            return Ok(invoice);
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<InvoiceResponseDTO>>> GetAll(
-            [FromQuery] EInvoiceStatus? status,
-            [FromQuery] EInvoiceOperation? operation,
-            [FromQuery] DateTime? date)
+        [HttpGet("by-number/{number}")]
+        public async Task<ActionResult<InvoiceResponseDTO>> GetByNumber([FromQuery] int number)
         {
-            throw new NotImplementedException();
+            var invoice = await service.GetByNumberAsync(number);
+            return Ok(invoice);
         }
 
-        [HttpGet("product/{id:int}")]
-        public async Task<ActionResult<IEnumerable<InvoiceResponseDTO>>> GetAllByProductId(int id)
+        [HttpGet("all/by-status/{status}")]
+        public async Task<ActionResult<InvoiceResponseDTO>> GetAllByStatus([FromQuery] EInvoiceStatus status)
         {
-            throw new NotImplementedException();
+            var invoice = await service.GetAllByStatusAsync(status);
+            return Ok(invoice);
+        }
+        [HttpGet("all/by-operation/{operation}")]
+        public async Task<ActionResult<InvoiceResponseDTO>> GetAllByOperation([FromQuery] EInvoiceOperation operation)
+        {
+            var invoice = await service.GetAllByOperationTypeAsync(operation);
+            return Ok(invoice);
+        }
+        [HttpGet("all/by-issue-date/{date}")]
+        public async Task<ActionResult<InvoiceResponseDTO>> GetAllByIssueDate([FromQuery] DateTime date)
+        {
+            var invoice = await service.GetAllByIssueDateAsync(date);
+            return Ok(invoice);
         }
 
-        [HttpGet("products")]
+        [HttpGet("all/products")]
         public async Task<ActionResult<List<InvoiceResponseDTO>>> GetAllByContainsProducts(
-            [FromQuery] IEnumerable<int?> productsIds)
+            [FromQuery] List<int> productsIds)
         {
-            throw new NotImplementedException();
+            var invoices = await service.GetContainsProductIdAsync(productsIds);
+            return Ok(invoices);
         }
 
-        [HttpGet("all/service")]
-        public async Task<ActionResult<IEnumerable<InvoiceResponseDTO>>> GetAllByContains(
-            [FromQuery] IEnumerable<int?> serviceIds)
+        [HttpGet("all/services")]
+        public async Task<ActionResult<IEnumerable<InvoiceResponseDTO>>> GetAllByServices(
+            [FromQuery] List<int> serviceIds)
         {
-            throw new NotImplementedException();
-        }
-
-        [HttpGet("all/service-list")]
-        public async Task<ActionResult<IEnumerable<InvoiceResponseDTO>>> GetAllByServices([FromQuery] IEnumerable<int> ids)
-        {
-            throw new NotImplementedException();
+            var invoices = await service.GetContainsServiceIdAsync(serviceIds);
+            return Ok(invoices);
         }
 
         [HttpGet("product-quantity")]
-        public async Task<ActionResult<InvoiceResponseDTO>> GetByProductQuantity(
-            [FromQuery] int? min,
-            [FromQuery] int? max)
+        public async Task<ActionResult<InvoiceResponseDTO>> GetAllByProductQuantity([FromQuery] int min, [FromQuery] int max)
         {
-            throw new NotImplementedException();
+            var invoices = await service.GetAllByProductQuantityAsync(min, max);
+            return Ok(invoices);
         }
 
         //----------------------------------------------------------------------------------------- <>
@@ -73,9 +78,10 @@ namespace Tecno_Planeta_Web_API.Controllers
         //--------------------------------- PATCH ------------------------------------------------------
 
         [HttpPatch("{id:int}/status")]
-        public Task<ActionResult<InvoiceResponseDTO>> UpdateStatus([FromQuery] EInvoiceStatus newStatus)
+        public async Task<ActionResult<InvoiceResponseDTO>> UpdateStatus(int id, [FromQuery] EInvoiceStatus newStatus)
         {
-            throw new NotImplementedException();
+            var invoice = await service.UpdateStatusAsync(id, newStatus);
+            return Ok(invoice);
         }
 
         //----------------------------------------------------------------------------------------- <>
@@ -83,15 +89,10 @@ namespace Tecno_Planeta_Web_API.Controllers
         //--------------------------------- DELETE ------------------------------------------------------
 
         [HttpDelete("{id:int}")]
-        public Task<ActionResult<InvoiceResponseDTO>> DeleteById(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        [HttpDelete("number/{number:int}")]
-        public Task<ActionResult<InvoiceResponseDTO>> DeleteByNumber(int number)
-        {
-            throw new NotImplementedException();
+            await service.DeleteAsync(id);
+            return NoContent();
         }
 
         //----------------------------------------------------------------------------------------- <>
@@ -99,9 +100,10 @@ namespace Tecno_Planeta_Web_API.Controllers
         //--------------------------------- POST ------------------------------------------------------
 
         [HttpPost]
-        public Task<ActionResult<InvoiceResponseDTO>> Create([FromBody] InvoiceResponseDTO newDevice)
+        public async Task<ActionResult<InvoiceResponseDTO>> Create([FromBody] InvoiceResponseDTO newDevice)
         {
-            throw new NotImplementedException();
+            var invoice =  await service.CreateAsync(newDevice);
+            return Ok(invoice);
         }
         //----------------------------------------------------------------------------------------- <>
     }

@@ -1,5 +1,7 @@
-﻿using BLL.DTO.User;
+﻿using BLL.DTO.Users.Customer;
+using BLL.Services;
 using BLL.Services.Interfaces;
+using Entities.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,39 +11,51 @@ namespace Tecno_Planeta_Web_API.Controllers
     public class CustomerController(ICustomerService service) : AbstractBaseController<ICustomerService>(service)
     {
         //--------------------------------- GET ------------------------------------------------------
-        [AllowAnonymous]
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<CustomerDTO>>> GetCustomer(
-            [FromQuery] string name,
-            [FromQuery] string phone,
-            [FromQuery] DateTime? registerDate)
+        [HttpGet("by-name/{name}")]
+        public async Task<ActionResult<CustomerResponseDTO>> GetByName(string name)
         {
-            // Lógica: aplicar filtros opcionales
-            // Ejemplo: _service.GetFilteredAsync(name, phone, registerDate);
-            throw new NotImplementedException();
+            var customer = await service.GetByNameAsync(name);
+            return Ok(customer);
+        }
+
+        [HttpGet("by-phone/{phone}")]
+        public async Task<ActionResult<CustomerResponseDTO>> GetByPhone(int phone)
+        {
+            var customer = await service.GetByPhoneAsync(phone);
+            return Ok(customer);
+        }
+
+        [HttpGet("by-register-date/{registerDate}")]
+        public async Task<ActionResult<IEnumerable<CustomerResponseDTO>>> GetByRegisterDate(DateTime registerDate)
+        {
+            var customers = await service.GetByRegisterDateAsync(registerDate);
+            return Ok(customers);
         }
 
         [AllowAnonymous]
         [HttpGet("periot")]
-        public async Task<ActionResult<CustomerDTO>> GetByPeriotOfTime(
+        public async Task<ActionResult<CustomerResponseDTO>> GetByPeriotOfTime(
             [FromQuery] DateTime startDate, 
             [FromQuery] DateTime endDate)
         {
-            throw new NotImplementedException();
+            var customer = await service.GetByPeriodOfTimeAsync(startDate, endDate);
+            return Ok(customer);
         }
 
         [AllowAnonymous]
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<CustomerDTO>> GetById(int id)
+        public async Task<ActionResult<CustomerResponseDTO>> GetById(int id)
         {
-            throw new NotImplementedException();
+            var customer = await service.GetByIdAsync(id);
+            return Ok(customer);
         }
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CustomerDTO>>> GetAll()
+        public async Task<ActionResult<IEnumerable<CustomerResponseDTO>>> GetAll()
         {
-            throw new NotImplementedException();
+            var customers = await service.GetAllAsync();
+            return Ok(customers);
         }
 
         //----------------------------------------------------------------------------------------- <>
@@ -50,16 +64,18 @@ namespace Tecno_Planeta_Web_API.Controllers
 
         [Authorize(policy: "Admin")]
         [HttpPatch("{id:int}/name")]
-        public Task<ActionResult<CustomerDTO>> UpdateName([FromQuery] string newName)
+        public async Task<ActionResult<CustomerResponseDTO>> UpdateName(int id, [FromQuery] string newName)
         {
-            throw new NotImplementedException();
+            var customer = await service.UpdateNameAsync(id, newName);
+            return Ok(customer);
         }
 
         [Authorize(policy: "Admin")]
         [HttpPatch("{id:int}/phone")]
-        public Task<ActionResult<CustomerDTO>> UpdatePhone([FromQuery] string newPhone)
+        public async Task<ActionResult<CustomerResponseDTO>> UpdatePhone(int id, [FromQuery] int newPhone)
         {
-            throw new NotImplementedException();
+            var customer = await service.UpdatePhoneAsync(id, newPhone);
+            return Ok(customer);
         }
         //----------------------------------------------------------------------------------------- <>
 
@@ -67,9 +83,10 @@ namespace Tecno_Planeta_Web_API.Controllers
 
         [Authorize(policy: "Admin")]
         [HttpDelete("{id:int}")]
-        public Task<ActionResult<CustomerDTO>> DeleteById(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            throw new NotImplementedException();
+            await service.DeleteAsync(id);
+            return NoContent();
         }
         //----------------------------------------------------------------------------------------- <>
 
@@ -77,9 +94,10 @@ namespace Tecno_Planeta_Web_API.Controllers
 
         [Authorize(policy: "Admin")]
         [HttpPost]
-        public Task<ActionResult<CustomerDTO>> Create([FromBody] CustomerDTO newCustomer)
+        public async Task<ActionResult<CustomerResponseDTO>> Create([FromBody] CustomerCreateDTO newCustomer)
         {
-            throw new NotImplementedException();
+            var customer = await service.CreateAsync(newCustomer);
+            return Ok(customer);
         }
         //----------------------------------------------------------------------------------------- <>
     }

@@ -1,4 +1,4 @@
-﻿using BLL.DTO.Service.Repair;
+﻿using BLL.DTO.Services.Repair;
 using BLL.Services.Interfaces;
 using Entities.Services.Enums;
 using Microsoft.AspNetCore.Authorization;
@@ -9,38 +9,43 @@ namespace Tecno_Planeta_Web_API.Controllers
     public class RepairController(IRepairService service) : AbstractBaseController<IRepairService>(service)
     {
         //--------------------------------- GET ------------------------------------------------------
-        [AllowAnonymous]
-        [HttpGet]
-        public async Task<ActionResult<RepairDTO>> GetById(int id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<RepairResponseDTO>> GetById(int id)
         {
-            throw new NotImplementedException();
+            var repair = await service.GetByIdAsync(id);
+            return Ok(repair);
+        }
+
+        [HttpGet("all/by-customer-name/{customerName}")]
+        public async Task<ActionResult<IEnumerable<RepairResponseDTO>>> GetAllRepairsByCustomer([FromQuery] string customerName)
+        {
+            var repairs = await service.GetByCustomerNameAsync(customerName);
+            return Ok(repairs);
+        }
+
+        [HttpGet("all/by-entry-date/{entryDate}")]
+        public async Task<ActionResult<IEnumerable<RepairResponseDTO>>> GetAllRepairsByEntryDate([FromQuery] DateTime entryDate)
+        {
+            var repairs = await service.GetByEntryDateAsync(entryDate);
+            return Ok(repairs);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("all/by-period")]
+        public async Task<ActionResult<IEnumerable<RepairResponseDTO>>> GetAllByPeriodOfTime(
+            [FromQuery] DateTime min,
+            [FromQuery] DateTime max)
+        {
+            var repairs = await service.GetByPeriodOfEntryDateAsync(min, max);
+            return Ok(repairs);
         }
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<RepairDTO>>> GetRepairs(
-            [FromQuery] string? customerName,
-            [FromQuery] DateTime? entryDate)
+        public async Task<ActionResult<IEnumerable<RepairResponseDTO>>> GetAll()
         {
-            // Lógica: aplicar filtros opcionales
-            // Ejemplo: _service.GetFilteredAsync(name, phone, registerDate);
-            throw new NotImplementedException();
-        }
-
-        [AllowAnonymous]
-        [HttpGet("period")]
-        public async Task<ActionResult<IEnumerable<RepairDTO>>> GetByPeriodOfTime(
-            [FromQuery] DateTime? min,
-            [FromQuery] DateTime? max)
-        {
-            throw new NotImplementedException();
-        }
-
-        [AllowAnonymous]
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<RepairDTO>>> GetAll()
-        {
-            throw new NotImplementedException();
+            var repairs = await service.GetAllAsync();
+            return Ok(repairs);
         }
 
         //----------------------------------------------------------------------------------------- <>
@@ -49,30 +54,34 @@ namespace Tecno_Planeta_Web_API.Controllers
 
         [Authorize(policy: "Admin")]
         [HttpPatch("{id:int}/cost")]
-        public Task<ActionResult<RepairDTO>> UpdateCost(int id, [FromBody] string newPrice)
+        public async Task<ActionResult<RepairResponseDTO>> UpdateCost(int id, [FromBody] decimal newPrice)
         {
-            throw new NotImplementedException();
+            var repair = await service.UpdateCostAsync(id, newPrice);
+            return Ok(repair);
         }
 
         [Authorize(policy: "Admin")]
         [HttpPatch("{id:int}/note")]
-        public Task<ActionResult<RepairDTO>> UpdateNote(int id, [FromBody] string newNote)
+        public async Task<ActionResult<RepairResponseDTO>> UpdateNote(int id, [FromBody] string newNote)
         {
-            throw new NotImplementedException();
+            var repair = await service.UpdateNoteAsync(id, newNote);
+            return Ok(repair);
         }
 
         [Authorize(policy: "Admin")]
         [HttpPatch("{id:int}/status")]
-        public Task<ActionResult<RepairDTO>> UpdateStatus(int id, [FromBody] ERepairStatus newStatus)
+        public async Task<ActionResult<RepairResponseDTO>> UpdateStatus(int id, [FromBody] ERepairStatus newStatus)
         {
-            throw new NotImplementedException();
+            var reapair = await service.UpdateStatusAsync(id, newStatus);
+            return Ok(reapair);
         }
 
         [Authorize(policy: "Admin")]
         [HttpPatch("{id:int}/cancel")]
-        public Task<ActionResult<RepairDTO>> CancelRepair(int id)
+        public async Task<ActionResult<RepairResponseDTO>> CancelRepair(int id)
         {
-            throw new NotImplementedException();
+            var repair = await service.CancelRepairAsync(id);
+            return Ok(repair);
         }
         //----------------------------------------------------------------------------------------- <>
 
@@ -80,9 +89,10 @@ namespace Tecno_Planeta_Web_API.Controllers
 
         [Authorize(policy: "Admin")]
         [HttpDelete("{id:int}")]
-        public Task<ActionResult<RepairDTO>> DeleteById(int id)
+        public async Task<ActionResult<RepairResponseDTO>> Delete(int id)
         {
-            throw new NotImplementedException();
+            await service.DeleteAsync(id);
+            return NoContent();
         }
         //----------------------------------------------------------------------------------------- <>
 
@@ -90,9 +100,10 @@ namespace Tecno_Planeta_Web_API.Controllers
 
         [Authorize(policy: "Admin")]
         [HttpPost]
-        public Task<ActionResult<RepairDTO>> Create([FromBody] RepairDTO newRepair)
+        public async Task<ActionResult<RepairResponseDTO>> Create([FromBody] RepairCreateDTO newRepair)
         {
-            throw new NotImplementedException();
+            var repair = await service.CreateAsync(newRepair);
+            return Ok(repair);
         }
         //----------------------------------------------------------------------------------------- <>
     }

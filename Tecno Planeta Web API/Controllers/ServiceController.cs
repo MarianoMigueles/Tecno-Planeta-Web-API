@@ -1,4 +1,4 @@
-﻿using BLL.DTO.Service.Service;
+﻿using BLL.DTO.Services.Service;
 using BLL.Services.Interfaces;
 using Entities.Services.Enums;
 using Microsoft.AspNetCore.Authorization;
@@ -10,33 +10,35 @@ namespace Tecno_Planeta_Web_API.Controllers
     {
         //--------------------------------- GET ------------------------------------------------------
         [AllowAnonymous]
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<ServiceResponseDTO>> GetServiceById([FromQuery] int id)
+        {
+            var repair = await service.GetByIdAsync(id);
+            return Ok(repair);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("al/range")]
+        public async Task<ActionResult<IEnumerable<ServiceResponseDTO>>> GetAllByRangeOfPrice([FromQuery] decimal min, [FromQuery] decimal max)
+        {
+            var repairs = await service.GetAllByPriceRangeAsync(min, max);
+            return Ok(repairs);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("all/period")]
+        public async Task<ActionResult<IEnumerable<ServiceResponseDTO>>> GetByPeriodOfTime([FromQuery] TimeOnly min, [FromQuery] TimeOnly max)
+        {
+            var repairs = await service.GetByPeriotOfEstimatedTimeAsync(min, max);
+            return Ok(repairs);
+        }
+
+        [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<ServiceDTO>> GetServiceById([FromQuery] int id)
+        public async Task<ActionResult<IEnumerable<ServiceResponseDTO>>> GetAll()
         {
-            throw new NotImplementedException();
-        }
-
-        [AllowAnonymous]
-        [HttpGet("range")]
-        public async Task<ActionResult<IEnumerable<ServiceDTO>>> GetAllByRangeOfPrice(
-            [FromQuery] decimal? min,
-            [FromQuery] decimal? max)
-        {
-            throw new NotImplementedException();
-        }
-
-        [AllowAnonymous]
-        [HttpGet("period")]
-        public async Task<ActionResult<IEnumerable<ServiceDTO>>> GetByPeriodOfTime([FromQuery] DateTime? startTime, [FromQuery] DateTime? endTime)
-        {
-            throw new NotImplementedException();
-        }
-
-        [AllowAnonymous]
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ServiceDTO>>> GetAll()
-        {
-            throw new NotImplementedException();
+            var repairs = await service.GetAllAsync();
+            return Ok(repairs);
         }
 
         //----------------------------------------------------------------------------------------- <>
@@ -45,30 +47,34 @@ namespace Tecno_Planeta_Web_API.Controllers
 
         [Authorize(policy: "Admin")]
         [HttpPatch("{id:int}/name")]
-        public Task<ActionResult<ServiceDTO>> UpdateName(int id, [FromQuery] string newName)
+        public async Task<ActionResult<ServiceResponseDTO>> UpdateName(int id, [FromQuery] string newName)
         {
-            throw new NotImplementedException();
+            var repair = await service.UpdateNameAsync(id, newName);
+            return Ok(repair);
         }
 
         [Authorize(policy: "Admin")]
         [HttpPatch("{id:int}/description")]
-        public Task<ActionResult<ServiceDTO>> UpdateDescription(int id, [FromQuery] string newDescription)
+        public async Task<ActionResult<ServiceResponseDTO>> UpdateDescription(int id, [FromQuery] string newDescription)
         {
-            throw new NotImplementedException();
+            var repair = await service.UpdateDescriptionAsync(id, newDescription);
+            return Ok(repair);
         }
 
         [Authorize(policy: "Admin")]
         [HttpPatch("{id:int}/price")]
-        public Task<ActionResult<ServiceDTO>> UpdateBasePrice(int id, [FromQuery] decimal newPrice)
+        public async Task<ActionResult<ServiceResponseDTO>> UpdateBasePrice(int id, [FromQuery] decimal newPrice)
         {
-            throw new NotImplementedException();
+            var repair = await service.UpdateBasePriceAsync(id, newPrice);
+            return Ok(repair);
         }
 
         [Authorize(policy: "Admin")]
         [HttpPatch("{id:int}/time")]
-        public Task<ActionResult<ServiceDTO>> UpdateEstimatedTime(int id, TimeOnly newEstimatedTime)
+        public async Task<ActionResult<ServiceResponseDTO>> UpdateEstimatedTime(int id, TimeOnly newEstimatedTime)
         {
-            throw new NotImplementedException();
+            var reapir = await service.UpdateEstimatedTimeAsync(id, newEstimatedTime);
+            return Ok(reapir);
         }
         //----------------------------------------------------------------------------------------- <>
 
@@ -76,9 +82,10 @@ namespace Tecno_Planeta_Web_API.Controllers
 
         [Authorize(policy: "Admin")]
         [HttpDelete("{id:int}")]
-        public Task<ActionResult<ServiceDTO>> DeleteById(int id)
+        public async Task<ActionResult<ServiceResponseDTO>> Delete(int id)
         {
-            throw new NotImplementedException();
+            await service.DeleteAsync(id);
+            return NoContent();
         }
         //----------------------------------------------------------------------------------------- <>
 
@@ -86,9 +93,10 @@ namespace Tecno_Planeta_Web_API.Controllers
 
         [Authorize(policy: "Admin")]
         [HttpPost]
-        public Task<ActionResult<ServiceDTO>> Create([FromBody] ServiceDTO newService)
+        public async Task<ActionResult<ServiceResponseDTO>> Create([FromBody] ServiceCreateDTO newService)
         {
-            throw new NotImplementedException();
+            var repair = await service.CreateAsync(newService);
+            return Ok(repair);
         }
         //----------------------------------------------------------------------------------------- <>
     }

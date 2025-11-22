@@ -9,21 +9,39 @@ namespace Tecno_Planeta_Web_API.Controllers
     public class ProductController(IProductService service) : AbstractBaseController<IProductService>(service)
     {
         //--------------------------------- GET ------------------------------------------------------
-        [HttpGet]
-        public async Task<ActionResult<ProductResponseDTO>> GetProduct(
-            [FromQuery] int? id,
-            [FromQuery] string? name,
-            [FromQuery] string? barCode)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<ProductResponseDTO>> GetById([FromQuery] int id)
         {
-            throw new NotImplementedException();
+            var product = await service.GetByIdAsync(id);
+            return Ok(product);
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductResponseDTO>>> GetAll(
-            [FromQuery] bool? activeStatus,
-            [FromQuery] string? category)
+        [HttpGet("by-name/{name}")]
+        public async Task<ActionResult<ProductResponseDTO>> GetByName([FromQuery] string name)
         {
-            throw new NotImplementedException();
+            var product = await service.GetByNameAsync(name);
+            return Ok(product);
+        }
+
+        [HttpGet("by-bar-code/{barCode}")]
+        public async Task<ActionResult<ProductResponseDTO>> GetByBarCode([FromQuery] string barCode)
+        {
+            var product = await service.GetByBarCodeAsync(barCode);
+            return Ok(product);
+        }
+
+        [HttpGet("all/by-status/{activeStatus}")]
+        public async Task<ActionResult<IEnumerable<ProductResponseDTO>>> GetAllByStatus([FromQuery] bool activeStatus)
+        {
+            var products = await service.GetAllByActiveStatusAsync(activeStatus);
+            return Ok(products);
+        }
+
+        [HttpGet("all/by-category/{category}")]
+        public async Task<ActionResult<IEnumerable<ProductResponseDTO>>> GetAllByCategory([FromQuery] string category)
+        {
+            var products = await service.GetAllByCategoryAsync(category);
+            return Ok(products);
         }
 
         [HttpGet("range")]
@@ -31,7 +49,8 @@ namespace Tecno_Planeta_Web_API.Controllers
             [FromQuery] int minPrice,
             [FromQuery] int maxPrice)
         {
-            throw new NotImplementedException();
+            var products = await service.GetAllByRangeOfPurchasePriceAsync(minPrice, maxPrice);
+            return Ok(products);
         }
 
         [HttpGet("stock")]
@@ -39,39 +58,66 @@ namespace Tecno_Planeta_Web_API.Controllers
             [FromQuery] int amount,
             [FromQuery] bool isGreater = false)
         {
-            throw new NotImplementedException();
+            var products = await service.GetAllByAmoutOfStockAsync(amount, isGreater);
+            return Ok(products);
         }
 
         //----------------------------------------------------------------------------------------- <>
 
         //--------------------------------- PATCH ------------------------------------------------------
 
-        [HttpPatch("{id:int}")]
-        public Task<ActionResult<ProductResponseDTO>> UpdateProduct(
-            [FromQuery] string? newName,
-            [FromQuery] string? newPrice,
-            [FromQuery] string? category,
-            [FromQuery] string? description)
+        [HttpPatch("{id:int}/name")]
+        public async Task<ActionResult<ProductResponseDTO>> UpdateName(int id, [FromQuery] string newName)
         {
-            throw new NotImplementedException();
+            var product = await service.UpdateNameAsync(id, newName);
+            return Ok(product);
+        }
+        [HttpPatch("{id:int}/price")]
+        public async Task<ActionResult<ProductResponseDTO>> UpdatePrice(int id, [FromQuery] decimal newPrice)
+        {
+            var product = await service.UpdateSalePriceAsync(id, newPrice);
+            return Ok(product);
+        }
+        [HttpPatch("{id:int}/category")]
+        public async Task<ActionResult<ProductResponseDTO>> UpdateCategory(int id, [FromQuery] string category)
+        {
+            var product = await service.UpdateCategoryAsync(id, category);
+            return Ok(product);
+        }
+        [HttpPatch("{id:int}/description")]
+        public async Task<ActionResult<ProductResponseDTO>> UpdateDescription(int id, [FromQuery] string description)
+        {
+            var product = await service.UpdateDescriptionAsync(id, description);
+            return Ok(product);
         }
 
-        [HttpPatch("{id:int}/status")]
-        public Task<ActionResult<ProductResponseDTO>> UpdateStatus([FromQuery] bool isActive)
+        [HttpPatch("{id:int}/status-activate")]
+        public async Task<ActionResult<ProductResponseDTO>> ActivateProduct(int id)
         {
-            throw new NotImplementedException();
+            var product = await service.ActivateAsync(id);
+            return Ok(product);
+        }
+
+
+        [HttpPatch("{id:int}/status-desactivate")]
+        public async Task<ActionResult<ProductResponseDTO>> DesactivateProduct(int id)
+        {
+            var product = await service.DesactivateAsync(id);
+            return Ok(product);
         }
 
         [HttpPatch("{id:int}/add")]
-        public Task<ActionResult<ProductResponseDTO>> AddStock([FromQuery] int amount)
+        public async Task<ActionResult<ProductResponseDTO>> AddStock(int id, [FromQuery] int amount)
         {
-            throw new NotImplementedException();
+            var product = await service.AddStockAsync(id, amount);
+            return Ok(product);
         }
 
         [HttpPatch("{id:int}/substrack")]
-        public Task<ActionResult<ProductResponseDTO>> SubstractStock([FromQuery] int amount)
+        public async Task<ActionResult<ProductResponseDTO>> SubstractStock(int id, [FromQuery] int amount)
         {
-            throw new NotImplementedException();
+            var product = await service.SubstractStockAsync(id, amount);
+            return Ok(product);
         }
 
         //----------------------------------------------------------------------------------------- <>
@@ -79,9 +125,10 @@ namespace Tecno_Planeta_Web_API.Controllers
         //--------------------------------- DELETE ------------------------------------------------------
 
         [HttpDelete("{id:int}")]
-        public Task<ActionResult<ProductResponseDTO>> DeleteById(int id)
+        public async Task<ActionResult<ProductResponseDTO>> Delete(int id)
         {
-            throw new NotImplementedException();
+            await service.DeleteAsync(id);
+            return NoContent();
         }
 
         //----------------------------------------------------------------------------------------- <>
@@ -89,9 +136,10 @@ namespace Tecno_Planeta_Web_API.Controllers
         //--------------------------------- POST ------------------------------------------------------
 
         [HttpPost]
-        public Task<ActionResult<ProductResponseDTO>> Create([FromBody] ProductResponseDTO newDevice)
+        public async Task<ActionResult<ProductResponseDTO>> Create([FromBody] ProductResponseDTO newDevice)
         {
-            throw new NotImplementedException();
+            var product = await service.CreateAsync(newDevice);
+            return Ok(product);
         }
         //----------------------------------------------------------------------------------------- <>
     }
