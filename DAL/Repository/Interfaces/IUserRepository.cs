@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 
 namespace DAL.Repository.Interfaces
 {
-    public interface IUserRepository : IRepository<User>, ILogInRepository
+    public interface IUserRepository : IRepository<User>
     {
         //--------------------------------- GET ------------------------------------------------------
         public Task<User> GetByNameAsync(string name);
+        public Task<User> GetByEmailAsync(string email);
         public Task<List<User>> GetAllBySectorAsync(EUserSector sector);
         public Task<User> GetAllByRolAsync(EUserRol rol);
         //----------------------------------------------------------------------------------------- <>

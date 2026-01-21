@@ -2,6 +2,8 @@
 using DAL.Repository.Interfaces;
 using Entities.Elements.ProductFolder;
 using Entities.Users;
+using Exeptions;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +16,11 @@ namespace DAL.Repository
     {
 
         //--------------------------------- GET ------------------------------------------------------
-
+        public async override Task<Product> GetByIdAsync(int id)
+        {
+            var result = await _context.Set<Product>().Include(p => p.Category).Include(p => p.Details).FirstOrDefaultAsync(p => p.Id == id);
+            return result ?? throw new EntityNotFoundException($"No entity of type {typeof(Product).Name} was found with ID {id}.");
+        }
         public async Task<List<Product>> GetAllByActiveStatusAsync(bool status) => await this.GetListAsync(p => p.IsActive.Equals(status));
         public async Task<List<Product>> GetAllByCategoryAsync(string category) => await this.GetListAsync(p => p.Category.Description.Equals(category));
         public async Task<Product> GetByBarCodeAsync(string barCode) => await this.GetSingleAsync(p => p.Details.BarCode.Equals(barCode));
