@@ -19,6 +19,12 @@ namespace DAL.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            //modelBuilder.Entity<Repair>()
+            //    .HasOne(r => r.Customer)
+            //    .WithMany(c => c.Repairs)
+            //    .HasForeignKey(r => r.CustomerId)
+            //    .OnDelete(DeleteBehavior.Cascade);
         }
 
         //--------------------------------- USERS 
