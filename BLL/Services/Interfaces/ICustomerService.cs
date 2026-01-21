@@ -9,11 +9,9 @@ using System.Threading.Tasks;
 
 namespace BLL.Services.Interfaces
 {
-    public interface ICustomerService : IService
+    public interface ICustomerService : IService, ICrudService<CustomerResponseDTO>
     {
         //--------------------------------- GET ------------------------------------------------------
-        public Task<CustomerResponseDTO> GetByIdAsync(int id);
-        public Task<List<CustomerResponseDTO>> GetAllAsync();
         public Task<CustomerResponseDTO> GetByNameAsync(string name);
         public Task<CustomerResponseDTO> GetByPhoneAsync(int phone);
         public Task<CustomerResponseDTO> GetByRegisterDateAsync(DateTime registerTime);
@@ -24,12 +22,6 @@ namespace BLL.Services.Interfaces
         //--------------------------------- PATCH ------------------------------------------------------
         public Task<CustomerResponseDTO> UpdateNameAsync(int id, string newName);
         public Task<CustomerResponseDTO> UpdatePhoneAsync(int id, int newPhone);
-        //----------------------------------------------------------------------------------------- <>
-
-        //--------------------------------- POST ------------------------------------------------------
-
-        public Task<CustomerResponseDTO> CreateAsync(IBaseDTO createDto);
-
         //----------------------------------------------------------------------------------------- <>
     }
 }

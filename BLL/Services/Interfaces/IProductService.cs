@@ -11,11 +11,9 @@ using System.Threading.Tasks;
 
 namespace BLL.Services.Interfaces
 {
-    public interface IProductService : IService
+    public interface IProductService : IService, ICrudService<ProductResponseDTO>
     {
         //--------------------------------- GET ------------------------------------------------------
-        public Task<ProductResponseDTO> GetByIdAsync(int id);
-        public Task<List<ProductResponseDTO>> GetAllAsync();
         public Task<ProductResponseDTO> GetByNameAsync(string name);
         public Task<ProductResponseDTO> GetByBarCodeAsync(string name);
         public Task<List<ProductResponseDTO>> GetAllByRangeOfPurchasePriceAsync(decimal min, decimal max);
@@ -34,11 +32,6 @@ namespace BLL.Services.Interfaces
         public Task<ProductResponseDTO> DesactivateAsync(int id);
         public Task<ProductResponseDTO> UpdateCategoryAsync(int id, string newCategory);
         public Task<ProductResponseDTO> UpdateDescriptionAsync(int id, string newDescription);
-        //----------------------------------------------------------------------------------------- <>
-        //--------------------------------- POST ------------------------------------------------------
-
-        public Task<ProductResponseDTO> CreateAsync(IBaseDTO createDto);
-
         //----------------------------------------------------------------------------------------- <>
     }
 }

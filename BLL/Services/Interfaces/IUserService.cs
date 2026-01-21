@@ -12,11 +12,9 @@ using BLL.DTO.Product;
 
 namespace BLL.Services.Interfaces
 {
-    public interface IUserService : IService
+    public interface IUserService : IService, ICrudService<UserResponseDTO>
     {
         //--------------------------------- GET ------------------------------------------------------
-        public Task<UserResponseDTO> GetByIdAsync(int id);
-        public Task<List<UserResponseDTO>> GetAllAsync();
         public Task<UserResponseDTO> GetByNameAsync(string name);
         public Task<List<UserResponseDTO>> GetAllBySectorAsync(EUserSector sector);
         public Task<List<UserResponseDTO>> GetAllByRolAsync(EUserRol rol);
@@ -28,11 +26,6 @@ namespace BLL.Services.Interfaces
         public Task<UserResponseDTO> UpdatePasswordAsync(int id, string newPassword);
         public Task<UserResponseDTO> UpdateRolAsync(int id, EUserRol newRol);
         public Task<UserResponseDTO> UpdateSectorAsync(int id, EUserSector newSector);
-        //----------------------------------------------------------------------------------------- <>
-        //--------------------------------- POST ------------------------------------------------------
-
-        public Task<UserResponseDTO> CreateAsync(IBaseDTO createDto);
-
         //----------------------------------------------------------------------------------------- <>
     }
 }

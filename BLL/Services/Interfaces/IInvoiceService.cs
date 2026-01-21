@@ -12,11 +12,9 @@ using System.Threading.Tasks;
 
 namespace BLL.Services.Interfaces
 {
-    public interface IInvoiceService : IService
+    public interface IInvoiceService : IService, ICrudService<InvoiceResponseDTO>
     {
         //--------------------------------- GET ------------------------------------------------------
-        public Task<InvoiceResponseDTO> GetByIdAsync(int id);
-        public Task<List<InvoiceResponseDTO>> GetAllAsync();
         public Task<InvoiceResponseDTO> GetByNumberAsync(int number);
         public Task<List<InvoiceResponseDTO>> GetContainsProductIdAsync(List<int> ids);
         public Task<List<InvoiceResponseDTO>> GetContainsServiceIdAsync(List<int> ids);
@@ -30,11 +28,6 @@ namespace BLL.Services.Interfaces
 
         //--------------------------------- PATCH ------------------------------------------------------
         public Task<InvoiceResponseDTO> UpdateStatusAsync(int id, EInvoiceStatus newStatus);
-        //----------------------------------------------------------------------------------------- <>
-        //--------------------------------- POST ------------------------------------------------------
-
-        public Task<InvoiceResponseDTO> CreateAsync(IBaseDTO createDto);
-
         //----------------------------------------------------------------------------------------- <>
     }
 }
