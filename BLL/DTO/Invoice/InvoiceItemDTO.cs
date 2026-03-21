@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BLL.DTO.Invoice
 {
-    public class InvoiceItemDTO : IBaseDTO
+    public class InvoiceItemDTO
     {
         [Required(ErrorMessage = "Quantity is required")]
         [Range(1, int.MaxValue, ErrorMessage = "Quantity must be at least 1")]

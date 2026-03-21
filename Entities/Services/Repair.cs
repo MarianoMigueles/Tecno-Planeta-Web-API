@@ -1,5 +1,6 @@
 ﻿using Entities.Elements;
 using Entities.Services.Enums;
+using Entities.Users;
 using Exeptions;
 using System;
 using System.Collections.Generic;

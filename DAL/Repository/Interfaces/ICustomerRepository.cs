@@ -13,7 +13,7 @@ namespace DAL.Repository.Interfaces
     {
         //--------------------------------- GET ------------------------------------------------------
         public Task<Customer> GetByNameAsync(string name);
-        public Task<Customer> GetByPhoneAsync(int phone);
+        public Task<Customer> GetByPhoneAsync(string phone);
         public Task<Customer> GetByRegisterDateAsync(DateTime registerTime);
         public Task<List<Customer>> GetByPeriodOfTimeAsync(DateTime min, DateTime max);
 
@@ -21,7 +21,7 @@ namespace DAL.Repository.Interfaces
 
         //--------------------------------- PATCH ------------------------------------------------------
         public Task<Customer> UpdateNameAsync(int id, string newName);
-        public Task<Customer> UpdatePhoneAsync(int id, int newPhone);
+        public Task<Customer> UpdatePhoneAsync(int id, string newPhone);
         //----------------------------------------------------------------------------------------- <>
 
     }

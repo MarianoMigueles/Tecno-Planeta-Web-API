@@ -1,4 +1,5 @@
 ﻿using Entities.Elements.Enums;
+using Entities.Services;
 using Entities.Users;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,7 @@ namespace Entities.Elements
         public string Brand { get; set; }
         public string Model { get; set; }
         public string SerialNumber { get; set; }
+
+        public List<Repair> Repairs { get; set; }
     }
 }

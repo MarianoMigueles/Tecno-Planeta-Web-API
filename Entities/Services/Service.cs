@@ -18,6 +18,13 @@ namespace Entities.Services
         public decimal BasePrice { get; private set; }
         public TimeOnly EstimatedTime { get; private set; }
 
+        public Service(string name,string description, decimal basePrice, TimeOnly estimatedTime)
+        {
+            Name = name;
+            Description = description;
+            EditBasePrice(basePrice);
+            EditEstimatedTime(estimatedTime);
+        }
         public void EditBasePrice(decimal newPrice)
         {
             if (newPrice < 0)

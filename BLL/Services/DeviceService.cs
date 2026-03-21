@@ -20,7 +20,7 @@ namespace BLL.Services
     {
         protected override IDeviceRepository Repository => _unitOfWork.DeviceRepository;
 
-        //--------------------------------- PATCH ------------------------------------------------------
+        //--------------------------------- GET ------------------------------------------------------
         public async Task<List<DeviceResponseDTO>> GetByCustomerNameAsync(string customerName)
         {
             var devices = await Repository.GetByCustomerNameAsync(customerName);

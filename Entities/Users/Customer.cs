@@ -1,4 +1,5 @@
-﻿using Entities.Services;
+﻿using Entities.Elements;
+using Entities.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,11 +12,9 @@ namespace Entities.Users
     public class Customer : AbstractEntity
     {
         public required string Name { get; set; }
-        public required int Phone { get; set; }
+        public required string Phone { get; set; }
         public DateTime RegisterDate { get; set; }
 
-
-        public int RepairId { get; set; }
-        public Repair Repair { get; set; }
+        public List<Device> Devices { get; set; }
     }
 }

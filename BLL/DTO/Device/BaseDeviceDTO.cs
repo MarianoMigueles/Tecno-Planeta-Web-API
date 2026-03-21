@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace BLL.DTO.Device
 {
-    public class BaseDeviceDTO
+    public class BaseDeviceDTO : IBaseDTO
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "Device type is required")]
         public virtual EDeviceType Type { get; set; }
 

@@ -13,6 +13,6 @@ namespace Entities.Elements.ProductFolder
 
         [Column(TypeName = "decimal(6,2)")]
         public decimal PurchasePrice { get; set; }
-        public string BarCode { get; set; }
+        public required string BarCode { get; set; }
     }
 }

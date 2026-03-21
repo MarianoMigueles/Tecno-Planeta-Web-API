@@ -1,100 +1,108 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Entities.Services;
+using Exeptions;
+using FluentAssertions;
+using Moq;
 
 namespace ServiceLayerTests.ServiceTests
 {
-    public class ServicePatchTests
+    public class ServicePatchTests : ServiceTestBase
     {
-        //--------------------------------------------------------------------------------------
-        //------------------------- UpdateBasePriceAsync ---------------------------------------
-        //--------------------------------------------------------------------------------------
         [Fact]
-        public async Task UpdateBasePriceAsync_ShouldUpdatePrice_WhenServiceExists()
+        public async Task UpdateBasePriceAsync_ShouldReturnUpdatedService_WhenServiceExists()
         {
-            throw new NotImplementedException();
+            var service = SharedMockData.GetSingleService();
+            ServiceRepositoryMock.Setup(r => r.UpdateBasePriceAsync(service.Id, 75m)).ReturnsAsync(service);
+
+            var result = await Service.UpdateBasePriceAsync(service.Id, 75m);
+
+            result.Should().NotBeNull();
         }
 
         [Fact]
-        public async Task UpdateBasePriceAsync_ShouldThrowException_WhenServiceDoesNotExist()
+        public async Task UpdateBasePriceAsync_ShouldThrowEntityNotFoundException_WhenServiceDoesNotExist()
         {
-            throw new NotImplementedException();
+            ServiceRepositoryMock.Setup(r => r.UpdateBasePriceAsync(999, 75m))
+                .ThrowsAsync(new EntityNotFoundException("Service not found"));
+
+            var act = async () => await Service.UpdateBasePriceAsync(999, 75m);
+
+            await act.Should().ThrowAsync<EntityNotFoundException>();
         }
 
         [Fact]
-        public async Task UpdateBasePriceAsync_ShouldThrowException_WhenPriceIsNegative()
+        public async Task UpdateBasePriceAsync_ShouldThrowValidationException_WhenPriceIsNegative()
         {
-            throw new NotImplementedException();
-        }
+            var service = SharedMockData.GetSingleService();
 
-        //--------------------------------------------------------------------------------------
-        //------------------------- UpdateDescriptionAsync -------------------------------------
-        //--------------------------------------------------------------------------------------
+            var act = () => service.EditBasePrice(-1m);
 
-        [Fact]
-        public async Task UpdateDescriptionAsync_ShouldUpdateDescription_WhenServiceExists()
-        {
-            throw new NotImplementedException();
+            act.Should().Throw<Exception>();
         }
 
         [Fact]
-        public async Task UpdateDescriptionAsync_ShouldThrowException_WhenServiceDoesNotExist()
+        public async Task UpdateDescriptionAsync_ShouldReturnUpdatedService_WhenServiceExists()
         {
-            throw new NotImplementedException();
+            var service = SharedMockData.GetSingleService();
+            ServiceRepositoryMock.Setup(r => r.UpdateDescriptionAsync(service.Id, "Nueva descripcion")).ReturnsAsync(service);
+
+            var result = await Service.UpdateDescriptionAsync(service.Id, "Nueva descripcion");
+
+            result.Should().NotBeNull();
         }
 
         [Fact]
-        public async Task UpdateDescriptionAsync_ShouldThrowException_WhenDescriptionIsNullOrEmpty()
+        public async Task UpdateDescriptionAsync_ShouldThrowEntityNotFoundException_WhenServiceDoesNotExist()
         {
-            throw new NotImplementedException();
-        }
+            ServiceRepositoryMock.Setup(r => r.UpdateDescriptionAsync(999, "X"))
+                .ThrowsAsync(new EntityNotFoundException("Service not found"));
 
-        //--------------------------------------------------------------------------------------
-        //------------------------- UpdateEstimatedTimeAsync -----------------------------------
-        //--------------------------------------------------------------------------------------
+            var act = async () => await Service.UpdateDescriptionAsync(999, "X");
 
-        [Fact]
-        public async Task UpdateEstimatedTimeAsync_ShouldUpdateEstimatedTime_WhenServiceExists()
-        {
-            throw new NotImplementedException();
+            await act.Should().ThrowAsync<EntityNotFoundException>();
         }
 
         [Fact]
-        public async Task UpdateEstimatedTimeAsync_ShouldThrowException_WhenServiceDoesNotExist()
+        public async Task UpdateEstimatedTimeAsync_ShouldReturnUpdatedService_WhenTimeIsValid()
         {
-            throw new NotImplementedException();
+            var service = SharedMockData.GetSingleService();
+            var newTime = new TimeOnly(3, 0);
+            ServiceRepositoryMock.Setup(r => r.UpdateEstimatedTimeAsync(service.Id, newTime)).ReturnsAsync(service);
+
+            var result = await Service.UpdateEstimatedTimeAsync(service.Id, newTime);
+
+            result.Should().NotBeNull();
         }
 
         [Fact]
-        public async Task UpdateEstimatedTimeAsync_ShouldThrowException_WhenEstimatedTimeIsInvalid()
+        public async Task UpdateEstimatedTimeAsync_ShouldThrowValidationException_WhenTimeIsTheSame()
         {
-            throw new NotImplementedException();
-        }
+            var service = SharedMockData.GetSingleService();
 
-        //--------------------------------------------------------------------------------------
-        //-------------------------  UpdateNameAsync -------------------------------------------
-        //--------------------------------------------------------------------------------------
+            var act = () => service.EditEstimatedTime(service.EstimatedTime);
 
-        [Fact]
-        public async Task UpdateNameAsync_ShouldUpdateName_WhenServiceExists()
-        {
-            throw new NotImplementedException();
+            act.Should().Throw<Exception>();
         }
 
         [Fact]
-        public async Task UpdateNameAsync_ShouldThrowException_WhenServiceDoesNotExist()
+        public async Task UpdateNameAsync_ShouldReturnUpdatedService_WhenServiceExists()
         {
-            throw new NotImplementedException();
+            var service = SharedMockData.GetSingleService();
+            ServiceRepositoryMock.Setup(r => r.UpdateNameAsync(service.Id, "Nuevo Nombre")).ReturnsAsync(service);
+
+            var result = await Service.UpdateNameAsync(service.Id, "Nuevo Nombre");
+
+            result.Should().NotBeNull();
         }
 
         [Fact]
-        public async Task UpdateNameAsync_ShouldThrowException_WhenNewNameIsNullOrEmpty()
+        public async Task UpdateNameAsync_ShouldThrowEntityNotFoundException_WhenServiceDoesNotExist()
         {
-            throw new NotImplementedException();
+            ServiceRepositoryMock.Setup(r => r.UpdateNameAsync(999, "X"))
+                .ThrowsAsync(new EntityNotFoundException("Service not found"));
+
+            var act = async () => await Service.UpdateNameAsync(999, "X");
+
+            await act.Should().ThrowAsync<EntityNotFoundException>();
         }
-
-
     }
 }

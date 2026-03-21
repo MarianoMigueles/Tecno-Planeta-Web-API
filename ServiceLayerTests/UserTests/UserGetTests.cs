@@ -1,65 +1,66 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Entities.Users;
+using Entities.Users.Enums;
+using Exeptions;
+using FluentAssertions;
+using Moq;
 
 namespace ServiceLayerTests.UserTests
 {
-    public class UserGetTests
+    public class UserGetTests : UserTestBase
     {
-        //--------------------------------------------------------------------------------------
-        //------------------------- GetAllByRolAsync -------------------------------------------
-        //--------------------------------------------------------------------------------------
         [Fact]
-        public async Task GetAllByRolAsync_ShouldReturnUsers_WhenRolExists()
+        public async Task GetByNameAsync_ShouldReturnUser_WhenNameExists()
         {
-            throw new NotImplementedException();
+            var user = SharedMockData.GetSingleUser();
+            UserRepositoryMock.Setup(r => r.GetByNameAsync(user.UserName)).ReturnsAsync(user);
+
+            var result = await Service.GetByNameAsync(user.UserName);
+
+            result.Should().NotBeNull();
+            result.UserName.Should().Be(user.UserName);
         }
 
         [Fact]
-        public async Task GetAllByRolAsync_ShouldReturnEmptyList_WhenNoUsersMatchRol()
+        public async Task GetByNameAsync_ShouldThrowEntityNotFoundException_WhenUserDoesNotExist()
         {
-            throw new NotImplementedException();
-        }
+            UserRepositoryMock.Setup(r => r.GetByNameAsync("inexistente"))
+                .ThrowsAsync(new EntityNotFoundException("User not found"));
 
-        //--------------------------------------------------------------------------------------
-        //------------------------- GetAllBySectorAsync ----------------------------------------
-        //--------------------------------------------------------------------------------------
+            var act = async () => await Service.GetByNameAsync("inexistente");
+
+            await act.Should().ThrowAsync<EntityNotFoundException>();
+        }
 
         [Fact]
         public async Task GetAllBySectorAsync_ShouldReturnUsers_WhenSectorExists()
         {
-            throw new NotImplementedException();
+            var users = SharedMockData.GetMockUsers();
+            UserRepositoryMock.Setup(r => r.GetAllBySectorAsync(EUserSector.SALES)).ReturnsAsync(users);
+
+            var result = await Service.GetAllBySectorAsync(EUserSector.SALES);
+
+            result.Should().HaveCount(users.Count);
         }
 
         [Fact]
-        public async Task GetAllBySectorAsync_ShouldReturnEmptyList_WhenNoUsersMatchSector()
+        public async Task GetAllBySectorAsync_ShouldReturnEmptyList_WhenNoUsersInSector()
         {
-            throw new NotImplementedException();
-        }
+            UserRepositoryMock.Setup(r => r.GetAllBySectorAsync(EUserSector.REPAIR)).ReturnsAsync(new List<User>());
 
-        //--------------------------------------------------------------------------------------
-        //------------------------- GetByNameAsync ---------------------------------------------
-        //--------------------------------------------------------------------------------------
+            var result = await Service.GetAllBySectorAsync(EUserSector.REPAIR);
 
-        [Fact]
-        public async Task GetByNameAsync_ShouldReturnUser_WhenNameExists()
-        {
-            throw new NotImplementedException();
+            result.Should().BeEmpty();
         }
 
         [Fact]
-        public async Task GetByNameAsync_ShouldReturnNull_WhenNameDoesNotExist()
+        public async Task GetAllAsync_ShouldReturnAllUsers()
         {
-            throw new NotImplementedException();
-        }
+            var users = SharedMockData.GetMockUsers();
+            UserRepositoryMock.Setup(r => r.GetAllAsync()).ReturnsAsync(users);
 
-        [Fact]
-        public async Task GetByNameAsync_ShouldThrowException_WhenNameIsNullOrEmpty()
-        {
-            throw new NotImplementedException();
-        }
+            var result = await Service.GetAllAsync();
 
+            result.Should().HaveCount(users.Count);
+        }
     }
 }

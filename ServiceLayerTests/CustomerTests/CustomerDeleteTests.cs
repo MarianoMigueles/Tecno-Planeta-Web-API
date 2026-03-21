@@ -1,30 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Entities.Users;
+using Exeptions;
+using FluentAssertions;
+using Moq;
 
 namespace ServiceLayerTests.CustomerTests
 {
-    public class CustomerDeleteTests
+    public class CustomerDeleteTests : CustomerTestBase
     {
         [Fact]
         public async Task DeleteAsync_ShouldReturnTrue_WhenCustomerExists()
         {
-            throw new NotImplementedException();
+            var customer = SharedMockData.GetSingleCustomer();
+            CustomerRepositoryMock.Setup(r => r.GetByIdAsync(customer.Id)).ReturnsAsync(customer);
+            CustomerRepositoryMock.Setup(r => r.Delete(It.IsAny<Customer>()));
+
+            var result = await Service.DeleteAsync(customer.Id);
+
+            result.Should().BeTrue();
+            UnitOfWorkMock.Verify(u => u.Save(), Times.Once);
         }
 
         [Fact]
-        public async Task DeleteAsync_ShouldReturnFalse_WhenCustomerDoesNotExist()
+        public async Task DeleteAsync_ShouldThrowEntityNotFoundException_WhenCustomerDoesNotExist()
         {
-            throw new NotImplementedException();
+            CustomerRepositoryMock.Setup(r => r.GetByIdAsync(999))
+                .ThrowsAsync(new EntityNotFoundException("Customer not found"));
+
+            var act = async () => await Service.DeleteAsync(999);
+
+            await act.Should().ThrowAsync<EntityNotFoundException>();
         }
 
         [Fact]
         public async Task DeleteAsync_ShouldCallSaveChanges_WhenDeletionSucceeds()
         {
-            throw new NotImplementedException();
-        }
+            var customer = SharedMockData.GetSingleCustomer();
+            CustomerRepositoryMock.Setup(r => r.GetByIdAsync(customer.Id)).ReturnsAsync(customer);
+            CustomerRepositoryMock.Setup(r => r.Delete(It.IsAny<Customer>()));
 
+            await Service.DeleteAsync(customer.Id);
+
+            UnitOfWorkMock.Verify(u => u.Save(), Times.Once);
+        }
     }
 }

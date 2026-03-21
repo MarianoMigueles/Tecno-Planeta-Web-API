@@ -1,4 +1,5 @@
-﻿using Entities.Users.Enums;
+﻿using BCrypt.Net;
+using Entities.Users.Enums;
 using Exeptions;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
@@ -8,18 +9,31 @@ namespace Entities.Users
     public class User : AbstractEntity
     {
         public string UserName { get; set; }
+        public string Email { get; set; }
         public string Password { get; private set; }
         public EUserRol Rol { get; private set; }
         public EUserSector Sector { get; private set; }
 
-        public void SetPassword(string password)
+        /// <summary>
+        /// Asigna el password ya hasheado (el hash lo genera AuthService con BCrypt antes de llamar este método).
+        /// </summary>
+        public void SetPassword(string hashedPassword)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(hashedPassword))
+                throw new ValidationException("Password hash cannot be empty.");
+
+            Password = hashedPassword;
         }
 
-        public bool VerifyPassword(string password)
+        /// <summary>
+        /// Verifica un password en texto plano contra el hash almacenado usando BCrypt.
+        /// </summary>
+        public bool VerifyPassword(string plainPassword)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(plainPassword))
+                return false;
+
+            return BCrypt.Net.BCrypt.Verify(plainPassword, Password);
         }
 
         public void EditRol(EUserRol newRol)
@@ -27,10 +41,11 @@ namespace Entities.Users
             if (newRol == Rol)
                 throw new ValidationException("Rol is the same to the value already set.");
 
-            this.Rol = newRol;           
+            this.Rol = newRol;
         }
 
-        public void EditSector(EUserSector newSector) {
+        public void EditSector(EUserSector newSector)
+        {
             if (newSector == Sector)
                 throw new ValidationException("Sector is the same to the value already set.");
 
@@ -64,6 +79,6 @@ namespace Entities.Users
                 throw new ValidationException("Password must contain at least one special character");
 
             this.Password = newPassword;
-        }   
+        }
     }
 }

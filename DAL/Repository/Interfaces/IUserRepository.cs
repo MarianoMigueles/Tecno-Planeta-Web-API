@@ -14,7 +14,7 @@ namespace DAL.Repository.Interfaces
         public Task<User> GetByNameAsync(string name);
         public Task<User> GetByEmailAsync(string email);
         public Task<List<User>> GetAllBySectorAsync(EUserSector sector);
-        public Task<User> GetAllByRolAsync(EUserRol rol);
+        public Task<List<User>> GetAllByRolAsync(EUserRol rol);
         //----------------------------------------------------------------------------------------- <>
 
         //--------------------------------- PATCH ------------------------------------------------------

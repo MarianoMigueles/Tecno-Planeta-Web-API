@@ -11,6 +11,7 @@ namespace BLL.DTO.Services.Repair
 {
     public class RepairUpdateDTO : IBaseDTO
     {
+        public int Id { get; set; }
         [Range(0, 10000, ErrorMessage = "Cost must be between 0 and 10,000")]
         [RegularExpression(@"^\d+(\.\d{1,2})?$", ErrorMessage = "Cost must have up to 2 decimal places")]
         public decimal? Cost { get; set; }

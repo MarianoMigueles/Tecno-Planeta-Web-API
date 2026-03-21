@@ -1,147 +1,144 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Entities.Elements.Enums;
+using Entities.Elements.InvoiceFolder;
+using Exeptions;
+using FluentAssertions;
+using Moq;
 
 namespace ServiceLayerTests.InvoiceTests
 {
-    public class InvoiceGetTests
+    public class InvoiceGetTests : InvoiceTestBase
     {
-
-        //--------------------------------------------------------------------------------------
-        //------------------------- GetAllByIssueDateAsync -------------------------------------
-        //--------------------------------------------------------------------------------------
-        [Fact]
-        public async Task GetAllByIssueDateAsync_ShouldReturnInvoices_WhenDateMatches()
+        private List<Invoice> GetMockInvoices()
         {
-            throw new NotImplementedException();
+            var customer = SharedMockData.GetSingleCustomer();
+            return new List<Invoice>
+            {
+                new Invoice { Id = 1, CustomerID = customer.Id, Customer = customer, InvoiceNumber = 1001, IssueDate = new DateTime(2024, 5, 10) },
+                new Invoice { Id = 2, CustomerID = customer.Id, Customer = customer, InvoiceNumber = 1002, IssueDate = new DateTime(2024, 6, 15) },
+            };
         }
 
         [Fact]
-        public async Task GetAllByIssueDateAsync_ShouldReturnEmptyList_WhenNoInvoicesMatchDate()
+        public async Task GetByIdAsync_ShouldReturnInvoice_WhenIdExists()
         {
-            throw new NotImplementedException();
-        }
+            var invoices = GetMockInvoices();
+            var invoice = invoices.First();
+            InvoiceRepositoryMock.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
 
-        //--------------------------------------------------------------------------------------
-        //------------------------- GetAllByOperationTypeAsync ---------------------------------
-        //--------------------------------------------------------------------------------------
+            var result = await Service.GetByIdAsync(invoice.Id);
 
-        [Fact]
-        public async Task GetAllByOperationTypeAsync_ShouldReturnInvoices_WhenTypeExists()
-        {
-            throw new NotImplementedException();
+            result.Should().NotBeNull();
         }
 
         [Fact]
-        public async Task GetAllByOperationTypeAsync_ShouldReturnEmptyList_WhenNoInvoicesMatchType()
+        public async Task GetByIdAsync_ShouldThrowEntityNotFoundException_WhenIdDoesNotExist()
         {
-            throw new NotImplementedException();
+            InvoiceRepositoryMock.Setup(r => r.GetByIdAsync(999))
+                .ThrowsAsync(new EntityNotFoundException("Invoice not found"));
+
+            var act = async () => await Service.GetByIdAsync(999);
+
+            await act.Should().ThrowAsync<EntityNotFoundException>();
         }
 
-        //--------------------------------------------------------------------------------------
-        //------------------------- GetAllByStatusAsync ----------------------------------------
-        //--------------------------------------------------------------------------------------
+        [Fact]
+        public async Task GetByNumberAsync_ShouldReturnInvoice_WhenNumberExists()
+        {
+            var invoice = GetMockInvoices().First();
+            InvoiceRepositoryMock.Setup(r => r.GetByNumberAsync(1001)).ReturnsAsync(invoice);
+
+            var result = await Service.GetByNumberAsync(1001);
+
+            result.Should().NotBeNull();
+            result.InvoiceNumber.Should().Be(1001);
+        }
 
         [Fact]
-        public async Task GetAllByStatusAsync_ShouldReturnInvoices_WhenStatusExists()
+        public async Task GetByCustomerNameAsync_ShouldReturnInvoice_WhenCustomerExists()
         {
-            throw new NotImplementedException();
+            var invoice = GetMockInvoices().First();
+            InvoiceRepositoryMock.Setup(r => r.GetByCustomerNameAsync("Juan Perez")).ReturnsAsync(invoice);
+
+            var result = await Service.GetByCustomerNameAsync("Juan Perez");
+
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public async Task GetAllByStatusAsync_ShouldReturnInvoices_WhenStatusMatches()
+        {
+            var invoices = GetMockInvoices();
+            InvoiceRepositoryMock.Setup(r => r.GetAllByStatusAsync(EInvoiceStatus.DRAFT)).ReturnsAsync(invoices);
+
+            var result = await Service.GetAllByStatusAsync(EInvoiceStatus.DRAFT);
+
+            result.Should().HaveCount(invoices.Count);
         }
 
         [Fact]
         public async Task GetAllByStatusAsync_ShouldReturnEmptyList_WhenNoInvoicesMatchStatus()
         {
-            throw new NotImplementedException();
-        }
+            InvoiceRepositoryMock.Setup(r => r.GetAllByStatusAsync(EInvoiceStatus.CANCELED)).ReturnsAsync(new List<Invoice>());
 
-        //--------------------------------------------------------------------------------------
-        //------------------------- GetByCustomerNameAsync -------------------------------------
-        //--------------------------------------------------------------------------------------
+            var result = await Service.GetAllByStatusAsync(EInvoiceStatus.CANCELED);
 
-        [Fact]
-        public async Task GetByCustomerNameAsync_ShouldReturnInvoice_WhenCustomerExists()
-        {
-            throw new NotImplementedException();
+            result.Should().BeEmpty();
         }
 
         [Fact]
-        public async Task GetByCustomerNameAsync_ShouldReturnNull_WhenCustomerDoesNotExist()
+        public async Task GetAllByOperationTypeAsync_ShouldReturnInvoices_WhenTypeMatches()
         {
-            throw new NotImplementedException();
+            var invoices = GetMockInvoices();
+            InvoiceRepositoryMock.Setup(r => r.GetAllByOperationTypeAsync(EInvoiceOperation.INCOME)).ReturnsAsync(invoices);
+
+            var result = await Service.GetAllByOperationTypeAsync(EInvoiceOperation.INCOME);
+
+            result.Should().HaveCount(invoices.Count);
         }
 
         [Fact]
-        public async Task GetByCustomerNameAsync_ShouldThrowException_WhenNameIsNullOrEmpty()
+        public async Task GetAllByIssueDateAsync_ShouldReturnInvoices_WhenDateMatches()
         {
-            throw new NotImplementedException();
+            var invoices = GetMockInvoices();
+            var date = new DateTime(2024, 5, 10);
+            InvoiceRepositoryMock.Setup(r => r.GetAllByIssueDateAsync(date)).ReturnsAsync(invoices);
+
+            var result = await Service.GetAllByIssueDateAsync(date);
+
+            result.Should().HaveCount(invoices.Count);
         }
-
-        //--------------------------------------------------------------------------------------
-        //------------------------- GetByNumberAsync -------------------------------------------
-        //--------------------------------------------------------------------------------------
-
-        [Fact]
-        public async Task GetByNumberAsync_ShouldReturnInvoice_WhenNumberExists()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Fact]
-        public async Task GetByNumberAsync_ShouldReturnNull_WhenNumberDoesNotExist()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Fact]
-        public async Task GetByNumberAsync_ShouldThrowException_WhenNumberIsInvalid()
-        {
-            throw new NotImplementedException();
-        }
-
-        //--------------------------------------------------------------------------------------
-        //------------------------- GetContainsProductIdAsync ----------------------------------
-        //--------------------------------------------------------------------------------------
 
         [Fact]
         public async Task GetContainsProductIdAsync_ShouldReturnInvoices_WhenProductIdsMatch()
         {
-            throw new NotImplementedException();
+            var invoices = GetMockInvoices();
+            var ids = new List<int> { 1, 2 };
+            InvoiceRepositoryMock.Setup(r => r.GetContainsProductIdAsync(ids)).ReturnsAsync(invoices);
+
+            var result = await Service.GetContainsProductIdAsync(ids);
+
+            result.Should().HaveCount(invoices.Count);
         }
 
         [Fact]
         public async Task GetContainsProductIdAsync_ShouldReturnEmptyList_WhenNoInvoicesContainProducts()
         {
-            throw new NotImplementedException();
+            InvoiceRepositoryMock.Setup(r => r.GetContainsProductIdAsync(new List<int> { 999 })).ReturnsAsync(new List<Invoice>());
+
+            var result = await Service.GetContainsProductIdAsync(new List<int> { 999 });
+
+            result.Should().BeEmpty();
         }
 
         [Fact]
-        public async Task GetContainsProductIdAsync_ShouldThrowException_WhenIdsListIsNullOrEmpty()
+        public async Task GetAllByProductQuantityAsync_ShouldReturnInvoices_WhenQuantityIsInRange()
         {
-            throw new NotImplementedException();
-        }
+            var invoices = GetMockInvoices();
+            InvoiceRepositoryMock.Setup(r => r.GetAllByProductQuantityAsync(0, 10)).ReturnsAsync(invoices);
 
-        //--------------------------------------------------------------------------------------
-        //------------------------- GetContainsServiceIdAsync ----------------------------------
-        //--------------------------------------------------------------------------------------
+            var result = await Service.GetAllByProductQuantityAsync(0, 10);
 
-        [Fact]
-        public async Task GetContainsServiceIdAsync_ShouldReturnInvoices_WhenServiceIdsMatch()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Fact]
-        public async Task GetContainsServiceIdAsync_ShouldReturnEmptyList_WhenNoInvoicesContainServices()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Fact]
-        public async Task GetContainsServiceIdAsync_ShouldThrowException_WhenIdsListIsNullOrEmpty()
-        {
-            throw new NotImplementedException();
+            result.Should().HaveCount(invoices.Count);
         }
     }
 }

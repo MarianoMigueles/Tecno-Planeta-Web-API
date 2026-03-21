@@ -1,36 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BLL.DTO.Users.Customer;
+using Entities.Users;
+using FluentAssertions;
+using Moq;
 
 namespace ServiceLayerTests.CustomerTests
 {
-    public class CustomerPostTests
+    public class CustomerPostTests : CustomerTestBase
     {
         [Fact]
-        public async Task CreateAsync_ShouldCreateCustomer_WhenDataIsValid()
+        public async Task CreateAsync_ShouldReturnCustomerResponseDTO_WhenDataIsValid()
         {
-            throw new NotImplementedException();
+            var dto = new CustomerCreateDTO { Name = "Nuevo Cliente", Phone = "3411112233" };
+            CustomerRepositoryMock.Setup(r => r.CreateAsync(It.IsAny<Customer>())).Returns(Task.CompletedTask);
+
+            var result = await Service.CreateAsync(dto);
+
+            result.Should().NotBeNull();
+            result.Should().BeOfType<CustomerResponseDTO>();
+            CustomerRepositoryMock.Verify(r => r.CreateAsync(It.IsAny<Customer>()), Times.Once);
         }
 
         [Fact]
-        public async Task CreateAsync_ShouldReturnCustomerResponseDTO_WhenCreationSucceeds()
+        public async Task CreateAsync_ShouldCallSaveChanges_WhenCustomerIsCreated()
         {
-            throw new NotImplementedException();
-        }
+            var dto = new CustomerCreateDTO { Name = "Nuevo Cliente", Phone = "3411112233" };
+            CustomerRepositoryMock.Setup(r => r.CreateAsync(It.IsAny<Customer>())).Returns(Task.CompletedTask);
 
-        [Fact]
-        public async Task CreateAsync_ShouldThrowException_WhenDtoIsNull()
-        {
-            throw new NotImplementedException();
-        }
+            await Service.CreateAsync(dto);
 
-        [Fact]
-        public async Task CreateAsync_ShouldCallSaveChanges()
-        {
-            throw new NotImplementedException();
+            UnitOfWorkMock.Verify(u => u.Save(), Times.Once);
         }
-
     }
 }

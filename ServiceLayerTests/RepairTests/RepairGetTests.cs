@@ -1,71 +1,91 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Entities.Services;
+using Exeptions;
+using FluentAssertions;
+using Moq;
 
 namespace ServiceLayerTests.RepairTests
 {
-    public class RepairGetTests
+    public class RepairGetTests : RepairTestBase
     {
-        //--------------------------------------------------------------------------------------
-        //------------------------- GetByCustomerNameAsync -------------------------------------
-        //--------------------------------------------------------------------------------------
-
         [Fact]
         public async Task GetByCustomerNameAsync_ShouldReturnRepairs_WhenCustomerExists()
         {
-            throw new NotImplementedException();
+            var repairs = SharedMockData.GetMockRepairs();
+            RepairRepositoryMock.Setup(r => r.GetByCustomerNameAsync("Juan Perez")).ReturnsAsync(repairs);
+
+            var result = await Service.GetByCustomerNameAsync("Juan Perez");
+
+            result.Should().NotBeNull().And.HaveCount(repairs.Count);
+            RepairRepositoryMock.Verify(r => r.GetByCustomerNameAsync("Juan Perez"), Times.Once);
         }
 
         [Fact]
         public async Task GetByCustomerNameAsync_ShouldReturnEmptyList_WhenCustomerHasNoRepairs()
         {
-            throw new NotImplementedException();
-        }
+            RepairRepositoryMock.Setup(r => r.GetByCustomerNameAsync("Sin Reparaciones")).ReturnsAsync(new List<Repair>());
 
-        [Fact]
-        public async Task GetByCustomerNameAsync_ShouldThrowException_WhenNameIsNullOrEmpty()
-        {
-            throw new NotImplementedException();
-        }
+            var result = await Service.GetByCustomerNameAsync("Sin Reparaciones");
 
-        //--------------------------------------------------------------------------------------
-        //------------------------- GetByEntryDateAsync ----------------------------------------
-        //--------------------------------------------------------------------------------------
+            result.Should().NotBeNull().And.BeEmpty();
+        }
 
         [Fact]
         public async Task GetByEntryDateAsync_ShouldReturnRepairs_WhenDateMatches()
         {
-            throw new NotImplementedException();
+            var repairs = SharedMockData.GetMockRepairs();
+            var date = DateTime.UtcNow;
+            RepairRepositoryMock.Setup(r => r.GetByEntryDateAsync(date)).ReturnsAsync(repairs);
+
+            var result = await Service.GetByEntryDateAsync(date);
+
+            result.Should().HaveCount(repairs.Count);
         }
 
         [Fact]
         public async Task GetByEntryDateAsync_ShouldReturnEmptyList_WhenNoRepairsMatchDate()
         {
-            throw new NotImplementedException();
-        }
+            var date = new DateTime(2000, 1, 1);
+            RepairRepositoryMock.Setup(r => r.GetByEntryDateAsync(date)).ReturnsAsync(new List<Repair>());
 
-        //--------------------------------------------------------------------------------------
-        //------------------------- GetByPeriodOfEntryDateAsync --------------------------------
-        //--------------------------------------------------------------------------------------
+            var result = await Service.GetByEntryDateAsync(date);
+
+            result.Should().BeEmpty();
+        }
 
         [Fact]
         public async Task GetByPeriodOfEntryDateAsync_ShouldReturnRepairs_WhenDatesAreValid()
         {
-            throw new NotImplementedException();
+            var repairs = SharedMockData.GetMockRepairs();
+            var min = DateTime.UtcNow.AddDays(-30);
+            var max = DateTime.UtcNow;
+            RepairRepositoryMock.Setup(r => r.GetByPeriodOfEntryDateAsync(min, max)).ReturnsAsync(repairs);
+
+            var result = await Service.GetByPeriodOfEntryDateAsync(min, max);
+
+            result.Should().HaveCount(repairs.Count);
         }
 
         [Fact]
         public async Task GetByPeriodOfEntryDateAsync_ShouldReturnEmptyList_WhenNoRepairsInRange()
         {
-            throw new NotImplementedException();
+            var min = new DateTime(2000, 1, 1);
+            var max = new DateTime(2000, 12, 31);
+            RepairRepositoryMock.Setup(r => r.GetByPeriodOfEntryDateAsync(min, max)).ReturnsAsync(new List<Repair>());
+
+            var result = await Service.GetByPeriodOfEntryDateAsync(min, max);
+
+            result.Should().BeEmpty();
         }
 
         [Fact]
-        public async Task GetByPeriodOfEntryDateAsync_ShouldThrowException_WhenMinDateIsGreaterThanMaxDate()
+        public async Task GetAllAsync_ShouldReturnAllRepairs()
         {
-            throw new NotImplementedException();
+            var repairs = SharedMockData.GetMockRepairs();
+            RepairRepositoryMock.Setup(r => r.GetAllAsync()).ReturnsAsync(repairs);
+
+            var result = await Service.GetAllAsync();
+
+            result.Should().HaveCount(repairs.Count);
         }
     }
 }

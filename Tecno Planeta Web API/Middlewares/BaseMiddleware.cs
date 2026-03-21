@@ -2,7 +2,7 @@
 {
     public class BaseMiddleware(RequestDelegate next, ILogger<BaseMiddleware> logger)
     {
-        protected readonly RequestDelegate _next;
-        protected readonly ILogger<BaseMiddleware> _logger;
+        protected readonly RequestDelegate _next = next;
+        protected readonly ILogger<BaseMiddleware> _logger = logger;
     }
 }

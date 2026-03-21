@@ -36,13 +36,13 @@ namespace DAL.Repository
         public async Task<List<Product>> GetAllByPurchasePriceAsync(decimal price, bool isGreaterThan = false)
         {
             return await this.GetListAsync(p => isGreaterThan 
-                                                ? p.SalePrice >= price 
-                                                : p.SalePrice <= price);
+                                                ? p.Details.PurchasePrice >= price 
+                                                : p.Details.PurchasePrice <= price);
         }
 
         public async Task<List<Product>> GetAllByRangeOfPurchasePriceAsync(decimal min, decimal max)
         {
-            return await this.GetListAsync(p => p.SalePrice >= min && p.SalePrice <= max);
+            return await this.GetListAsync(p => p.Details.PurchasePrice >= min && p.Details.PurchasePrice <= max);
         }
 
 

@@ -10,6 +10,7 @@ namespace BLL.DTO.Invoice
 {
     public class InvoiceCreateDTO : IBaseDTO
     {
+        public int Id { get; set; }
         [Range(1, int.MaxValue, ErrorMessage = "Valid customer ID is required")]
         public int CustomerId { get; set; }
 

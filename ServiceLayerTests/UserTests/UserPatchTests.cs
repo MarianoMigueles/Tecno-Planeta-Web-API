@@ -1,100 +1,88 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Entities.Users;
+using Entities.Users.Enums;
+using Exeptions;
+using FluentAssertions;
+using Moq;
 
 namespace ServiceLayerTests.UserTests
 {
-    public class UserPatchTests
+    public class UserPatchTests : UserTestBase
     {
-        //--------------------------------------------------------------------------------------
-        //------------------------- UpdateNameAsync --------------------------------------------
-        //--------------------------------------------------------------------------------------
         [Fact]
-        public async Task UpdateNameAsync_ShouldUpdateName_WhenUserExists()
+        public async Task UpdateNameAsync_ShouldReturnUpdatedUser_WhenUserExists()
         {
-            throw new NotImplementedException();
+            var user = SharedMockData.GetSingleUser();
+            var updated = new User { Id = user.Id, UserName = "nuevo_nombre", Email = user.Email };
+            UserRepositoryMock.Setup(r => r.UpdateNameAsync(user.Id, "nuevo_nombre")).ReturnsAsync(updated);
+
+            var result = await Service.UpdateNameAsync(user.Id, "nuevo_nombre");
+
+            result.Should().NotBeNull();
+            result.UserName.Should().Be("nuevo_nombre");
         }
 
         [Fact]
-        public async Task UpdateNameAsync_ShouldThrowException_WhenUserDoesNotExist()
+        public async Task UpdateNameAsync_ShouldThrowEntityNotFoundException_WhenUserDoesNotExist()
         {
-            throw new NotImplementedException();
+            UserRepositoryMock.Setup(r => r.UpdateNameAsync(999, "x"))
+                .ThrowsAsync(new EntityNotFoundException("User not found"));
+
+            var act = async () => await Service.UpdateNameAsync(999, "x");
+
+            await act.Should().ThrowAsync<EntityNotFoundException>();
         }
 
         [Fact]
-        public async Task UpdateNameAsync_ShouldThrowException_WhenNewNameIsNullOrEmpty()
+        public async Task UpdatePasswordAsync_ShouldReturnUpdatedUser_WhenPasswordIsValid()
         {
-            throw new NotImplementedException();
-        }
+            var user = SharedMockData.GetSingleUser();
+            UserRepositoryMock.Setup(r => r.UpdatePasswordAsync(user.Id, "NewPass@123")).ReturnsAsync(user);
 
-        //--------------------------------------------------------------------------------------
-        //------------------------- UpdatePasswordAsync ----------------------------------------
-        //--------------------------------------------------------------------------------------
+            var result = await Service.UpdatePasswordAsync(user.Id, "NewPass@123");
 
-        [Fact]
-        public async Task UpdatePasswordAsync_ShouldUpdatePassword_WhenUserExists()
-        {
-            throw new NotImplementedException();
+            result.Should().NotBeNull();
         }
 
         [Fact]
-        public async Task UpdatePasswordAsync_ShouldThrowException_WhenUserDoesNotExist()
+        public async Task UpdatePasswordAsync_ShouldThrowValidationException_WhenPasswordIsTooWeak()
         {
-            throw new NotImplementedException();
+            var user = SharedMockData.GetSingleUser();
+
+            var act = () => user.EditPassword("weak");
+
+            act.Should().Throw<Exception>();
         }
 
         [Fact]
-        public async Task UpdatePasswordAsync_ShouldThrowException_WhenPasswordIsWeakOrInvalid()
+        public async Task UpdateRolAsync_ShouldReturnUpdatedUser_WhenRolIsValid()
         {
-            throw new NotImplementedException();
-        }
+            var user = SharedMockData.GetSingleUser();
+            UserRepositoryMock.Setup(r => r.UpdateRolAsync(user.Id, EUserRol.EMPLOYEE)).ReturnsAsync(user);
 
-        //--------------------------------------------------------------------------------------
-        //------------------------- UpdateRolAsync ---------------------------------------------
-        //--------------------------------------------------------------------------------------
+            var result = await Service.UpdateRolAsync(user.Id, EUserRol.EMPLOYEE);
 
-        [Fact]
-        public async Task UpdateRolAsync_ShouldUpdateRol_WhenUserExists()
-        {
-            throw new NotImplementedException();
+            result.Should().NotBeNull();
         }
 
         [Fact]
-        public async Task UpdateRolAsync_ShouldThrowException_WhenUserDoesNotExist()
+        public async Task UpdateRolAsync_ShouldThrowValidationException_WhenRolIsTheSame()
         {
-            throw new NotImplementedException();
+            var user = SharedMockData.GetSingleUser();
+
+            var act = () => user.EditRol(user.Rol);
+
+            act.Should().Throw<Exception>();
         }
 
         [Fact]
-        public async Task UpdateRolAsync_ShouldThrowException_WhenRolIsInvalid()
+        public async Task UpdateSectorAsync_ShouldReturnUpdatedUser_WhenSectorIsValid()
         {
-            throw new NotImplementedException();
+            var user = SharedMockData.GetSingleUser();
+            UserRepositoryMock.Setup(r => r.UpdateSectorAsync(user.Id, EUserSector.INVENTORY)).ReturnsAsync(user);
+
+            var result = await Service.UpdateSectorAsync(user.Id, EUserSector.INVENTORY);
+
+            result.Should().NotBeNull();
         }
-
-        //--------------------------------------------------------------------------------------
-        //------------------------- UpdateSectorAsync ------------------------------------------
-        //--------------------------------------------------------------------------------------
-
-        [Fact]
-        public async Task UpdateSectorAsync_ShouldUpdateSector_WhenUserExists()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Fact]
-        public async Task UpdateSectorAsync_ShouldThrowException_WhenUserDoesNotExist()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Fact]
-        public async Task UpdateSectorAsync_ShouldThrowException_WhenSectorIsInvalid()
-        {
-            throw new NotImplementedException();
-        }
-
-
     }
 }

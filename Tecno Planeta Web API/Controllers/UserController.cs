@@ -6,10 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Tecno_Planeta_Web_API.Controllers
 {
-    public class UserController(IUserService service, IConfiguration configuration) : AbstractBaseController<IUserService>(service)
+    public class UserController(IUserService service) : AbstractBaseController<IUserService>(service)
     {
-        private readonly IConfiguration _configuration = configuration;
-
         //--------------------------------- GET ------------------------------------------------------
         [AllowAnonymous]
         [HttpGet("{id:int}")]

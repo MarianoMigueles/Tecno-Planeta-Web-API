@@ -32,7 +32,7 @@ namespace BLL.Services
             return _mapper.Map<List<CustomerResponseDTO>>(customer);
         }
 
-        public async Task<CustomerResponseDTO> GetByPhoneAsync(int phone)
+        public async Task<CustomerResponseDTO> GetByPhoneAsync(string phone)
         {
             var customer = await Repository.GetByPhoneAsync(phone);
             return _mapper.Map<CustomerResponseDTO>(customer);
@@ -55,7 +55,7 @@ namespace BLL.Services
             return _mapper.Map<CustomerResponseDTO>(customer);
         }
 
-        public async Task<CustomerResponseDTO> UpdatePhoneAsync(int id, int newPhone)
+        public async Task<CustomerResponseDTO> UpdatePhoneAsync(int id, string newPhone)
         {
             var customer = await Repository.UpdatePhoneAsync(id, newPhone);
             await SaveChangesAsync();

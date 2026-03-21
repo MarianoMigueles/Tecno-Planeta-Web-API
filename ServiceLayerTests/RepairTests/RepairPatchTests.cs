@@ -1,93 +1,116 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Entities.Services;
+using Entities.Services.Enums;
+using Exeptions;
+using FluentAssertions;
+using Moq;
 
 namespace ServiceLayerTests.RepairTests
 {
-    public class RepairPatchTests
+    public class RepairPatchTests : RepairTestBase
     {
-        //--------------------------------------------------------------------------------------
-        //------------------------- CancelRepairAsync ------------------------------------------
-        //--------------------------------------------------------------------------------------
+        // ── CancelRepair ─────────────────────────────────────────────
         [Fact]
-        public async Task CancelRepairAsync_ShouldCancelRepair_WhenRepairExists()
+        public async Task CancelRepairAsync_ShouldReturnCancelledRepair_WhenRepairExists()
         {
-            throw new NotImplementedException();
+            var repair = SharedMockData.GetSingleRepair();
+            RepairRepositoryMock.Setup(r => r.CancelRepairAsync(repair.Id)).ReturnsAsync(repair);
+
+            var result = await Service.CancelRepairAsync(repair.Id);
+
+            result.Should().NotBeNull();
+            RepairRepositoryMock.Verify(r => r.CancelRepairAsync(repair.Id), Times.Once);
         }
 
         [Fact]
-        public async Task CancelRepairAsync_ShouldThrowException_WhenRepairDoesNotExist()
+        public async Task CancelRepairAsync_ShouldThrowEntityNotFoundException_WhenRepairDoesNotExist()
         {
-            throw new NotImplementedException();
+            RepairRepositoryMock.Setup(r => r.CancelRepairAsync(999))
+                .ThrowsAsync(new EntityNotFoundException("Repair not found"));
+
+            var act = async () => await Service.CancelRepairAsync(999);
+
+            await act.Should().ThrowAsync<EntityNotFoundException>();
         }
 
-        //--------------------------------------------------------------------------------------
-        //------------------------- UpdateCostAsync --------------------------------------------
-        //--------------------------------------------------------------------------------------
-
+        // ── UpdateCost ───────────────────────────────────────────────
         [Fact]
-        public async Task UpdateCostAsync_ShouldUpdateCost_WhenRepairExists()
+        public async Task UpdateCostAsync_ShouldReturnUpdatedRepair_WhenRepairExists()
         {
-            throw new NotImplementedException();
-        }
+            var repair = SharedMockData.GetSingleRepair();
+            RepairRepositoryMock.Setup(r => r.UpdateCostAsync(repair.Id, 250m)).ReturnsAsync(repair);
 
-        [Fact]
-        public async Task UpdateCostAsync_ShouldThrowException_WhenRepairDoesNotExist()
-        {
-            throw new NotImplementedException();
-        }
+            var result = await Service.UpdateCostAsync(repair.Id, 250m);
 
-        [Fact]
-        public async Task UpdateCostAsync_ShouldThrowException_WhenCostIsNegative()
-        {
-            throw new NotImplementedException();
-        }
-
-        //--------------------------------------------------------------------------------------
-        //------------------------- UpdateNoteAsync --------------------------------------------
-        //--------------------------------------------------------------------------------------
-
-        [Fact]
-        public async Task UpdateNoteAsync_ShouldUpdateNote_WhenRepairExists()
-        {
-            throw new NotImplementedException();
+            result.Should().NotBeNull();
         }
 
         [Fact]
-        public async Task UpdateNoteAsync_ShouldThrowException_WhenRepairDoesNotExist()
+        public async Task UpdateCostAsync_ShouldThrowEntityNotFoundException_WhenRepairDoesNotExist()
         {
-            throw new NotImplementedException();
+            RepairRepositoryMock.Setup(r => r.UpdateCostAsync(999, 100m))
+                .ThrowsAsync(new EntityNotFoundException("Repair not found"));
+
+            var act = async () => await Service.UpdateCostAsync(999, 100m);
+
+            await act.Should().ThrowAsync<EntityNotFoundException>();
         }
 
         [Fact]
-        public async Task UpdateNoteAsync_ShouldThrowException_WhenNoteIsNull()
+        public async Task UpdateCostAsync_ShouldThrowValidationException_WhenCostIsNegative()
         {
-            throw new NotImplementedException();
+            var repair = SharedMockData.GetSingleRepair();
+
+            var act = () => repair.UpdateCost(-1m);
+
+            act.Should().Throw<Exception>();
         }
 
-        //--------------------------------------------------------------------------------------
-        //------------------------- UpdateStatusAsync ------------------------------------------
-        //--------------------------------------------------------------------------------------
+        // ── UpdateNote ───────────────────────────────────────────────
+        [Fact]
+        public async Task UpdateNoteAsync_ShouldReturnUpdatedRepair_WhenRepairExists()
+        {
+            var repair = SharedMockData.GetSingleRepair();
+            RepairRepositoryMock.Setup(r => r.UpdateNoteAsync(repair.Id, "Nueva nota")).ReturnsAsync(repair);
+
+            var result = await Service.UpdateNoteAsync(repair.Id, "Nueva nota");
+
+            result.Should().NotBeNull();
+        }
 
         [Fact]
-        public async Task UpdateStatusAsync_ShouldUpdateStatus_WhenRepairExists()
+        public async Task UpdateNoteAsync_ShouldThrowEntityNotFoundException_WhenRepairDoesNotExist()
         {
-            throw new NotImplementedException();
+            RepairRepositoryMock.Setup(r => r.UpdateNoteAsync(999, "nota"))
+                .ThrowsAsync(new EntityNotFoundException("Repair not found"));
+
+            var act = async () => await Service.UpdateNoteAsync(999, "nota");
+
+            await act.Should().ThrowAsync<EntityNotFoundException>();
+        }
+
+        // ── UpdateStatus ─────────────────────────────────────────────
+        [Fact]
+        public async Task UpdateStatusAsync_ShouldReturnUpdatedRepair_WhenRepairExists()
+        {
+            var repair = SharedMockData.GetSingleRepair();
+            RepairRepositoryMock.Setup(r => r.UpdateStatusAsync(repair.Id, ERepairStatus.IN_PROGRESS)).ReturnsAsync(repair);
+
+            var result = await Service.UpdateStatusAsync(repair.Id, ERepairStatus.IN_PROGRESS);
+
+            result.Should().NotBeNull();
         }
 
         [Fact]
-        public async Task UpdateStatusAsync_ShouldThrowException_WhenRepairDoesNotExist()
+        public async Task UpdateStatusAsync_ShouldThrowValidationException_WhenStatusAlreadyComplete()
         {
-            throw new NotImplementedException();
-        }
+            var repair = SharedMockData.GetSingleRepair();
+            // Llevar al estado COMPLETE manualmente
+            repair.ChangeRepairStatus(ERepairStatus.IN_PROGRESS);
+            repair.ChangeRepairStatus(ERepairStatus.COMPLETE);
 
-        [Fact]
-        public async Task UpdateStatusAsync_ShouldThrowException_WhenStatusIsInvalid()
-        {
-            throw new NotImplementedException();
-        }
+            var act = () => repair.ChangeRepairStatus(ERepairStatus.PENDING);
 
+            act.Should().Throw<Exception>();
+        }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BLL.DTO.Product
 {
-    public class CreateProductDTO : ProductBaseDTO
+    public class ProductCreateDTO : ProductBaseDTO
     {
         [Range(0, double.MaxValue, ErrorMessage = "Purchase price cannot be negative")]
         [DataType(DataType.Currency)]

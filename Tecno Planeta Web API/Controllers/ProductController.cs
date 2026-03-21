@@ -136,9 +136,9 @@ namespace Tecno_Planeta_Web_API.Controllers
         //--------------------------------- POST ------------------------------------------------------
 
         [HttpPost]
-        public async Task<ActionResult<ProductResponseDTO>> Create([FromBody] ProductResponseDTO newDevice)
+        public async Task<ActionResult<ProductResponseDTO>> Create([FromBody] ProductCreateDTO newProduct)
         {
-            var product = await service.CreateAsync(newDevice);
+            var product = await service.CreateAsync(newProduct);
             return Ok(product);
         }
         //----------------------------------------------------------------------------------------- <>

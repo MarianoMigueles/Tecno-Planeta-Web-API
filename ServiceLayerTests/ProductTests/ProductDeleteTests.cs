@@ -1,30 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Entities.Elements.ProductFolder;
+using Exeptions;
+using FluentAssertions;
+using Moq;
 
 namespace ServiceLayerTests.ProductTests
 {
-    public class ProductDeleteTests
+    public class ProductDeleteTests : ProductServiceTestBase
     {
         [Fact]
-        public async Task DeleteAsync_ShouldDeleteProduct_WhenProductExists()
+        public async Task DeleteAsync_ShouldReturnTrue_WhenProductExists()
         {
-            throw new NotImplementedException();
+            var product = ProductMockData.GetMockProducts().First();
+            ProductRepositoryMock.Setup(r => r.GetByIdAsync(product.Id)).ReturnsAsync(product);
+            ProductRepositoryMock.Setup(r => r.Delete(It.IsAny<Product>()));
+
+            var result = await Service.DeleteAsync(product.Id);
+
+            result.Should().BeTrue();
+            UnitOfWorkMock.Verify(u => u.Save(), Times.Once);
         }
 
         [Fact]
-        public async Task DeleteAsync_ShouldThrowException_WhenProductDoesNotExist()
+        public async Task DeleteAsync_ShouldThrowEntityNotFoundException_WhenProductDoesNotExist()
         {
-            throw new NotImplementedException();
+            ProductRepositoryMock.Setup(r => r.GetByIdAsync(999))
+                .ThrowsAsync(new EntityNotFoundException("Product not found"));
+
+            var act = async () => await Service.DeleteAsync(999);
+
+            await act.Should().ThrowAsync<EntityNotFoundException>();
         }
 
         [Fact]
-        public async Task DeleteAsync_ShouldThrowException_WhenRepositoryFails()
+        public async Task DeleteAsync_ShouldCallSaveChanges_WhenDeletionSucceeds()
         {
-            throw new NotImplementedException();
-        }
+            var product = ProductMockData.GetMockProducts().First();
+            ProductRepositoryMock.Setup(r => r.GetByIdAsync(product.Id)).ReturnsAsync(product);
+            ProductRepositoryMock.Setup(r => r.Delete(It.IsAny<Product>()));
 
+            await Service.DeleteAsync(product.Id);
+
+            UnitOfWorkMock.Verify(u => u.Save(), Times.Once);
+        }
     }
 }

@@ -1,78 +1,91 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Entities.Services;
+using Exeptions;
+using FluentAssertions;
+using Moq;
 
 namespace ServiceLayerTests.ServiceTests
 {
-    public class ServiceGetTests
+    public class ServiceGetTests : ServiceTestBase
     {
-        //--------------------------------------------------------------------------------------
-        //------------------------- GetAllByPriceRangeAsync ------------------------------------
-        //--------------------------------------------------------------------------------------
         [Fact]
         public async Task GetAllByPriceRangeAsync_ShouldReturnServices_WhenPricesAreInRange()
         {
-            throw new NotImplementedException();
+            var services = SharedMockData.GetMockServices().Where(s => s.BasePrice >= 30m && s.BasePrice <= 60m).ToList();
+            ServiceRepositoryMock.Setup(r => r.GetAllByRangeOfPriceAsync(30m, 60m)).ReturnsAsync(services);
+
+            var result = await Service.GetAllByPriceRangeAsync(30m, 60m);
+
+            result.Should().HaveCount(services.Count);
+            result.Should().OnlyContain(s => s.BasePrice >= 30m && s.BasePrice <= 60m);
         }
 
         [Fact]
         public async Task GetAllByPriceRangeAsync_ShouldReturnEmptyList_WhenNoServicesInRange()
         {
-            throw new NotImplementedException();
-        }
+            ServiceRepositoryMock.Setup(r => r.GetAllByRangeOfPriceAsync(9000m, 9999m)).ReturnsAsync(new List<Service>());
 
-        [Fact]
-        public async Task GetAllByPriceRangeAsync_ShouldThrowException_WhenMinIsGreaterThanMax()
-        {
-            throw new NotImplementedException();
-        }
+            var result = await Service.GetAllByPriceRangeAsync(9000m, 9999m);
 
-        //--------------------------------------------------------------------------------------
-        //------------------------- GetByNameAsync ---------------------------------------------
-        //--------------------------------------------------------------------------------------
+            result.Should().BeEmpty();
+        }
 
         [Fact]
         public async Task GetByNameAsync_ShouldReturnService_WhenNameExists()
         {
-            throw new NotImplementedException();
+            var service = SharedMockData.GetSingleService();
+            ServiceRepositoryMock.Setup(r => r.GetByNameAsync(service.Name)).ReturnsAsync(service);
+
+            var result = await Service.GetByNameAsync(service.Name);
+
+            result.Should().NotBeNull();
+            result.Name.Should().Be(service.Name);
         }
 
         [Fact]
-        public async Task GetByNameAsync_ShouldReturnNull_WhenNameDoesNotExist()
+        public async Task GetByNameAsync_ShouldThrowEntityNotFoundException_WhenNameDoesNotExist()
         {
-            throw new NotImplementedException();
-        }
+            ServiceRepositoryMock.Setup(r => r.GetByNameAsync("Inexistente"))
+                .ThrowsAsync(new EntityNotFoundException("Service not found"));
 
-        [Fact]
-        public async Task GetByNameAsync_ShouldThrowException_WhenNameIsNullOrEmpty()
-        {
-            throw new NotImplementedException();
-        }
+            var act = async () => await Service.GetByNameAsync("Inexistente");
 
-        //--------------------------------------------------------------------------------------
-        //------------------------- GetByPeriotOfEstimatedTimeAsync ----------------------------
-        //--------------------------------------------------------------------------------------
+            await act.Should().ThrowAsync<EntityNotFoundException>();
+        }
 
         [Fact]
         public async Task GetByPeriotOfEstimatedTimeAsync_ShouldReturnServices_WhenTimeIsInRange()
         {
-            throw new NotImplementedException();
+            var services = SharedMockData.GetMockServices();
+            var min = new TimeOnly(0, 30);
+            var max = new TimeOnly(3, 0);
+            ServiceRepositoryMock.Setup(r => r.GetByPeriotOfEstimatedTimeAsync(min, max)).ReturnsAsync(services);
+
+            var result = await Service.GetByPeriotOfEstimatedTimeAsync(min, max);
+
+            result.Should().HaveCount(services.Count);
         }
 
         [Fact]
         public async Task GetByPeriotOfEstimatedTimeAsync_ShouldReturnEmptyList_WhenNoServicesInRange()
         {
-            throw new NotImplementedException();
+            var min = new TimeOnly(23, 0);
+            var max = new TimeOnly(23, 59);
+            ServiceRepositoryMock.Setup(r => r.GetByPeriotOfEstimatedTimeAsync(min, max)).ReturnsAsync(new List<Service>());
+
+            var result = await Service.GetByPeriotOfEstimatedTimeAsync(min, max);
+
+            result.Should().BeEmpty();
         }
 
         [Fact]
-        public async Task GetByPeriotOfEstimatedTimeAsync_ShouldThrowException_WhenMinIsGreaterThanMax()
+        public async Task GetAllAsync_ShouldReturnAllServices()
         {
-            throw new NotImplementedException();
+            var services = SharedMockData.GetMockServices();
+            ServiceRepositoryMock.Setup(r => r.GetAllAsync()).ReturnsAsync(services);
+
+            var result = await Service.GetAllAsync();
+
+            result.Should().HaveCount(services.Count);
         }
-
-
     }
 }

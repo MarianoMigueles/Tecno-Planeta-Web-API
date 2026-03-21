@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace BLL.DTO.Product
 {
-    public class UpdateProductDTO : ProductBaseDTO
+    public class ProductUpdateDTO : ProductBaseDTO
     {
         public bool IsActive { get; set; }
+        public decimal PurchasePrice { get; set; }
     }
 }

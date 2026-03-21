@@ -1,0 +1,27 @@
+using AutoMapper;
+using BLL.Automapper;
+using BLL.Services;
+using DAL.Repository.Interfaces;
+using DAL.UnitOfWork;
+using Moq;
+
+namespace ServiceLayerTests.DeviceTests
+{
+    public class DeviceTestBase
+    {
+        protected readonly Mock<IUnitOfWork> UnitOfWorkMock;
+        protected readonly Mock<IDeviceRepository> DeviceRepositoryMock;
+        protected readonly IMapper Mapper;
+        protected readonly DeviceService Service;
+
+        protected DeviceTestBase()
+        {
+            UnitOfWorkMock = new Mock<IUnitOfWork>();
+            DeviceRepositoryMock = new Mock<IDeviceRepository>();
+            UnitOfWorkMock.Setup(u => u.DeviceRepository).Returns(DeviceRepositoryMock.Object);
+            UnitOfWorkMock.Setup(u => u.Save()).ReturnsAsync(1);
+            Mapper = new MapperConfiguration(cfg => cfg.AddProfile<AutomapperProfile>()).CreateMapper();
+            Service = new DeviceService(UnitOfWorkMock.Object, Mapper);
+        }
+    }
+}

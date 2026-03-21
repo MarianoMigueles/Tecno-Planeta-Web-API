@@ -6,6 +6,7 @@ using BLL.DTO.Product;
 using BLL.DTO.Services.Repair;
 using BLL.DTO.Services.Service;
 using BLL.DTO.Users.Customer;
+using BLL.DTO.Users.Login;
 using BLL.DTO.Users.User;
 using Entities.Elements;
 using Entities.Elements.Enums;
@@ -31,6 +32,12 @@ namespace BLL.Automapper
             CreateMap<UserCreateDTO, User>();
             CreateMap<UserUpdateDTO, User>();
             CreateMap<User, UserBaseDTO>().ReverseMap();
+            //------------------------------------------------------------
+
+            //--------------------------------- LOGIN ---------------------
+            CreateMap<User, LoginRequestDTO>().ReverseMap();
+            CreateMap<User, RegisterRequestDTO>().ReverseMap();
+            //------------------------------------------------------------
 
             //--------------------------------- CUSTOMER -----------------
             CreateMap<Customer, DeviceResponseDTO>().ReverseMap();
@@ -38,66 +45,77 @@ namespace BLL.Automapper
             CreateMap<DeviceCreateDTO, Customer>();
 
             CreateMap<Customer, CustomerBaseDTO>().ReverseMap();
+            //------------------------------------------------------------
 
             //--------------------------------- REPAIR -------------------
             CreateMap<Repair, RepairResponseDTO>().ReverseMap();
 
-            CreateMap<RepairCreateDTO, Repair>() /*MAAAL*/
-                .ForMember(dest => dest.Device, opt => opt.MapFrom(src => new Device
-                {
-                    Id = src.DeviceId,
-                    Type = src.DeviceType,
-                    Brand = src.DeviceBrand,
-                    Model = src.DeviceModel,
-                    SerialNumber = src.DeviceSerialNumber,
-                    Owner = new Customer { Id = src.OwnerId, Name = src.OwnerName }
-                }));
+            CreateMap<RepairCreateDTO, Repair>()
+                .ForPath(dest => dest.DeviceId, opt => opt.MapFrom(src => src.DeviceId))
+                .ForPath(dest => dest.Device.Type, opt => opt.MapFrom(src => src.DeviceType))
+                .ForPath(dest => dest.Device.Brand, opt => opt.MapFrom(src => src.DeviceBrand))
+                .ForPath(dest => dest.Device.Model, opt => opt.MapFrom(src => src.DeviceModel))
+                .ForPath(dest => dest.Device.SerialNumber, opt => opt.MapFrom(src => src.DeviceSerialNumber))
+                .ForPath(dest => dest.Device.Owner.Id, opt => opt.MapFrom(src => src.OwnerId))
+                .ForPath(dest => dest.Device.Owner.Name, opt => opt.MapFrom(src => src.OwnerName));
 
             CreateMap<RepairUpdateDTO, Repair>();
+            //------------------------------------------------------------
 
             //--------------------------------- SERVICE -----------------
             CreateMap<Service, ServiceBaseDTO>().ReverseMap();
+            //------------------------------------------------------------
 
             //--------------------------------- PRODUCT -----------------
-            CreateMap<Product, ProductResponseDTO>().ReverseMap();
+            CreateMap<Product, ProductResponseDTO>().ReverseMap()
+                .ForPath(dest => dest.Category.Description, opt => opt.MapFrom(src => src.CategoryDescription))
+                .ForPath(dest => dest.Details.Description, opt => opt.MapFrom(src => src.DetailsDescription));
 
-            CreateMap<CreateProductDTO, Product>()
-                .ForMember(dest => dest.Category.Description, opt => opt.MapFrom(src => src.CategoryDescription))
-                .ForMember(dest => dest.Details.Description, opt => opt.MapFrom(src => src.DetailsDescription));
+            CreateMap<ProductCreateDTO, Product>()
+                .ForPath(dest => dest.Category.Description, opt => opt.MapFrom(src => src.CategoryDescription))
+                .ForPath(dest => dest.Details.Description, opt => opt.MapFrom(src => src.DetailsDescription))
+                .ForPath(dest => dest.Details.BarCode, opt => opt.MapFrom(src => src.BarCode))
+                .ForPath(dest => dest.Details.PurchasePrice, opt => opt.MapFrom(src => src.PurchasePrice));
 
-            CreateMap<UpdateProductDTO, Product>()
-                .ForMember(dest => dest.Category.Description, opt => opt.MapFrom(src => src.CategoryDescription))
-                .ForMember(dest => dest.Details.Description, opt => opt.MapFrom(src => src.DetailsDescription));
+            CreateMap<ProductUpdateDTO, Product>()
+                .ForPath(dest => dest.Category.Description, opt => opt.MapFrom(src => src.CategoryDescription))
+                .ForPath(dest => dest.Details.Description, opt => opt.MapFrom(src => src.DetailsDescription))
+                .ForPath(dest => dest.Details.BarCode, opt => opt.MapFrom(src => src.BarCode));
 
             CreateMap<Product, ProductBaseDTO>().ReverseMap()
-                .ForMember(dest => dest.Category.Description, opt => opt.MapFrom(src => src.CategoryDescription))
-                .ForMember(dest => dest.Details.Description, opt => opt.MapFrom(src => src.DetailsDescription));
+                .ForPath(dest => dest.Category.Description, opt => opt.MapFrom(src => src.CategoryDescription))
+                .ForPath(dest => dest.Details.Description, opt => opt.MapFrom(src => src.DetailsDescription))
+                .ForPath(dest => dest.Details.BarCode, opt => opt.MapFrom(src => src.BarCode));
+            //------------------------------------------------------------
 
             //--------------------------------- INVOICE -----------------
             CreateMap<Invoice, InvoiceResponseDTO>().ReverseMap()
-                .ForMember(dest => dest.Details.PercentageDiscount, opt => opt.MapFrom(src => src.PercentageDiscount))
-                .ForMember(dest => dest.Details.PercentageTax, opt => opt.MapFrom(src => src.PercentageTax))
-                .ForMember(dest => dest.Details.Notes, opt => opt.MapFrom(src => src.Notes))
-                .ForMember(dest => dest.Details.Items, opt => opt.MapFrom(src => src.Items));
+                .ForPath(dest => dest.Details.PercentageDiscount, opt => opt.MapFrom(src => src.PercentageDiscount))
+                .ForPath(dest => dest.Details.PercentageTax, opt => opt.MapFrom(src => src.PercentageTax))
+                .ForPath(dest => dest.Details.Notes, opt => opt.MapFrom(src => src.Notes))
+                .ForPath(dest => dest.Details.Items, opt => opt.MapFrom(src => src.Items));
 
             CreateMap<InvoiceCreateDTO, Invoice>();
             CreateMap<InvoiceUpdateDTO, Invoice>();
 
             CreateMap<InvoiceItem, InvoiceItemDTO>().ReverseMap()
-                .ForMember(dest => dest.Product.Name, opt => opt.MapFrom(src => src.ProductName))
-                .ForMember(dest => dest.Product.SalePrice, opt => opt.MapFrom(src => src.UnitPrice))
-                .ForMember(dest => dest.Invoice.Details.Quantity, opt => opt.MapFrom(src => src.Quantity));
+                .ForPath(dest => dest.Product.Name, opt => opt.MapFrom(src => src.ProductName))
+                .ForPath(dest => dest.Product.SalePrice, opt => opt.MapFrom(src => src.UnitPrice))
+                .ForPath(dest => dest.Invoice.Details.Quantity, opt => opt.MapFrom(src => src.Quantity));
+            //------------------------------------------------------------
 
             //--------------------------------- STOCK MOVEMENT ----------
             CreateMap<StockMovement, StockMovementResponseDTO>().ReverseMap()
-                .ForMember(dest => dest.Invoice.InvoiceNumber, opt => opt.MapFrom(src => src.InvoiceNumber));
+                .ForPath(dest => dest.Invoice.InvoiceNumber, opt => opt.MapFrom(src => src.InvoiceNumber));
 
             CreateMap<StockMovementItem, StockMovementItemDTO>().ReverseMap()
-                .ForMember(dest => dest.Product.Name, opt => opt.MapFrom(src => src.ProductName))
-                .ForMember(dest => dest.Product.Id, opt => opt.MapFrom(src => src.ProductId));
+                .ForPath(dest => dest.Product.Name, opt => opt.MapFrom(src => src.ProductName))
+                .ForPath(dest => dest.Product.Id, opt => opt.MapFrom(src => src.ProductId));
+            //------------------------------------------------------------
 
             //--------------------------------- DEVICE ------------------
             CreateMap<Device, BaseDeviceDTO>().ReverseMap();
+            //------------------------------------------------------------
         }
     }
 }

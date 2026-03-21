@@ -19,7 +19,7 @@ namespace Tecno_Planeta_Web_API.Controllers
         }
 
         [HttpGet("by-phone/{phone}")]
-        public async Task<ActionResult<CustomerResponseDTO>> GetByPhone(int phone)
+        public async Task<ActionResult<CustomerResponseDTO>> GetByPhone(string phone)
         {
             var customer = await service.GetByPhoneAsync(phone);
             return Ok(customer);
@@ -72,7 +72,7 @@ namespace Tecno_Planeta_Web_API.Controllers
 
         [Authorize(policy: "Admin")]
         [HttpPatch("{id:int}/phone")]
-        public async Task<ActionResult<CustomerResponseDTO>> UpdatePhone(int id, [FromQuery] int newPhone)
+        public async Task<ActionResult<CustomerResponseDTO>> UpdatePhone(int id, [FromQuery] string newPhone)
         {
             var customer = await service.UpdatePhoneAsync(id, newPhone);
             return Ok(customer);

@@ -15,10 +15,10 @@ namespace DAL.Repository
     {
         //--------------------------------- GET ------------------------------------------------------
 
-        public async Task<List<Device>> GetAllByBrandAsync(string brand) => await this.GetListAsync(d => d.Equals(brand));
-        public async Task<List<Device>> GetAllByModelAsync(string model) => await this.GetListAsync(d => d.Equals(model));
-        public async Task<List<Device>> GetAllByTypeAsync(EDeviceType type) => await this.GetListAsync(d => d.Equals(type));
-        public async Task<List<Device>> GetByCustomerNameAsync(string customerName) => await this.GetListAsync(d => d.Equals(customerName));
+        public async Task<List<Device>> GetAllByBrandAsync(string brand) => await this.GetListAsync(d => d.Brand.Equals(brand));
+        public async Task<List<Device>> GetAllByModelAsync(string model) => await this.GetListAsync(d => d.Model.Equals(model));
+        public async Task<List<Device>> GetAllByTypeAsync(EDeviceType type) => await this.GetListAsync(d => d.Type.Equals(type));
+        public async Task<List<Device>> GetByCustomerNameAsync(string customerName) => await this.GetListAsync(d => d.Owner.Name.Equals(customerName));
 
         //----------------------------------------------------------------------------------------- <>
     }

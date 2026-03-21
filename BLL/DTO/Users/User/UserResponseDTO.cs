@@ -10,8 +10,10 @@ namespace BLL.DTO.Users.User
 {
     public class UserResponseDTO : IBaseDTO
     {
-        public string? UserName { get; set; }
-        public EUserRol? Rol { get; set; }
-        public EUserSector? Sector { get; set; }
+        public int Id { get; set; }
+        public string UserName { get; set; }
+        public string Email { get; set; }
+        public EUserRol Rol { get; set; }
+        public EUserSector Sector { get; set; }
     }
 }

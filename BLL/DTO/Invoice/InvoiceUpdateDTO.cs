@@ -10,6 +10,7 @@ namespace BLL.DTO.Invoice
 {
     public class InvoiceUpdateDTO : IBaseDTO
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "Invoice status is required")]
         [EnumDataType(typeof(EInvoiceStatus), ErrorMessage = "Invalid invoice status")]
         public EInvoiceStatus Status { get; private set; }

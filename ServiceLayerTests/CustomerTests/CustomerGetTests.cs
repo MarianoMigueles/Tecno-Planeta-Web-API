@@ -1,96 +1,133 @@
-﻿using Entities.Elements.ProductFolder;
+using Entities.Users;
+using Exeptions;
 using FluentAssertions;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServiceLayerTests.CustomerTests
 {
-    public class CustomerGetTests
+    public class CustomerGetTests : CustomerTestBase
     {
-        //--------------------------------------------------------------------------------------
-        //------------------------- GetByName --------------------------------------------------
-        //--------------------------------------------------------------------------------------
+        // ── GetByName ────────────────────────────────────────────────
         [Fact]
         public async Task GetByNameAsync_ShouldReturnCustomer_WhenNameExists()
         {
-            throw new NotImplementedException();
+            var customer = SharedMockData.GetSingleCustomer();
+            CustomerRepositoryMock.Setup(r => r.GetByNameAsync(customer.Name)).ReturnsAsync(customer);
+
+            var result = await Service.GetByNameAsync(customer.Name);
+
+            result.Should().NotBeNull();
+            result.Name.Should().Be(customer.Name);
+            CustomerRepositoryMock.Verify(r => r.GetByNameAsync(customer.Name), Times.Once);
         }
 
         [Fact]
-        public async Task GetByNameAsync_ShouldReturnNull_WhenNameDoesNotExist()
+        public async Task GetByNameAsync_ShouldThrowEntityNotFoundException_WhenNameDoesNotExist()
         {
-            throw new NotImplementedException();
+            CustomerRepositoryMock.Setup(r => r.GetByNameAsync("Inexistente"))
+                .ThrowsAsync(new EntityNotFoundException("Customer not found"));
+
+            var act = async () => await Service.GetByNameAsync("Inexistente");
+
+            await act.Should().ThrowAsync<EntityNotFoundException>();
+        }
+
+        // ── GetByPhone ───────────────────────────────────────────────
+        [Fact]
+        public async Task GetByPhoneAsync_ShouldReturnCustomer_WhenPhoneExists()
+        {
+            var customer = SharedMockData.GetSingleCustomer();
+            CustomerRepositoryMock.Setup(r => r.GetByPhoneAsync(customer.Phone)).ReturnsAsync(customer);
+
+            var result = await Service.GetByPhoneAsync(customer.Phone);
+
+            result.Should().NotBeNull();
+            result.Phone.Should().Be(customer.Phone.ToString());
+            CustomerRepositoryMock.Verify(r => r.GetByPhoneAsync(customer.Phone), Times.Once);
         }
 
         [Fact]
-        public async Task GetByNameAsync_ShouldThrowException_WhenNameIsNullOrEmpty()
+        public async Task GetByPhoneAsync_ShouldThrowEntityNotFoundException_WhenPhoneDoesNotExist()
         {
-            throw new NotImplementedException();
+            CustomerRepositoryMock.Setup(r => r.GetByPhoneAsync("9999999"))
+                .ThrowsAsync(new EntityNotFoundException("Customer not found"));
+
+            var act = async () => await Service.GetByPhoneAsync("9999999");
+
+            await act.Should().ThrowAsync<EntityNotFoundException>();
         }
 
-        //--------------------------------------------------------------------------------------
-        //------------------------- GetByPeriodOfTime ------------------------------------------
-        //--------------------------------------------------------------------------------------
-
+        // ── GetByPeriodOfTime ────────────────────────────────────────
         [Fact]
         public async Task GetByPeriodOfTimeAsync_ShouldReturnCustomers_WhenDatesAreValid()
         {
-            throw new NotImplementedException();
+            var customers = SharedMockData.GetMockCustomers();
+            var min = new DateTime(2024, 1, 1);
+            var max = new DateTime(2024, 12, 31);
+            CustomerRepositoryMock.Setup(r => r.GetByPeriodOfTimeAsync(min, max)).ReturnsAsync(customers);
+
+            var result = await Service.GetByPeriodOfTimeAsync(min, max);
+
+            result.Should().HaveCount(customers.Count);
+            CustomerRepositoryMock.Verify(r => r.GetByPeriodOfTimeAsync(min, max), Times.Once);
         }
 
         [Fact]
         public async Task GetByPeriodOfTimeAsync_ShouldReturnEmptyList_WhenNoCustomersInRange()
         {
-            throw new NotImplementedException();
+            var min = new DateTime(2020, 1, 1);
+            var max = new DateTime(2020, 12, 31);
+            CustomerRepositoryMock.Setup(r => r.GetByPeriodOfTimeAsync(min, max)).ReturnsAsync(new List<Customer>());
+
+            var result = await Service.GetByPeriodOfTimeAsync(min, max);
+
+            result.Should().NotBeNull().And.BeEmpty();
+        }
+
+        // ── GetAll ───────────────────────────────────────────────────
+        [Fact]
+        public async Task GetAllAsync_ShouldReturnAllCustomers()
+        {
+            var customers = SharedMockData.GetMockCustomers();
+            CustomerRepositoryMock.Setup(r => r.GetAllAsync()).ReturnsAsync(customers);
+
+            var result = await Service.GetAllAsync();
+
+            result.Should().HaveCount(customers.Count);
         }
 
         [Fact]
-        public async Task GetByPeriodOfTimeAsync_ShouldThrowException_WhenMinDateIsGreaterThanMaxDate()
+        public async Task GetAllAsync_ShouldReturnEmptyList_WhenNoCustomersExist()
         {
-            throw new NotImplementedException();
+            CustomerRepositoryMock.Setup(r => r.GetAllAsync()).ReturnsAsync(new List<Customer>());
+
+            var result = await Service.GetAllAsync();
+
+            result.Should().NotBeNull().And.BeEmpty();
         }
 
-        //--------------------------------------------------------------------------------------
-        //------------------------- GetByPhoneAsync --------------------------------------------
-        //--------------------------------------------------------------------------------------
-
+        // ── GetById ──────────────────────────────────────────────────
         [Fact]
-        public async Task GetByPhoneAsync_ShouldReturnCustomer_WhenPhoneExists()
+        public async Task GetByIdAsync_ShouldReturnCustomer_WhenIdExists()
         {
-            throw new NotImplementedException();
-        }
+            var customer = SharedMockData.GetSingleCustomer();
+            CustomerRepositoryMock.Setup(r => r.GetByIdAsync(customer.Id)).ReturnsAsync(customer);
 
-        [Fact]
-        public async Task GetByPhoneAsync_ShouldReturnNull_WhenPhoneDoesNotExist()
-        {
-            throw new NotImplementedException();
-        }
+            var result = await Service.GetByIdAsync(customer.Id);
 
-        [Fact]
-        public async Task GetByPhoneAsync_ShouldThrowException_WhenPhoneIsInvalid()
-        {
-            throw new NotImplementedException();
-        }
-
-        //--------------------------------------------------------------------------------------
-        //------------------------- GetByRegisterDateAsync -------------------------------------
-        //--------------------------------------------------------------------------------------
-
-        [Fact]
-        public async Task GetByRegisterDateAsync_ShouldReturnCustomer_WhenDateMatches()
-        {
-            throw new NotImplementedException();
+            result.Should().NotBeNull();
+            result.Name.Should().Be(customer.Name);
         }
 
         [Fact]
-        public async Task GetByRegisterDateAsync_ShouldReturnNull_WhenDateDoesNotMatch()
+        public async Task GetByIdAsync_ShouldThrowEntityNotFoundException_WhenIdDoesNotExist()
         {
-            throw new NotImplementedException();
-        }
+            CustomerRepositoryMock.Setup(r => r.GetByIdAsync(999))
+                .ThrowsAsync(new EntityNotFoundException("Customer not found"));
 
+            var act = async () => await Service.GetByIdAsync(999);
+
+            await act.Should().ThrowAsync<EntityNotFoundException>();
+        }
     }
 }

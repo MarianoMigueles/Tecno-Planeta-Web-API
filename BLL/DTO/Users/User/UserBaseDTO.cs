@@ -10,6 +10,7 @@ namespace BLL.DTO.Users.User
 {
     public class UserBaseDTO : IBaseDTO
     {
+        public int Id { get; set; }
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Username must be between 3 and 50 characters")]
         [RegularExpression(@"^[a-zA-Z0-9_]+$", ErrorMessage = "Only letters, numbers and underscores are allowed")]
         public string? UserName { get; set; }
@@ -19,6 +20,13 @@ namespace BLL.DTO.Users.User
             ErrorMessage = "Password must contain uppercase, lowercase, numbers and special characters")]
         [DataType(DataType.Password)]
         public string? Password { get; set; }
+
+        [EmailAddress(ErrorMessage = "Invalid email format")]
+        [Required(ErrorMessage = "Email is required")]
+        [StringLength(100, ErrorMessage = "Email cannot exceed 100 characters")]
+        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$",
+            ErrorMessage = "Invalid email format")]
+        public string? Email { get; set; }
 
         [EnumDataType(typeof(EUserRol), ErrorMessage = "Invalid role")]
         public EUserRol? Rol { get; set; }

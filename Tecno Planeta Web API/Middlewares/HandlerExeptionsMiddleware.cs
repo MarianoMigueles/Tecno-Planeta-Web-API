@@ -1,7 +1,5 @@
-﻿using Azure;
-using Exeptions;
+﻿using Exeptions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using System.Net;
 
 namespace Tecno_Planeta_Web_API.Middlewares

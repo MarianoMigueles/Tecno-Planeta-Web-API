@@ -10,6 +10,7 @@ namespace BLL.DTO.Invoice
 {
     public class InvoiceResponseDTO : IBaseDTO
     {
+        public int Id { get; set; }
         public string CustomerName { get; set; }
         public EInvoiceStatus Status { get; set; }
         public decimal SubTotal { get; set; }

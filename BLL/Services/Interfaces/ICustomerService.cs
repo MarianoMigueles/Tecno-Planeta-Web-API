@@ -13,7 +13,7 @@ namespace BLL.Services.Interfaces
     {
         //--------------------------------- GET ------------------------------------------------------
         public Task<CustomerResponseDTO> GetByNameAsync(string name);
-        public Task<CustomerResponseDTO> GetByPhoneAsync(int phone);
+        public Task<CustomerResponseDTO> GetByPhoneAsync(string phone);
         public Task<CustomerResponseDTO> GetByRegisterDateAsync(DateTime registerTime);
         public Task<List<CustomerResponseDTO>> GetByPeriodOfTimeAsync(DateTime min, DateTime max);
 
@@ -21,7 +21,7 @@ namespace BLL.Services.Interfaces
 
         //--------------------------------- PATCH ------------------------------------------------------
         public Task<CustomerResponseDTO> UpdateNameAsync(int id, string newName);
-        public Task<CustomerResponseDTO> UpdatePhoneAsync(int id, int newPhone);
+        public Task<CustomerResponseDTO> UpdatePhoneAsync(int id, string newPhone);
         //----------------------------------------------------------------------------------------- <>
     }
 }

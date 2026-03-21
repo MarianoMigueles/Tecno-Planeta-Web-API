@@ -16,9 +16,9 @@ namespace DAL.Repository
     {
         //--------------------------------- GET ------------------------------------------------------
 
-        public async Task<Customer> GetByNameAsync(string name) => await this.GetSingleAsync(c => c.Equals(name));
-        public async Task<Customer> GetByPhoneAsync(int phone) => await this.GetSingleAsync(c => c.Equals(phone));
-        public async Task<Customer> GetByRegisterDateAsync(DateTime registerTime) => await this.GetSingleAsync(c => c.Equals(registerTime));
+        public async Task<Customer> GetByNameAsync(string name) => await this.GetSingleAsync(c => c.Name.Equals(name));
+        public async Task<Customer> GetByPhoneAsync(string phone) => await this.GetSingleAsync(c => c.Phone.Equals(phone));
+        public async Task<Customer> GetByRegisterDateAsync(DateTime registerTime) => await this.GetSingleAsync(c => c.RegisterDate.Equals(registerTime));
         public async Task<List<Customer>> GetByPeriodOfTimeAsync(DateTime min, DateTime max)
         {
             return await this.GetListAsync(c => c.RegisterDate >= min && c.RegisterDate <= max);
@@ -35,7 +35,7 @@ namespace DAL.Repository
             return customer;
         }
 
-        public async Task<Customer> UpdatePhoneAsync(int id, int newPhone)
+        public async Task<Customer> UpdatePhoneAsync(int id, string newPhone)
         {
             var customer = await this.GetByIdAsync(id);
             customer.Phone = newPhone;

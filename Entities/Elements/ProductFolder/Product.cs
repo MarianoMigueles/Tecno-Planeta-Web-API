@@ -25,7 +25,7 @@ namespace Entities.Elements.ProductFolder
         public int DetailsId { get; set; }
         public ProductDetails Details { get; set; }
 
-
+        /*
         public Product(string name, decimal salePrice, ProductCategory category, ProductDetails details, bool isActive = false, int stock = 0)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -41,7 +41,7 @@ namespace Entities.Elements.ProductFolder
 
             Category = category ?? throw new ArgumentNullException(nameof(category));
             Details = details ?? throw new ArgumentNullException(nameof(details));
-        }
+        }*/
 
 
         public void EditSalePrice(decimal newPrice)

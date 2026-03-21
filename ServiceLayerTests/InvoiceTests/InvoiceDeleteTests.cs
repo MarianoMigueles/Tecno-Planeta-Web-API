@@ -1,30 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Entities.Elements.InvoiceFolder;
+using Exeptions;
+using FluentAssertions;
+using Moq;
 
 namespace ServiceLayerTests.InvoiceTests
 {
-    public class InvoiceDeleteTests
+    public class InvoiceDeleteTests : InvoiceTestBase
     {
         [Fact]
         public async Task DeleteAsync_ShouldReturnTrue_WhenInvoiceExists()
         {
-            throw new NotImplementedException();
+            var customer = SharedMockData.GetSingleCustomer();
+            var invoice = new Invoice { Id = 1, CustomerID = customer.Id, Customer = customer, InvoiceNumber = 1001, IssueDate = DateTime.UtcNow };
+            InvoiceRepositoryMock.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
+            InvoiceRepositoryMock.Setup(r => r.Delete(It.IsAny<Invoice>()));
+
+            var result = await Service.DeleteAsync(invoice.Id);
+
+            result.Should().BeTrue();
+            UnitOfWorkMock.Verify(u => u.Save(), Times.Once);
         }
 
         [Fact]
-        public async Task DeleteAsync_ShouldReturnFalse_WhenInvoiceDoesNotExist()
+        public async Task DeleteAsync_ShouldThrowEntityNotFoundException_WhenInvoiceDoesNotExist()
         {
-            throw new NotImplementedException();
+            InvoiceRepositoryMock.Setup(r => r.GetByIdAsync(999))
+                .ThrowsAsync(new EntityNotFoundException("Invoice not found"));
+
+            var act = async () => await Service.DeleteAsync(999);
+
+            await act.Should().ThrowAsync<EntityNotFoundException>();
         }
 
         [Fact]
         public async Task DeleteAsync_ShouldCallSaveChanges_WhenDeletionSucceeds()
         {
-            throw new NotImplementedException();
-        }
+            var customer = SharedMockData.GetSingleCustomer();
+            var invoice = new Invoice { Id = 1, CustomerID = customer.Id, Customer = customer, InvoiceNumber = 1001, IssueDate = DateTime.UtcNow };
+            InvoiceRepositoryMock.Setup(r => r.GetByIdAsync(invoice.Id)).ReturnsAsync(invoice);
+            InvoiceRepositoryMock.Setup(r => r.Delete(It.IsAny<Invoice>()));
 
+            await Service.DeleteAsync(invoice.Id);
+
+            UnitOfWorkMock.Verify(u => u.Save(), Times.Once);
+        }
     }
 }

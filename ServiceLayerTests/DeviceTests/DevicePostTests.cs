@@ -1,36 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BLL.DTO.Device;
+using Entities.Elements;
+using FluentAssertions;
+using Moq;
 
 namespace ServiceLayerTests.DeviceTests
 {
-    public class DevicePostTests
+    public class DevicePostTests : DeviceTestBase
     {
         [Fact]
-        public async Task CreateAsync_ShouldCreateDevice_WhenDataIsValid()
+        public async Task CreateAsync_ShouldReturnDeviceResponseDTO_WhenDataIsValid()
         {
-            throw new NotImplementedException();
+            var dto = new DeviceCreateDTO
+            {
+                Type = Entities.Elements.Enums.EDeviceType.PHONE,
+                Brand = "Samsung",
+                Model = "Galaxy A54",
+                SerialNumber = "SN-TEST-001"
+            };
+            DeviceRepositoryMock.Setup(r => r.CreateAsync(It.IsAny<Device>())).Returns(Task.CompletedTask);
+
+            var result = await Service.CreateAsync(dto);
+
+            result.Should().NotBeNull();
+            result.Should().BeOfType<DeviceResponseDTO>();
+            UnitOfWorkMock.Verify(u => u.Save(), Times.Once);
         }
 
         [Fact]
-        public async Task CreateAsync_ShouldReturnDeviceResponseDTO_WhenCreationSucceeds()
+        public async Task CreateAsync_ShouldCallSaveChanges_WhenDeviceIsCreated()
         {
-            throw new NotImplementedException();
-        }
+            var dto = new DeviceCreateDTO { Type = Entities.Elements.Enums.EDeviceType.PC, Brand = "Dell", Model = "Optiplex", SerialNumber = "SN-002" };
+            DeviceRepositoryMock.Setup(r => r.CreateAsync(It.IsAny<Device>())).Returns(Task.CompletedTask);
 
-        [Fact]
-        public async Task CreateAsync_ShouldThrowException_WhenDtoIsNull()
-        {
-            throw new NotImplementedException();
-        }
+            await Service.CreateAsync(dto);
 
-        [Fact]
-        public async Task CreateAsync_ShouldCallSaveChanges()
-        {
-            throw new NotImplementedException();
+            UnitOfWorkMock.Verify(u => u.Save(), Times.Once);
         }
-
     }
 }

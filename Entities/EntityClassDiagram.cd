@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Entities.Elements.InvoiceFolder.Invoice" Collapsed="true">
+    <Position X="21.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAQEAAAxAAAAAgAAAAAAGAAAQAAgAQAAAAAAAAA=</HashCode>
+      <FileName>Elements\InvoiceFolder\Invoice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Elements.InvoiceFolder.InvoiceItem" Collapsed="true">
+    <Position X="28.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>MAACICAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Elements\InvoiceFolder\InvoiceItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Elements.Invoice.InvoiceDetails" Collapsed="true">
+    <Position X="1.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgIAAAAAAACAAABAAAAAAAAAAAAAAAAAAAgACAAAA=</HashCode>
+      <FileName>Elements\InvoiceFolder\InvoiceDetails.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Elements.Invoice.InvoiceType" Collapsed="true">
+    <Position X="8" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEAAAAAAAA=</HashCode>
+      <FileName>Elements\InvoiceFolder\InvoiceType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Elements.ProductFolder.Product" Collapsed="true">
+    <Position X="14.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IBAAAAAACAARAgAAEAAAAAQEiAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Elements\ProductFolder\Product.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Elements.ProductFolder.ProductCategory" Collapsed="true">
+    <Position X="23.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Elements\ProductFolder\ProductCategory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Elements.ProductFolder.ProductDetails" Collapsed="true">
+    <Position X="30.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAABAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Elements\ProductFolder\ProductDetails.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Elements.Device" Collapsed="true">
+    <Position X="3.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACIAAAAQAAAAAAAAAAAAAEAAAAAAQgAAAABAAA=</HashCode>
+      <FileName>Elements\Device.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Extra.StockMovement" Collapsed="true">
+    <Position X="17" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgIAAAAAAACAAAAAAAAAAAAAAAAAABAQAAgAAAAQA=</HashCode>
+      <FileName>Extra\StockMovement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Extra.StockMovementItem" Collapsed="true">
+    <Position X="26" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Extra\StockMovementItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Services.Repair" Collapsed="true">
+    <Position X="10.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAgAQAAAAAAAoCAAAAAAhCAAAAAAAGAEAAAAAAAEQA=</HashCode>
+      <FileName>Services\Repair.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Entities.Services.Service" Collapsed="true">
+    <Position X="19.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAgAAAAAAAAAAQAAAAAAACAAAAACAAAAQA=</HashCode>
+      <FileName>Services\Service.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Entities.Users.Customer" Collapsed="true">
+    <Position X="5.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAQAQAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Users\Customer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.Users.User" Collapsed="true">
+    <Position X="12.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CACAAAAACCAAAAAAAAACAAAAAAAAAgACAQAAgAAAAAE=</HashCode>
+      <FileName>Users\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Entities.AbstractEntity" Collapsed="true">
+    <Position X="16" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AbstractEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Entities.Services.IBaseService" Collapsed="true">
+    <Position X="33" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Services\IBaseService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Entities.Elements.Enums.EDeviceType" Collapsed="true">
+    <Position X="33" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAIAEAAAAAAAAAAEAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Elements\Enums\EDeviceType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Entities.Elements.Enums.EInvoiceOperation" Collapsed="true">
+    <Position X="34.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Elements\Enums\EInvoiceOperation.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Entities.Elements.Enums.EInvoiceStatus" Collapsed="true">
+    <Position X="36.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAiAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Elements\Enums\EInvoiceStatus.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Entities.Extra.Enums.EStockMovementType" Collapsed="true">
+    <Position X="34.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAABAAAAAAAAAACAAAAAgAAAAAAAABAAA=</HashCode>
+      <FileName>Extra\Enums\EStockMovementType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Entities.Services.Enums.ERepairStatus" Collapsed="true">
+    <Position X="33" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAACAAAAACAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Services\Enums\ERepairStatus.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Entities.Users.Enums.EUserRol" Collapsed="true">
+    <Position X="36.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAgAAAAQAAAAAAAAAACAA=</HashCode>
+      <FileName>Users\Enums\EUserRol.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Entities.Users.Enums.EUserSector" Collapsed="true">
+    <Position X="33" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAEAAAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Users\Enums\EUserSector.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

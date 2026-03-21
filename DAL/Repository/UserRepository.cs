@@ -17,7 +17,7 @@ namespace DAL.Repository
 
         public async Task<User> GetByNameAsync(string name) => await this.GetSingleAsync(u => u.UserName.Equals(name));
         public async Task<List<User>> GetAllBySectorAsync(EUserSector sector) => await this.GetListAsync(u => u.Sector.Equals(sector));
-        public async Task<User> GetAllByRolAsync(EUserRol rol) => await this.GetSingleAsync(u => u.Rol.Equals(rol));
+        public async Task<List<User>> GetAllByRolAsync(EUserRol rol) => await this.GetListAsync(u => u.Rol.Equals(rol));
         public async Task<User> GetByEmailAsync(string email) => await this.GetSingleAsync(u => u.Email.Equals(email));
 
 
