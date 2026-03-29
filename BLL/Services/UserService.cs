@@ -47,24 +47,28 @@ namespace BLL.Services
         public async Task<UserResponseDTO> UpdateNameAsync(int id, string newName)
         {
             var user = await Repository.UpdateNameAsync(id, newName);
+            await SaveChangesAsync();
             return _mapper.Map<UserResponseDTO>(user);
         }
 
         public async Task<UserResponseDTO> UpdatePasswordAsync(int id, string newPassword)
         {
             var user = await Repository.UpdatePasswordAsync(id, newPassword);
+            await SaveChangesAsync();
             return _mapper.Map<UserResponseDTO>(user);
         }
 
         public async Task<UserResponseDTO> UpdateRolAsync(int id, EUserRol rol)
         {
             var user = await Repository.UpdateRolAsync(id, rol);
+            await SaveChangesAsync();
             return _mapper.Map<UserResponseDTO>(user);
         }
 
         public async Task<UserResponseDTO> UpdateSectorAsync(int id, EUserSector newSector)
         {
             var user = await Repository.UpdateSectorAsync(id, newSector);
+            await SaveChangesAsync();
             return _mapper.Map<UserResponseDTO>(user);
         }
 

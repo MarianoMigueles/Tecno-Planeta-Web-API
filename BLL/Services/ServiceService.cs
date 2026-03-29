@@ -45,24 +45,28 @@ namespace BLL.Services
         public async Task<ServiceResponseDTO> UpdateBasePriceAsync(int id, decimal newPrice)
         {
             var service = await Repository.UpdateBasePriceAsync(id, newPrice);
+            await SaveChangesAsync();
             return _mapper.Map<ServiceResponseDTO>(service);
         }
 
         public async Task<ServiceResponseDTO> UpdateDescriptionAsync(int id, string newDescription)
         {
             var service = await Repository.UpdateDescriptionAsync(id, newDescription);
+            await SaveChangesAsync();
             return _mapper.Map<ServiceResponseDTO>(service);
         }
 
         public async Task<ServiceResponseDTO> UpdateEstimatedTimeAsync(int id, TimeOnly newEstimatedTime)
         {
             var service = await Repository.UpdateEstimatedTimeAsync(id, newEstimatedTime);
+            await SaveChangesAsync();
             return _mapper.Map<ServiceResponseDTO>(service);
         }
 
         public async Task<ServiceResponseDTO> UpdateNameAsync(int id, string newName)
         {
             var service = await Repository.UpdateNameAsync(id, newName);
+            await SaveChangesAsync();
             return _mapper.Map<ServiceResponseDTO>(service);
         }
 

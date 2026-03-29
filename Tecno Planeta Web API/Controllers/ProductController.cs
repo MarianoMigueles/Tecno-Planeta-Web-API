@@ -10,7 +10,7 @@ namespace Tecno_Planeta_Web_API.Controllers
     {
         //--------------------------------- GET ------------------------------------------------------
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<ProductResponseDTO>> GetById([FromQuery] int id)
+        public async Task<ActionResult<ProductResponseDTO>> GetById(int id)
         {
             var product = await service.GetByIdAsync(id);
             return Ok(product);

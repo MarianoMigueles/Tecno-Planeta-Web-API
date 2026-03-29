@@ -76,6 +76,7 @@ namespace BLL.Services
         public async Task<InvoiceResponseDTO> UpdateStatusAsync(int id, EInvoiceStatus newStatus)
         {
             var invoice = await Repository.UpdateStatusAsync(id, newStatus);
+            await SaveChangesAsync();
             return _mapper.Map<InvoiceResponseDTO>(invoice);
         }
 

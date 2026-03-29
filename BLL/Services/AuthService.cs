@@ -50,10 +50,7 @@ namespace BLL.Services
             string passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
             var newUser = _mapper.Map<User>(request);
-            newUser.SetPassword(passwordHash);
-
             await _repository.CreateAsync(newUser);
-
             await _unitOfWork.Save();
 
             return _mapper.Map<UserResponseDTO>(newUser); 

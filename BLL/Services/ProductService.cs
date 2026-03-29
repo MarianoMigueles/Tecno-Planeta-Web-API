@@ -68,47 +68,55 @@ namespace BLL.Services
         public async Task<ProductResponseDTO> ActivateAsync(int id)
         {
             var product = await Repository.UpdateStatusAsync(id, true);
+            await SaveChangesAsync();
             return _mapper.Map<ProductResponseDTO>(product);
         }
         public async Task<ProductResponseDTO> DesactivateAsync(int id)
         {
             var product = await Repository.UpdateStatusAsync(id, false);
+            await SaveChangesAsync();
             return _mapper.Map<ProductResponseDTO>(product);
         }
 
         public async Task<ProductResponseDTO> AddStockAsync(int id, int amount)
         {
             var product = await Repository.AddStockAsync(id, amount);
+            await SaveChangesAsync();
             return _mapper.Map<ProductResponseDTO>(product);
         }
 
         public async Task<ProductResponseDTO> SubstractStockAsync(int id, int amount)
         {
             var product = await Repository.SubstractStockAsync(id, amount);
+            await SaveChangesAsync();
             return _mapper.Map<ProductResponseDTO>(product);
         }
 
         public async Task<ProductResponseDTO> UpdateCategoryAsync(int id, string newCategory)
         {
             var product = await Repository.UpdateCategoryAsync(id, newCategory);
+            await SaveChangesAsync();
             return _mapper.Map<ProductResponseDTO>(product);
         }
 
         public async Task<ProductResponseDTO> UpdateDescriptionAsync(int id, string newDescriptio)
         {
             var product = await Repository.UpdateDescriptionAsync(id, newDescriptio);
+            await SaveChangesAsync();
             return _mapper.Map<ProductResponseDTO>(product);
         }
 
         public async Task<ProductResponseDTO> UpdateNameAsync(int id, string newName)
         {
             var product = await Repository.UpdateNameAsync(id, newName);
+            await SaveChangesAsync();
             return _mapper.Map<ProductResponseDTO>(product);
         }
 
         public async Task<ProductResponseDTO> UpdateSalePriceAsync(int id, decimal newPrice)
         {
             var product = await Repository.UpdateSalePriceAsync(id, newPrice);
+            await SaveChangesAsync();
             return _mapper.Map<ProductResponseDTO>(product);
         }
 

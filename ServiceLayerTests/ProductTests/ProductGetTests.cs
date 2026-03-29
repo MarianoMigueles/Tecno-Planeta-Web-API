@@ -17,13 +17,29 @@ namespace ServiceLayerTests.ProductTests
         [Fact]
         public async Task GetAllByRangeOfPurchasePriceAsync_ShouldReturnProducts_WhenRangeIsValid()
         {
-            throw new NotImplementedException();
+            var products = ProductMockData.GetMockProducts()
+                .Where(p => p.Details.PurchasePrice >= 100 && p.Details.PurchasePrice <= 700)
+                .ToList();
+            ProductRepositoryMock
+                .Setup(r => r.GetAllByRangeOfPurchasePriceAsync(100, 700))
+                .ReturnsAsync(products);
+
+            var result = await Service.GetAllByRangeOfPurchasePriceAsync(100, 700);
+
+            result.Should().NotBeNull().And.HaveCount(products.Count);
+            ProductRepositoryMock.Verify(r => r.GetAllByRangeOfPurchasePriceAsync(100, 700), Times.Once);
         }
 
         [Fact]
         public async Task GetAllByRangeOfPurchasePriceAsync_ShouldReturnEmptyList_WhenNoProductsMatch()
         {
-            throw new NotImplementedException();
+            ProductRepositoryMock
+                .Setup(r => r.GetAllByRangeOfPurchasePriceAsync(9000, 9999))
+                .ReturnsAsync(new List<Product>());
+
+            var result = await Service.GetAllByRangeOfPurchasePriceAsync(9000, 9999);
+
+            result.Should().NotBeNull().And.BeEmpty();
         }
 
         //--------------------------------------------------------------------------------------
@@ -32,13 +48,28 @@ namespace ServiceLayerTests.ProductTests
         [Fact]
         public async Task GetByBarCodeAsync_ShouldReturnProduct_WhenBarCodeExists()
         {
-            throw new NotImplementedException();
+            var product = ProductMockData.GetMockProducts().First(p => p.Details.BarCode == "GPU001");
+            ProductRepositoryMock
+                .Setup(r => r.GetByBarCodeAsync("GPU001"))
+                .ReturnsAsync(product);
+
+            var result = await Service.GetByBarCodeAsync("GPU001");
+
+            result.Should().NotBeNull();
+            result.BarCode.Should().Be("GPU001");
+            ProductRepositoryMock.Verify(r => r.GetByBarCodeAsync("GPU001"), Times.Once);
         }
 
         [Fact]
         public async Task GetByBarCodeAsync_ShouldThrowException_WhenBarCodeDoesNotExist()
         {
-            throw new NotImplementedException();
+            ProductRepositoryMock
+                .Setup(r => r.GetByBarCodeAsync("INEXISTENTE"))
+                .ThrowsAsync(new Exeptions.EntityNotFoundException("Product not found"));
+
+            var act = async () => await Service.GetByBarCodeAsync("INEXISTENTE");
+
+            await act.Should().ThrowAsync<Exeptions.EntityNotFoundException>();
         }
 
         //--------------------------------------------------------------------------------------
@@ -47,13 +78,28 @@ namespace ServiceLayerTests.ProductTests
         [Fact]
         public async Task GetByIdAsync_ShouldReturnProduct_WhenProductExists()
         {
-            throw new NotImplementedException();
+            var product = ProductMockData.GetMockProducts().First();
+            ProductRepositoryMock
+                .Setup(r => r.GetByIdAsync(product.Id))
+                .ReturnsAsync(product);
+
+            var result = await Service.GetByIdAsync(product.Id);
+
+            result.Should().NotBeNull();
+            result.Name.Should().Be(product.Name);
+            ProductRepositoryMock.Verify(r => r.GetByIdAsync(product.Id), Times.Once);
         }
 
         [Fact]
         public async Task GetByIdAsync_ShouldThrowException_WhenProductDoesNotExist()
         {
-            throw new NotImplementedException();
+            ProductRepositoryMock
+                .Setup(r => r.GetByIdAsync(999))
+                .ThrowsAsync(new Exeptions.EntityNotFoundException("Product not found"));
+
+            var act = async () => await Service.GetByIdAsync(999);
+
+            await act.Should().ThrowAsync<Exeptions.EntityNotFoundException>();
         }
 
         //--------------------------------------------------------------------------------------
@@ -63,13 +109,27 @@ namespace ServiceLayerTests.ProductTests
         [Fact]
         public async Task GetAllAsync_ShouldReturnAllProducts()
         {
-            throw new NotImplementedException();
+            var products = ProductMockData.GetMockProducts();
+            ProductRepositoryMock
+                .Setup(r => r.GetAllAsync())
+                .ReturnsAsync(products);
+
+            var result = await Service.GetAllAsync();
+
+            result.Should().HaveCount(products.Count);
+            ProductRepositoryMock.Verify(r => r.GetAllAsync(), Times.Once);
         }
 
         [Fact]
         public async Task GetAllAsync_ShouldReturnEmptyList_WhenNoProductsExist()
         {
-            throw new NotImplementedException();
+            ProductRepositoryMock
+                .Setup(r => r.GetAllAsync())
+                .ReturnsAsync(new List<Product>());
+
+            var result = await Service.GetAllAsync();
+
+            result.Should().NotBeNull().And.BeEmpty();
         }
 
         //--------------------------------------------------------------------------------------

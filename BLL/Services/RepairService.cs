@@ -46,24 +46,28 @@ namespace BLL.Services
         public async Task<RepairResponseDTO> CancelRepairAsync(int id)
         {
             var repair = await Repository.CancelRepairAsync(id);
+            await SaveChangesAsync();
             return _mapper.Map<RepairResponseDTO>(repair);
         }
 
         public async Task<RepairResponseDTO> UpdateCostAsync(int id, decimal newCost)
         {
             var repair = await Repository.UpdateCostAsync(id, newCost);
+            await SaveChangesAsync();
             return _mapper.Map<RepairResponseDTO>(repair);
         }
 
         public async Task<RepairResponseDTO> UpdateNoteAsync(int id, string note)
         {
             var repair = await Repository.UpdateNoteAsync(id, note);
+            await SaveChangesAsync();
             return _mapper.Map<RepairResponseDTO>(repair);
         }
 
         public async Task<RepairResponseDTO> UpdateStatusAsync(int id, ERepairStatus newStatus)
         {
             var repair = await Repository.UpdateStatusAsync(id, newStatus);
+            await SaveChangesAsync();
             return _mapper.Map<RepairResponseDTO>(repair);
         }
 

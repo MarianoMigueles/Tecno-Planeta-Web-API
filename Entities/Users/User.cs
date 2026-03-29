@@ -14,9 +14,18 @@ namespace Entities.Users
         public EUserRol Rol { get; private set; }
         public EUserSector Sector { get; private set; }
 
-        /// <summary>
-        /// Asigna el password ya hasheado (el hash lo genera AuthService con BCrypt antes de llamar este método).
-        /// </summary>
+        // Constructor sin parámetros requerido por EF Core y los tests
+        public User() { }
+
+        public User(string userName, string email, string password, EUserRol rol, EUserSector sector)
+        {
+            UserName = userName;
+            Email = email;
+            Password = password;
+            Rol = rol;
+            Sector = sector;
+        }
+
         public void SetPassword(string hashedPassword)
         {
             if (string.IsNullOrWhiteSpace(hashedPassword))
@@ -25,9 +34,6 @@ namespace Entities.Users
             Password = hashedPassword;
         }
 
-        /// <summary>
-        /// Verifica un password en texto plano contra el hash almacenado usando BCrypt.
-        /// </summary>
         public bool VerifyPassword(string plainPassword)
         {
             if (string.IsNullOrWhiteSpace(plainPassword))
@@ -81,4 +87,5 @@ namespace Entities.Users
             this.Password = newPassword;
         }
     }
+}
 }
