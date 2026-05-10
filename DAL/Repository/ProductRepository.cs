@@ -5,6 +5,7 @@ using Entities.Users;
 using Exeptions;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,15 +24,10 @@ namespace DAL.Repository
         }
         public async Task<List<Product>> GetAllByActiveStatusAsync(bool status) => await this.GetListAsync(p => p.IsActive.Equals(status));
         public async Task<List<Product>> GetAllByCategoryAsync(string category) => await this.GetListAsync(p => p.Category.Description.Equals(category));
-        public async Task<Product> GetByBarCodeAsync(string barCode) => await this.GetSingleAsync(p => p.Details.BarCode.Equals(barCode));
+        public async Task<Product> GetByBarCodeAsync(string barCode) => await this.GetSingleAsync(p => p.Details.BarCode.Equals(barCode), p => p.Details);
         public async Task<Product> GetByNameAsync(string name) => await this.GetSingleAsync(p => p.Name.Equals(name));
 
-        public async Task<List<Product>> GetAllByAmoutOfStockAsync(int amount, bool isGreaterThan = false)
-        {
-            return await this.GetListAsync(p => isGreaterThan
-                                                ? p.Stock >= amount
-                                                : p.Stock <= amount);
-        }
+        public async Task<List<Product>> GetAllByAmoutOfStockAsync(int amount, bool isGreaterThan = false) => await this.GetListAsync(p => isGreaterThan? p.Stock >= amount : p.Stock <= amount, p => p.Details);
 
         public async Task<List<Product>> GetAllByPurchasePriceAsync(decimal price, bool isGreaterThan = false)
         {

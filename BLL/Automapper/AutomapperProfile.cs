@@ -40,10 +40,8 @@ namespace BLL.Automapper
             //------------------------------------------------------------
 
             //--------------------------------- CUSTOMER -----------------
-            CreateMap<Customer, DeviceResponseDTO>().ReverseMap();
-
-            CreateMap<DeviceCreateDTO, Customer>();
-
+            CreateMap<Customer, CustomerResponseDTO>().ReverseMap();
+            CreateMap<CustomerCreateDTO, Customer>();
             CreateMap<Customer, CustomerBaseDTO>().ReverseMap();
             //------------------------------------------------------------
 
@@ -63,13 +61,23 @@ namespace BLL.Automapper
             //------------------------------------------------------------
 
             //--------------------------------- SERVICE -----------------
-            CreateMap<Service, ServiceBaseDTO>().ReverseMap();
+            CreateMap<Service, ServiceResponseDTO>().ReverseMap();
+            CreateMap<ServiceCreateDTO, Service>().ReverseMap();
+            CreateMap<ServiceUpdateDTO, Service>().ReverseMap();
             //------------------------------------------------------------
 
             //--------------------------------- PRODUCT -----------------
             CreateMap<Product, ProductResponseDTO>().ReverseMap()
                 .ForPath(dest => dest.Category.Description, opt => opt.MapFrom(src => src.CategoryDescription))
                 .ForPath(dest => dest.Details.Description, opt => opt.MapFrom(src => src.DetailsDescription));
+
+            CreateMap<Product, ProductResponseDTO>()
+                .ForMember(dest => dest.BarCode, opt => opt.MapFrom(src => src.Details.BarCode))
+                .ForMember(dest => dest.PurchasePrice, opt => opt.MapFrom(src => src.Details.PurchasePrice));
+
+            CreateMap<ProductResponseDTO, Product>()
+                .ForPath(dest => dest.Details.BarCode, opt => opt.MapFrom(src => src.BarCode))
+                .ForPath(dest => dest.Details.PurchasePrice, opt => opt.MapFrom(src => src.PurchasePrice));
 
             CreateMap<ProductCreateDTO, Product>()
                 .ForPath(dest => dest.Category.Description, opt => opt.MapFrom(src => src.CategoryDescription))
@@ -115,6 +123,8 @@ namespace BLL.Automapper
 
             //--------------------------------- DEVICE ------------------
             CreateMap<Device, BaseDeviceDTO>().ReverseMap();
+            CreateMap<DeviceCreateDTO, Device>();
+            CreateMap<DeviceResponseDTO, Device>().ReverseMap();
             //------------------------------------------------------------
         }
     }

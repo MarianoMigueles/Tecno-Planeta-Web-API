@@ -50,9 +50,10 @@ namespace BLL.Services
             return _mapper.Map<List<ProductResponseDTO>>(products);
         }
 
-        public async Task<ProductResponseDTO> GetByBarCodeAsync(string name)
+        public async Task<ProductResponseDTO> GetByBarCodeAsync(string barCode)
         {
-            var product = await Repository.GetByBarCodeAsync(name);
+            var product = await Repository.GetByBarCodeAsync(barCode);
+            var pr = _mapper.Map<ProductResponseDTO>(product);
             return _mapper.Map<ProductResponseDTO>(product);
         }
 

@@ -48,8 +48,8 @@ namespace BLL.Services
         public async Task<UserResponseDTO> RegisterAsync(RegisterRequestDTO request)
         {
             string passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
-
             var newUser = _mapper.Map<User>(request);
+            newUser.SetPassword(passwordHash);
             await _repository.CreateAsync(newUser);
             await _unitOfWork.Save();
 

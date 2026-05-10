@@ -28,6 +28,10 @@ namespace ServiceLayerTests.ProductTests
                 .Setup(u => u.ProductRepository)
                 .Returns(ProductRepositoryMock.Object);
 
+            UnitOfWorkMock
+                .Setup(u => u.Save())
+                .ReturnsAsync(1);
+
             var mapperConfig = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<AutomapperProfile>(); // tu AutoMapper Profile real
